@@ -4,6 +4,8 @@
     <string name="memo_cancel">취소</string>
     <string name="memo_create">등록</string>
     <string name="memo_delete">메모 삭제</string>
+    <string name="memo_delete_all">모든 메모 삭제</string>
+    <string name="memo_app_info">앱 정보</string>
     <string name="memo_fix">메모 고정 및 해제</string>
     <string name="memo_widget">위젯으로 띄우기</string>
     <string name="todo_title">오늘 할 일</string>

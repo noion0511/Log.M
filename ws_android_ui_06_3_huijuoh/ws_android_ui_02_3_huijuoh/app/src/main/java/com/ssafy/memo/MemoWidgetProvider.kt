@@ -6,111 +6,143 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.RemoteViews
-
-private const val TAG = "MemoWidgetProvider"
+import com.ssafy.memo.util.*
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.util.*
 
 class MemoWidgetProvider : AppWidgetProvider() {
-
-    companion object {
-        const val EXTRA_ITEM_POSITION = "com.ssafy.memo.EXTRA_ITEM_POSITION"
-        const val EXTRA_SELECTED_WIDGET_ID = "com.ssafy.memo.EXTRA_SELECTED_WIDGET_ID"
-    }
 
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
-        Log.d("MemoWidgetProvider", "onUpdate called with appWidgetIds: ${appWidgetIds.contentToString()}")
-
-//        for (appWidgetId in appWidgetIds) {
-//            updateAppWidget(context, appWidgetManager, appWidgetId)
-//        }
+        // 위젯이 여러 개인 경우를 처리하기 위해 모든 위젯 ID에 대해 업데이트를 수행합니다.
         for (appWidgetId in appWidgetIds) {
-            val remoteViews = RemoteViews(context.packageName, R.layout.widget_memo)
-            val extras = appWidgetManager.getAppWidgetOptions(appWidgetId)
-            val memoItemId = extras.getLong(EXTRA_ITEM_POSITION, -1L)
-            val memoItem = MemoDBHelper(context).selectMemoAt(memoItemId)
+            val memoId = getMemoIdForWidget(context, appWidgetId)
 
-
-            // PendingIntent를 사용하여 클릭 이벤트를 처리할 인텐트를 설정합니다.
-            val clickIntent = Intent(context, MemoWidgetProvider::class.java).apply {
-                action = "your_click_action"
-                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            // 위젯 인스턴스와 관련된 메모가 없는 경우 새로운 메모를 생성합니다.
+            if (memoId == null) {
+                val memo = createNewMemo(context)
+                saveMemoIdForWidget(context, appWidgetId, memo.id)
             }
-            val pendingIntent = PendingIntent.getBroadcast(context, appWidgetId, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
-            remoteViews.setTextViewText(R.id.textViewTitle, memoItem?.title ?: "")
-            remoteViews.setTextViewText(R.id.textViewContent, memoItem?.content ?: "")
-            remoteViews.setTextViewText(R.id.textViewDate, memoItem?.date ?: "")
-
-            // 원격 뷰에 클릭 이벤트를 설정합니다. 여기에서 R.id.your_widget_button은 클릭 이벤트를 처리할 위젯의 뷰 ID입니다.
-            remoteViews.setOnClickPendingIntent(R.id.widget_memo, pendingIntent)
-
-            // 위젯 업데이트
-            appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
-
-//
-//
-//            val extras = appWidgetManager.getAppWidgetOptions(appWidgetId)
-//            val memoItemId = extras.getLong(EXTRA_ITEM_POSITION, -1L)
-//
-//            val intent = Intent(context, MemoEditActivity::class.java)
-//            intent.putExtra("itemId", memoItemId)
-//            intent.putExtra("appWidgetId", appWidgetId)
-//            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//            val pendingIntent = PendingIntent.getActivity(
-//                context,
-//                0,
-//                intent,
-//                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-//            )
-//            views.setOnClickPendingIntent(R.id.widget_memo, pendingIntent)
-//
-//            updateAppWidget(context, appWidgetManager, appWidgetId, memoItemId)
+            updateAppWidget(context, appWidgetManager, appWidgetId)
         }
     }
+
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
 
-        if (intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE) {
+        if (intent.action == ACTION_MEMO_DELETED) {
             val appWidgetManager = AppWidgetManager.getInstance(context)
-            val memoItemId = intent.getLongExtra(EXTRA_ITEM_POSITION, -1L)
-            val selectedWidgetId = intent.getIntExtra(EXTRA_SELECTED_WIDGET_ID, -1)
-
-            Log.d(TAG, "onDataSetChanged: onReceive ${memoItemId}")
-            Log.d(TAG, "onDataSetChanged: onReceive ${selectedWidgetId}")
-
-            updateAppWidget(context, appWidgetManager, selectedWidgetId, memoItemId)
+            val appWidgetIds = appWidgetManager.getAppWidgetIds(
+                ComponentName(
+                    context,
+                    MemoWidgetProvider::class.java
+                )
+            )
+            onUpdate(context, appWidgetManager, appWidgetIds)
         }
-
-        Log.d(TAG, "onReceive: click~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     }
 
+
+    override fun onDeleted(context: Context, appWidgetIds: IntArray) {
+        for (appWidgetId in appWidgetIds) {
+            removeMemoIdForWidget(context, appWidgetId)
+        }
+    }
+
+
+    @OptIn(DelicateCoroutinesApi::class)
     private fun updateAppWidget(
         context: Context,
         appWidgetManager: AppWidgetManager,
-        appWidgetId: Int,
-        memoItemId: Long
+        appWidgetId: Int
     ) {
-        Log.d(TAG, "onDataSetChanged: updateAppWidget ${memoItemId}")
-        Log.d(TAG, "onDataSetChanged: updateAppWidget ${appWidgetId}")
+        // 메모 데이터를 로드하는 코드를 작성해야 합니다.
+        GlobalScope.launch {
+            val memo = if (appWidgetId != -1) loadMemo(context, appWidgetId) else null
 
-        val memoItem = if (memoItemId != -1L) {
-            MemoDBHelper(context).selectMemoAt(memoItemId)
-        } else {
-            null
+            // 위젯 레이아웃을 업데이트합니다.
+            val views = RemoteViews(context.packageName, R.layout.widget_memo)
+
+            if (memo != null) {
+                views.setTextViewText(R.id.textViewTitle, memo.title)
+                views.setTextViewText(R.id.textViewContent, memo.content)
+                views.setTextViewText(R.id.textViewDate, memo.date)
+                setWidgetClickEvent(context, views, appWidgetId, memo.id)
+            } else {
+                views.setTextViewText(R.id.textViewTitle, "메모가 없음")
+                views.setTextViewText(R.id.textViewContent, "연결된 메모가 삭제되었습니다.")
+                setWidgetClickEvent(context, views, appWidgetId, -1L)
+            }
+            // 위젯을 업데이트합니다.
+            appWidgetManager.updateAppWidget(appWidgetId, views)
         }
+    }
 
-        val views = RemoteViews(context.packageName, R.layout.widget_memo)
+    private suspend fun loadMemo(context: Context, widgetId: Int): MemoItem? {
+        val memoId = loadMemoIdForWidget(context, widgetId)
+        if (memoId == -1L) return null
 
-        views.setTextViewText(R.id.textViewTitle, memoItem?.title ?: "")
-        views.setTextViewText(R.id.textViewContent, memoItem?.content ?: "")
-        views.setTextViewText(R.id.textViewDate, memoItem?.date ?: "")
+        val dbHelper = MemoDBHelper(context)
+        return dbHelper.selectMemo(memoId)
+    }
 
-        appWidgetManager.updateAppWidget(appWidgetId, views)
+    private fun createNewMemo(context: Context): MemoItem {
+        val dbHelper = MemoDBHelper(context)
+        val memo = MemoItem(
+            0L, // ID는 데이터베이스에서 자동으로 생성됩니다.
+            "new meme", // 제목
+            "", // 내용
+            DateFormatUtil.formatDate(Date(), "yyyy-MM-dd HH:mm"), // 날짜
+            false // 고정 여부
+        )
+
+        dbHelper.insertMemo(memo)
+        val memoItems = dbHelper.selectAllMemos()
+        return memoItems.last() // 가장 최근에 저장된 메모를 반환합니다.
+    }
+
+    private fun setWidgetClickEvent(
+        context: Context,
+        views: RemoteViews,
+        appWidgetId: Int,
+        memoId: Long
+    ) {
+        if (memoId == -1L) {
+            views.setOnClickPendingIntent(R.id.widget_memo, null)
+            return
+        }
+        // 인텐트를 생성하여 EditMemoActivity를 시작하도록 설정합니다.
+        val intent = Intent(context, MemoEditActivity::class.java)
+
+        // 위젯 인스턴스에 대한 정보를 전달하기 위해 인텐트에 extra 데이터를 추가합니다.
+        intent.putExtra(EXTRA_WIDGET_ID, appWidgetId)
+        intent.putExtra(EXTRA_MEMO_ID, memoId)
+
+        // PendingIntent를 사용하여 인텐트를 설정합니다.
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            appWidgetId,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        // 위젯 뷰의 클릭 리스너를 설정합니다.
+        views.setOnClickPendingIntent(R.id.widget_memo, pendingIntent)
+
+    }
+
+    companion object {
+        const val EXTRA_MEMO_ID = "memoId"
+        const val EXTRA_WIDGET_ID = "widgetId"
+        const val ACTION_MEMO_DELETED = "MEMO_DELETED"
+        const val ACTION_MEMO_DELETED_ALL = "ACTION_MEMO_DELETED_ALL"
     }
 }

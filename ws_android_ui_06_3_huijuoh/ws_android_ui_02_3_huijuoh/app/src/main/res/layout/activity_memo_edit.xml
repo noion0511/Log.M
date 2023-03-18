@@ -44,6 +44,14 @@
         app:layout_constraintStart_toEndOf="@+id/button_save"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
@@ -52,34 +60,34 @@
         app:layout_constraintBottom_toTopOf="@+id/button_save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/include">
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/todo_title"
             android:layout_margin="10dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:hint="@string/todo_title">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editText_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/todo_content"
             android:layout_margin="10dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:layout_weight="1"
+            android:hint="@string/todo_content">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editText_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="top"/>
+                android:gravity="top" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <CheckBox
@@ -89,6 +97,6 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:text="@string/check_fix"/>
+            android:text="@string/check_fix" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.memo.databinding.ActivityMainBinding
 
@@ -24,8 +25,8 @@ class MainActivity : AppCompatActivity() {
         initAdapter()
         initCreateMemo()
         initContextMenu()
+        initToolbar()
     }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_create, menu)
         return super.onCreateOptionsMenu(menu)
@@ -33,9 +34,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.button_create -> {
-                val intent = Intent(this, MemoEditActivity::class.java)
-                startActivity(intent)
+            R.id.button_delete_all -> {
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("모든 메모 삭제")
+                builder.setMessage("정말 모든 메모를 삭제하시겠습니까? 이후에 삭제된 메모들을 복구되지 않습니다.")
+                builder.setPositiveButton("예") { dialog, which ->
+                    memoDBHelper.deleteAllMemos()
+                    memoAdapter.clear()
+                }
+                builder.setNegativeButton("아니오") { dialog, which ->
+                    dialog.dismiss()
+                }
+                builder.show()
                 true
             }
             else -> {
@@ -50,6 +60,8 @@ class MainActivity : AppCompatActivity() {
                 memoDBHelper.deleteMemo(selectedMemoItem.id)
                 memoAdapter.clear()
                 memoAdapter.addAll(memoDBHelper.selectAllMemos())
+                val intent = Intent(MemoWidgetProvider.ACTION_MEMO_DELETED)
+                sendBroadcast(intent)
                 true
             }
             R.id.button_fix -> {
@@ -65,6 +77,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun initToolbar() {
+        setSupportActionBar(binding.include.toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
     private fun initCreateMemo() {
         binding.floatingActionButton.setOnClickListener {
             val intent = Intent(this, MemoEditActivity::class.java)
@@ -76,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         memoAdapter = MemoAdapter(memos, object : MemoAdapter.OnItemClickListener {
             override fun onItemClick(memoItem: MemoItem) {
                 val intent = Intent(applicationContext, MemoEditActivity::class.java)
-                intent.putExtra("itemId", memoItem.id)
+                intent.putExtra(MemoWidgetProvider.EXTRA_MEMO_ID, memoItem.id)
                 startActivity(intent)
             }
         },
