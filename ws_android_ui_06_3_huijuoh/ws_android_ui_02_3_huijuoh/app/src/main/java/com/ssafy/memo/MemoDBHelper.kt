@@ -22,9 +22,13 @@ class MemoDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
     }
 
     @SuppressLint("Range")
-    fun selectAllMemos(): ArrayList<MemoItem> {
+    fun selectAllMemos(sortOption: Int = 1): ArrayList<MemoItem> {
         val memoItems = ArrayList<MemoItem>()
-        val selectQuery = "SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_IS_FIXED DESC, $COLUMN_DATE"
+        val selectQuery = when (sortOption) {
+            1 -> "SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_IS_FIXED DESC, $COLUMN_DATE DESC"
+            2 -> "SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_IS_FIXED DESC, $COLUMN_TITLE COLLATE NOCASE ASC"
+            else -> "SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_IS_FIXED DESC, $COLUMN_DATE ASC"
+        }
         val db = readableDatabase
         val cursor = db.rawQuery(selectQuery, null)
 

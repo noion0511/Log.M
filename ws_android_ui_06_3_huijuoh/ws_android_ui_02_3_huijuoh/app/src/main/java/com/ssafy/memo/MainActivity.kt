@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.memo.databinding.ActivityMainBinding
 
@@ -16,17 +18,22 @@ class MainActivity : AppCompatActivity() {
     private lateinit var memoDBHelper: MemoDBHelper
     private lateinit var selectedMemoItem: MemoItem
     private var memos = mutableListOf<MemoItem>()
+    private var sortType = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         initMemoDBHelper()
+        initButtonSetViewType()
         initAdapter()
-        initCreateMemo()
+        initCreateBtn()
         initContextMenu()
+        initSortMemu()
         initToolbar()
+
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_create, menu)
         return super.onCreateOptionsMenu(menu)
@@ -59,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             R.id.button_delete -> {
                 memoDBHelper.deleteMemo(selectedMemoItem.id)
                 memoAdapter.clear()
-                memoAdapter.addAll(memoDBHelper.selectAllMemos())
+                memoAdapter.addAll(memoDBHelper.selectAllMemos(sortType))
                 val intent = Intent(MemoWidgetProvider.ACTION_MEMO_DELETED)
                 sendBroadcast(intent)
                 true
@@ -68,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                 selectedMemoItem.isFixed = !selectedMemoItem.isFixed
                 memoDBHelper.updateMemo(selectedMemoItem)
                 memoAdapter.clear()
-                memoAdapter.addAll(memoDBHelper.selectAllMemos())
+                memoAdapter.addAll(memoDBHelper.selectAllMemos(sortType))
                 true
             }
             else -> {
@@ -81,14 +88,45 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.include.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
     }
-    private fun initCreateMemo() {
+
+    private fun initCreateBtn() {
         binding.floatingActionButton.setOnClickListener {
             val intent = Intent(this, MemoEditActivity::class.java)
             startActivity(intent)
         }
     }
+
+    private fun initSortMemu() {
+        val items = listOf("최신 순", "사전 순", "생성 순")
+
+        val adapter = ArrayAdapter(this, R.layout.item_menu_sort, items)
+        binding.textviewSort.setAdapter(adapter)
+        binding.textviewSort.setText(items[0], false)
+
+        binding.textviewSort.setOnItemClickListener { _, _, position, _ ->
+            when(position) {
+                0 -> {
+                    sortType = 1
+                    memoAdapter.clear()
+                    memoAdapter.addAll(memoDBHelper.selectAllMemos(1))
+                }
+                1 -> {
+                    sortType = 2
+                    memoAdapter.clear()
+                    memoAdapter.addAll(memoDBHelper.selectAllMemos(2))
+                }
+                2 -> {
+                    sortType = 3
+                    memoAdapter.clear()
+                    memoAdapter.addAll(memoDBHelper.selectAllMemos(3))
+                }
+            }
+
+        }
+    }
+
     private fun initAdapter() {
-        memos = memoDBHelper.selectAllMemos()
+        memos = memoDBHelper.selectAllMemos(sortType)
         memoAdapter = MemoAdapter(memos, object : MemoAdapter.OnItemClickListener {
             override fun onItemClick(memoItem: MemoItem) {
                 val intent = Intent(applicationContext, MemoEditActivity::class.java)
@@ -113,6 +151,19 @@ class MainActivity : AppCompatActivity() {
         binding.listViewMemo.layoutManager = LinearLayoutManager(this)
         binding.listViewMemo.adapter = memoAdapter
     }
+
+    private fun initButtonSetViewType() {
+        binding.btnSimpleView.isSelected = true
+        binding.btnSimpleView.setOnClickListener {
+            binding.listViewMemo.layoutManager = LinearLayoutManager(this)
+            memoAdapter.setViewType(MemoAdapter.TYPE_ITEM_SIMPLE)
+        }
+        binding.btnDetailView.setOnClickListener {
+            binding.listViewMemo.layoutManager = GridLayoutManager(this, 2)
+            memoAdapter.setViewType(MemoAdapter.TYPE_ITEM_DETAIL)
+        }
+    }
+
     private fun initContextMenu() {
         registerForContextMenu(binding.listViewMemo)
     }
@@ -123,9 +174,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if(::memoAdapter.isInitialized && ::memoDBHelper.isInitialized) {
+        if (::memoAdapter.isInitialized && ::memoDBHelper.isInitialized) {
             memoAdapter.clear()
-            memoAdapter.addAll(memoDBHelper.selectAllMemos())
+            memoAdapter.addAll(memoDBHelper.selectAllMemos(sortType))
         }
     }
 

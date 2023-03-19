@@ -34,7 +34,8 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="@color/black"
-                    android:text="@{memo.title}"/>
+                    android:text="@{memo.title}"
+                    android:singleLine="true"/>
 
                 <TextView
                     android:id="@+id/dateTextView"
@@ -50,7 +51,7 @@
                 android:id="@+id/fixedIconImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_gravity="top"
                 app:srcCompat="@drawable/baseline_push_pin_24"
                 android:contentDescription="@string/fixed_icon_description"
                 app:visibility="@{memo.isFixed ? View.VISIBLE : View.GONE}"/>
