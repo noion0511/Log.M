@@ -1,4 +1,4 @@
-package com.ssafy.memo.util
+package com.likewhile.meme.util
 
 import android.content.Context
 

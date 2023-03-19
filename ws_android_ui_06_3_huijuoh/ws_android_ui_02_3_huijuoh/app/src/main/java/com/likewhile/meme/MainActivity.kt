@@ -1,4 +1,4 @@
-package com.ssafy.memo
+package com.likewhile.meme
 
 
 import android.content.Intent
@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ssafy.memo.databinding.ActivityMainBinding
+import com.likewhile.meme.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }

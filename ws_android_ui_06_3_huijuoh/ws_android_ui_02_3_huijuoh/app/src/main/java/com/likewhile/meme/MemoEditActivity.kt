@@ -1,4 +1,4 @@
-package com.ssafy.memo
+package com.likewhile.meme
 
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.ssafy.memo.databinding.ActivityMemoEditBinding
-import com.ssafy.memo.util.DateFormatUtil
+import com.likewhile.meme.databinding.ActivityMemoEditBinding
+import com.likewhile.meme.util.DateFormatUtil
 import java.util.*
 
 private const val TAG = "MemoEditActivity"

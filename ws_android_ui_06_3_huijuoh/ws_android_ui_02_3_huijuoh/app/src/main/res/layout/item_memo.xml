@@ -4,7 +4,7 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="com.ssafy.memo.MemoItem"/>
+        <import type="com.likewhile.meme.MemoItem"/>
         <variable name="memo" type="MemoItem"/>
     </data>
 

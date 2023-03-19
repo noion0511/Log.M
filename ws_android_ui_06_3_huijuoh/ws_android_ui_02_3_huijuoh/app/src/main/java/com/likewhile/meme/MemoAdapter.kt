@@ -1,10 +1,10 @@
-package com.ssafy.memo
+package com.likewhile.meme
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ssafy.memo.databinding.ItemMemoBinding
-import com.ssafy.memo.databinding.ItemMemoDetailBinding
+import com.likewhile.meme.databinding.ItemMemoBinding
+import com.likewhile.meme.databinding.ItemMemoDetailBinding
 
 class MemoAdapter(private val memoItems: MutableList<MemoItem>, private val onItemClickListener: OnItemClickListener, private val onItemLongClickListener: OnItemLongClickListener
     ) :

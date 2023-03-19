@@ -1,4 +1,4 @@
-package com.ssafy.memo
+package com.likewhile.meme
 
 import android.content.Intent
 import android.widget.RemoteViewsService

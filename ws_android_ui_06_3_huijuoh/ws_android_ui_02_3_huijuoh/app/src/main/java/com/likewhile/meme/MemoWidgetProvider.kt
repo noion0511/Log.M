@@ -1,4 +1,4 @@
-package com.ssafy.memo
+package com.likewhile.meme
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -7,7 +7,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
-import com.ssafy.memo.util.*
+import com.likewhile.meme.util.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -105,7 +105,7 @@ class MemoWidgetProvider : AppWidgetProvider() {
         )
 
         dbHelper.insertMemo(memo)
-        val memoItems = dbHelper.selectAllMemos()
+        val memoItems = dbHelper.selectAllMemos(3)
         return memoItems.last() // 가장 최근에 저장된 메모를 반환합니다.
     }
 

@@ -1,4 +1,4 @@
-package com.ssafy.memo
+package com.likewhile.meme
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
@@ -121,10 +121,10 @@ class MemoDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
     }
 
     companion object {
-        const val DATABASE_NAME = "memo.db"
+        const val DATABASE_NAME = "meme.db"
         const val DATABASE_VERSION = 1
 
-        const val TABLE_NAME = "memo"
+        const val TABLE_NAME = "meme"
         const val COLUMN_ID = "_id"
         const val COLUMN_TITLE = "title"
         const val COLUMN_CONTENT = "content"
