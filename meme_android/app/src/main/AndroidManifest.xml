@@ -29,6 +29,7 @@
 
         <activity
             android:name=".MemoEditActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
