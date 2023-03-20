@@ -118,6 +118,7 @@ class MemoEditActivity : AppCompatActivity() {
                     Log.d(TAG, "onDataSetChanged: initSave ${appWidgetId}")
                     memoDBHelper.updateMemo(memoItem)
                     updateWidget()
+                    initMemoData()
                 } else {
                     memoDBHelper.insertMemo(memoItem)
                 }
