@@ -3,10 +3,16 @@ package com.likewhile.meme
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
+import android.widget.Toolbar
 import com.likewhile.meme.databinding.ActivityMemoEditBinding
 import com.likewhile.meme.util.DateFormatUtil
 import java.util.*
@@ -28,7 +34,6 @@ class MemoEditActivity : AppCompatActivity() {
         initSave()
         initCancel()
         initToolbar()
-
     }
 
     private fun initMemoForm() {
@@ -37,6 +42,16 @@ class MemoEditActivity : AppCompatActivity() {
             binding.editTextContent.setText(memo.content)
             binding.checkBoxFix.isChecked = memo.isFixed
 
+            binding.editTextTitle.isEnabled = false
+            binding.editTextTitle.alpha = 1f
+            binding.editTextTitle.setTextColor(Color.BLACK)
+            binding.editTextContent.isEnabled = false
+            binding.editTextContent.alpha = 1f
+            binding.editTextContent.setTextColor(Color.BLACK)
+            binding.checkBoxFix.isEnabled = false
+            binding.checkBoxFix.setTextColor(Color.BLACK)
+            binding.buttonSave.visibility = View.GONE
+            binding.buttonCancel.visibility = View.GONE
         }
     }
 
@@ -45,8 +60,39 @@ class MemoEditActivity : AppCompatActivity() {
     }
 
     private fun initToolbar() {
+        val params = Toolbar.LayoutParams(
+            Toolbar.LayoutParams.MATCH_PARENT,
+            Toolbar.LayoutParams.WRAP_CONTENT,
+            Gravity.START
+        )
         setSupportActionBar(binding.include.toolbar)
+        binding.include.toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24)
+        binding.include.toolbar.layoutParams = params
+        binding.include.toolbar.setNavigationOnClickListener { finish() }
         supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+            R.id.button_edit_mode -> {
+                binding.editTextTitle.isEnabled = true
+                binding.editTextContent.isEnabled = true
+                binding.checkBoxFix.isEnabled = true
+                binding.buttonSave.visibility = View.VISIBLE
+                binding.buttonCancel.visibility = View.VISIBLE
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     private fun initSave() {
@@ -72,10 +118,11 @@ class MemoEditActivity : AppCompatActivity() {
                     Log.d(TAG, "onDataSetChanged: initSave ${appWidgetId}")
                     memoDBHelper.updateMemo(memoItem)
                     updateWidget()
+                    initMemoData()
                 } else {
                     memoDBHelper.insertMemo(memoItem)
                 }
-                finish()
+                initMemoForm()
             }
         }
     }
