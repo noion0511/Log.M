@@ -6,7 +6,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
+import android.widget.Toolbar
 import com.likewhile.meme.databinding.ActivityMemoEditBinding
 import com.likewhile.meme.util.DateFormatUtil
 import java.util.*
@@ -28,7 +32,6 @@ class MemoEditActivity : AppCompatActivity() {
         initSave()
         initCancel()
         initToolbar()
-
     }
 
     private fun initMemoForm() {
@@ -45,8 +48,31 @@ class MemoEditActivity : AppCompatActivity() {
     }
 
     private fun initToolbar() {
+        val params = Toolbar.LayoutParams(
+            Toolbar.LayoutParams.MATCH_PARENT,
+            Toolbar.LayoutParams.WRAP_CONTENT,
+            Gravity.START
+        )
         setSupportActionBar(binding.include.toolbar)
+        binding.include.toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24)
+        binding.include.toolbar.layoutParams = params
+        binding.include.toolbar.setNavigationOnClickListener { finish() }
         supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     private fun initSave() {
@@ -75,7 +101,6 @@ class MemoEditActivity : AppCompatActivity() {
                 } else {
                     memoDBHelper.insertMemo(memoItem)
                 }
-                finish()
             }
         }
     }
