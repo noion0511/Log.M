@@ -1,9 +1,12 @@
-package com.likewhile.meme
+package com.likewhile.meme.ui.view.widget
 
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
+import com.likewhile.meme.R
+import com.likewhile.meme.data.local.MemoDBHelper
+import com.likewhile.meme.data.model.MemoItem
 
 class MemoWidgetFactory(private val context: Context, intent: Intent?) : RemoteViewsService.RemoteViewsFactory {
     private val memoDBHelper = MemoDBHelper(context)

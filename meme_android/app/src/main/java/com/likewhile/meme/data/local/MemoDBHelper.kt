@@ -1,4 +1,4 @@
-package com.likewhile.meme
+package com.likewhile.meme.data.local
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
@@ -6,11 +6,11 @@ import android.content.Context
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import java.util.*
-import kotlin.collections.ArrayList
+import androidx.lifecycle.LiveData
+import com.likewhile.meme.MemeApplication
+import com.likewhile.meme.ui.view.widget.MemoWidgetProvider
+import com.likewhile.meme.data.model.MemoItem
 
-
-private const val TAG = "MemoDBHelper"
 class MemoDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(CREATE_TABLE_SQL)

@@ -1,4 +1,4 @@
-package com.likewhile.meme
+package com.likewhile.meme.ui.view.widget
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -7,6 +7,10 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
+import com.likewhile.meme.R
+import com.likewhile.meme.data.local.MemoDBHelper
+import com.likewhile.meme.data.model.MemoItem
+import com.likewhile.meme.ui.view.MemoEditActivity
 import com.likewhile.meme.util.*
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope

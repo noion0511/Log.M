@@ -1,4 +1,4 @@
-package com.likewhile.meme
+package com.likewhile.meme.ui.view
 
 
 import android.content.Intent
@@ -8,23 +8,28 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.likewhile.meme.*
+import com.likewhile.meme.data.model.MemoItem
 import com.likewhile.meme.databinding.ActivityMainBinding
+import com.likewhile.meme.ui.adapter.MemoAdapter
+import com.likewhile.meme.ui.view.widget.MemoWidgetProvider
+import com.likewhile.meme.ui.viewmodel.MemoViewModel
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private lateinit var memoViewModel: MemoViewModel
     private lateinit var memoAdapter: MemoAdapter
-    private lateinit var memoDBHelper: MemoDBHelper
     private lateinit var selectedMemoItem: MemoItem
-    private var memos = mutableListOf<MemoItem>()
-    private var sortType = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        initMemoDBHelper()
+        memoViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(MemoViewModel::class.java)
+
         initButtonSetViewType()
         initAdapter()
         initCreateBtn()
@@ -45,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 builder.setTitle(getString(R.string.delete_all_memos_title))
                 builder.setMessage(getString(R.string.delete_all_memos_message))
                 builder.setPositiveButton(getString(R.string.delete_all_memos_confirm)) { dialog, which ->
-                    memoDBHelper.deleteAllMemos()
+                    memoViewModel.deleteAllMemos()
                     memoAdapter.clear()
                 }
                 builder.setNegativeButton(getString(R.string.delete_all_memos_cancel)) { dialog, which ->
@@ -63,18 +68,14 @@ class MainActivity : AppCompatActivity() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.button_delete -> {
-                memoDBHelper.deleteMemo(selectedMemoItem.id)
-                memoAdapter.clear()
-                memoAdapter.addAll(memoDBHelper.selectAllMemos(sortType))
+                memoViewModel.deleteMemo(selectedMemoItem.id)
                 val intent = Intent(MemoWidgetProvider.ACTION_MEMO_DELETED)
                 sendBroadcast(intent)
                 true
             }
             R.id.button_fix -> {
                 selectedMemoItem.isFixed = !selectedMemoItem.isFixed
-                memoDBHelper.updateMemo(selectedMemoItem)
-                memoAdapter.clear()
-                memoAdapter.addAll(memoDBHelper.selectAllMemos(sortType))
+                memoViewModel.updateMemo(selectedMemoItem)
                 true
             }
             else -> {
@@ -109,19 +110,13 @@ class MainActivity : AppCompatActivity() {
         binding.textviewSort.setOnItemClickListener { _, _, position, _ ->
             when(position) {
                 0 -> {
-                    sortType = 1
-                    memoAdapter.clear()
-                    memoAdapter.addAll(memoDBHelper.selectAllMemos(1))
+                    memoViewModel.setSortType(1)
                 }
                 1 -> {
-                    sortType = 2
-                    memoAdapter.clear()
-                    memoAdapter.addAll(memoDBHelper.selectAllMemos(2))
+                    memoViewModel.setSortType(2)
                 }
                 2 -> {
-                    sortType = 3
-                    memoAdapter.clear()
-                    memoAdapter.addAll(memoDBHelper.selectAllMemos(3))
+                    memoViewModel.setSortType(3)
                 }
             }
 
@@ -129,8 +124,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        memos = memoDBHelper.selectAllMemos(sortType)
-        memoAdapter = MemoAdapter(memos, object : MemoAdapter.OnItemClickListener {
+        memoViewModel.memos.observe(this) { memos ->
+            memos?.let {
+                memoAdapter.clear()
+                memoAdapter.addAll(it)
+            }
+        }
+
+        memoAdapter = MemoAdapter(memoViewModel.memos.value ?: mutableListOf(), object : MemoAdapter.OnItemClickListener {
             override fun onItemClick(memoItem: MemoItem) {
                 val intent = Intent(applicationContext, MemoEditActivity::class.java)
                 intent.putExtra(MemoWidgetProvider.EXTRA_MEMO_ID, memoItem.id)
@@ -171,20 +172,13 @@ class MainActivity : AppCompatActivity() {
         registerForContextMenu(binding.listViewMemo)
     }
 
-    private fun initMemoDBHelper() {
-        memoDBHelper = MemoDBHelper(this)
-    }
-
     override fun onResume() {
         super.onResume()
-        if (::memoAdapter.isInitialized && ::memoDBHelper.isInitialized) {
-            memoAdapter.clear()
-            memoAdapter.addAll(memoDBHelper.selectAllMemos(sortType))
-        }
+        memoViewModel.refreshMemos()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        memoDBHelper.close()
+        memoViewModel.closeDB()
     }
 }

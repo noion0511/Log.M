@@ -15,7 +15,7 @@
         tools:targetApi="31">
 
         <receiver
-            android:name=".MemoWidgetProvider"
+            android:name=".ui.view.widget.MemoWidgetProvider"
             android:exported="false"
             android:label="MemoWidget">
             <intent-filter>
@@ -28,15 +28,15 @@
         </receiver>
 
         <activity
-            android:name=".MemoEditActivity"
+            android:name=".ui.view.MemoEditActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="false">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".ui.view.MainActivity" />
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
