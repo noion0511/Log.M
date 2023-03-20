@@ -1,8 +1,9 @@
-package com.likewhile.meme
+package com.likewhile.meme.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.likewhile.meme.data.model.MemoItem
 import com.likewhile.meme.databinding.ItemMemoBinding
 import com.likewhile.meme.databinding.ItemMemoDetailBinding
 
