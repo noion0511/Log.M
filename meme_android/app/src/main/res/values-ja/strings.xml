@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MEME</string>
+    <string name="memo_save">保存</string>
+    <string name="memo_cancel">キャンセル</string>
+    <string name="memo_create">作成</string>
+    <string name="memo_modify">変更</string>
+    <string name="memo_delete">メモの削除</string>
+    <string name="memo_delete_all">すべてのメモを削除</string>
+    <string name="memo_app_info">アプリ情報</string>
+    <string name="memo_fix">メモのピン留めまたは解除</string>
+    <string name="memo_widget">ウィジェットに追加</string>
+    <string name="todo_title">タイトル</string>
+    <string name="todo_content">内容</string>
+    <string name="todo_time">時間</string>
+    <string name="todo_alarm_10">10分後にアラーム</string>
+    <string name="no_memo">メモはありません</string>
+    <string name="sort_memo">メモの並び替え</string>
+    <string name="back">戻る</string>
+    <string name="check_fix">このタスクをトップにピン留めしますか？</string>
+    <string name="fab_content_desc">新しいタスクメモを作成</string>
+    <string name="fixed_icon_description">タスクメモを固定</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">ウィジェットを追加</string>
+    <string name="app_widget_description">これはアプリウィジェットの説明です</string>
+
+    <!-- MainActivity -->
+    <string name="delete_all_memos_title">すべてのメモを削除</string>
+    <string name="delete_all_memos_message">本当にすべてのメモを削除してよろしいですか？削除後、メモを復元することはできません。</string>
+    <string name="delete_all_memos_confirm">はい</string>
+    <string name="delete_all_memos_cancel">いいえ</string>
+    <string name="sort_by_latest">新しい順</string>
+    <string name="sort_alphabetically">アルファベット順</string>
+    <string name="sort_by_creation_date">作成日時</string>
+</resources>

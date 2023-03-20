@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">MEME</string>
+    <string name="memo_save">保存</string>
+    <string name="memo_cancel">取消</string>
+    <string name="memo_create">创建</string>
+    <string name="memo_modify">修改</string>
+    <string name="memo_delete">删除便签</string>
+    <string name="memo_delete_all">删除所有便签</string>
+    <string name="memo_app_info">应用信息</string>
+    <string name="memo_fix">固定/取消固定便签</string>
+    <string name="memo_widget">添加小部件</string>
+    <string name="todo_title">标题</string>
+    <string name="todo_content">内容</string>
+    <string name="todo_time">时间</string>
+    <string name="todo_alarm_10">十分钟后提醒</string>
+    <string name="no_memo">没有便签</string>
+    <string name="sort_memo">便签排序方式</string>
+    <string name="back">返回</string>
+    <string name="check_fix">您是否要将此待办事项固定在顶部？</string>
+    <string name="fab_content_desc">创建新的待办便签</string>
+    <string name="fixed_icon_description">固定待办便签</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">添加小部件</string>
+    <string name="app_widget_description">这是一个小部件说明</string>
+
+    <!-- MainActivity -->
+    <string name="delete_all_memos_title">删除所有便签</string>
+    <string name="delete_all_memos_message">您确定要删除所有便签吗？删除后，便签将无法恢复。</string>
+    <string name="delete_all_memos_confirm">是</string>
+    <string name="delete_all_memos_cancel">否</string>
+    <string name="sort_by_latest">最新</string>
+    <string name="sort_alphabetically">按字母排序</string>
+    <string name="sort_by_creation_date">按创建日期排序</string>
+</resources>

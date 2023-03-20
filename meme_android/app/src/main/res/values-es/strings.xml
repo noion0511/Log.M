@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MEME</string>
+    <string name="memo_save">Guardar</string>
+    <string name="memo_cancel">Cancelar</string>
+    <string name="memo_create">Crear</string>
+    <string name="memo_modify">Modificar</string>
+    <string name="memo_delete">Borrar Memo</string>
+    <string name="memo_delete_all">Borrar todos los Memos</string>
+    <string name="memo_app_info">Información de la aplicación</string>
+    <string name="memo_fix">Fijar o Desfijar Memo</string>
+    <string name="memo_widget">Agregar Widget</string>
+    <string name="todo_title">Título</string>
+    <string name="todo_content">Contenido</string>
+    <string name="todo_time">Hora</string>
+    <string name="todo_alarm_10">Alarma en 10 minutos</string>
+    <string name="no_memo">No hay memo</string>
+    <string name="sort_memo">Ordenar Memo</string>
+    <string name="back">Volver</string>
+    <string name="check_fix">¿Quieres fijar este memo en la parte superior?</string>
+    <string name="fab_content_desc">Crear un nuevo memo</string>
+    <string name="fixed_icon_description">Fijar memo</string>
+    <string name="appwidget_text">EJEMPLO</string>
+    <string name="add_widget">Agregar widget</string>
+    <string name="app_widget_description">Esta es una descripción del widget de la aplicación</string>
+
+    <!-- MainActivity -->
+    <string name="delete_all_memos_title">Borrar todos los memos</string>
+    <string name="delete_all_memos_message">¿Estás seguro de que quieres borrar todos los memos? Una vez borrados, los memos no se pueden recuperar.</string>
+    <string name="delete_all_memos_confirm">Sí</string>
+    <string name="delete_all_memos_cancel">No</string>
+    <string name="sort_by_latest">Último</string>
+    <string name="sort_alphabetically">Alfabético</string>
+    <string name="sort_by_creation_date">Fecha de creación</string>
+</resources>

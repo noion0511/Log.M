@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         initContextMenu()
         initSortMemu()
         initToolbar()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -43,13 +42,13 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.button_delete_all -> {
                 val builder = AlertDialog.Builder(this)
-                builder.setTitle("모든 메모 삭제")
-                builder.setMessage("정말 모든 메모를 삭제하시겠습니까? 이후에 삭제된 메모들을 복구되지 않습니다.")
-                builder.setPositiveButton("예") { dialog, which ->
+                builder.setTitle(getString(R.string.delete_all_memos_title))
+                builder.setMessage(getString(R.string.delete_all_memos_message))
+                builder.setPositiveButton(getString(R.string.delete_all_memos_confirm)) { dialog, which ->
                     memoDBHelper.deleteAllMemos()
                     memoAdapter.clear()
                 }
-                builder.setNegativeButton("아니오") { dialog, which ->
+                builder.setNegativeButton(getString(R.string.delete_all_memos_cancel)) { dialog, which ->
                     dialog.dismiss()
                 }
                 builder.show()
@@ -97,7 +96,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initSortMemu() {
-        val items = listOf("최신 순", "사전 순", "생성 순")
+        val items = listOf(
+            getString(R.string.sort_by_latest),
+            getString(R.string.sort_alphabetically),
+            getString(R.string.sort_by_creation_date)
+        )
 
         val adapter = ArrayAdapter(this, R.layout.item_menu_sort, items)
         binding.textviewSort.setAdapter(adapter)
