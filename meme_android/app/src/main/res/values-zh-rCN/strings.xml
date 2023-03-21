@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MEME</string>
+    <string name="app_name">LOG.M</string>
     <string name="memo_save">保存</string>
     <string name="memo_cancel">取消</string>
     <string name="memo_create">创建</string>
     <string name="memo_modify">修改</string>
     <string name="memo_delete">删除备忘录</string>
     <string name="memo_delete_all">删除所有备忘录</string>
+    <string name="memo_privacy_policy">隐私政策</string>
     <string name="memo_app_info">应用信息</string>
     <string name="memo_fix">固定或解除备忘录</string>
     <string name="memo_widget">添加部件</string>
@@ -32,4 +33,27 @@
     <string name="sort_by_latest">最新的</string>
     <string name="sort_alphabetically">字母表排序</string>
     <string name="sort_by_creation_date">创建日期</string>
+
+    <!-- Privacy Policy -->
+    <string name="privacy_policy_content">个人信息处理和隐私政策
+个人信息的收集和使用目的
+备忘录应用程序收集用户的个人信息，以提供备忘录创建、保存、修改、删除和小部件显示等功能。收集的个人信息包括以下内容：
+
+用户创建的备忘录标题和内容
+备忘录创建日期和时间
+小部件ID，用于将备忘录显示为小部件
+所收集的个人信息仅用于备忘录创建、保存、小部件显示和其他相关用途，不用于其他用途。
+
+个人信息的保留和使用期限
+备忘录应用程序保留备忘录的个人信息，直到用户删除它们。当用户删除备忘录时，该备忘录的个人信息会立即被删除。
+
+个人信息的提供和共享
+备忘录应用程序不会向第三方提供或共享用户的个人信息，也不会在未经用户同意的情况下泄露。但是，当适用的法律法规要求提供信息时，将根据该法律法规提供信息。
+
+个人信息保护的技术和管理措施
+备忘录应用程序遵守相关法律法规，如《个人信息保护法》，并采取以下技术和管理措施以安全保护用户的个人信息：
+
+将能够访问个人信息的人员最小化
+使用备忘录应用程序期间产生的与个人信息相关的问题，请通过以下联系方式进行个人信息查询：
+电子邮件：noion0511@gmail.com</string>
 </resources>

@@ -59,6 +59,11 @@ class MainActivity : AppCompatActivity() {
                 builder.show()
                 true
             }
+            R.id.button_privacy_policy -> {
+                val intent = Intent(this, PrivacyPolicyActivity::class.java)
+                startActivity(intent)
+                true
+            }
             else -> {
                 super.onOptionsItemSelected(item)
             }

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MEME</string>
+    <string name="app_name">LOG.M</string>
     <string name="memo_save">Guardar</string>
     <string name="memo_cancel">Cancelar</string>
     <string name="memo_create">Crear</string>
     <string name="memo_modify">Modificar</string>
     <string name="memo_delete">Borrar Memo</string>
     <string name="memo_delete_all">Borrar todos los Memos</string>
+    <string name="memo_privacy_policy">Política de privacidad</string>
     <string name="memo_app_info">Información de la aplicación</string>
     <string name="memo_fix">Fijar o Desfijar Memo</string>
     <string name="memo_widget">Agregar Widget</string>
@@ -32,4 +33,28 @@
     <string name="sort_by_latest">Último</string>
     <string name="sort_alphabetically">Alfabético</string>
     <string name="sort_by_creation_date">Fecha de creación</string>
+
+    <!-- Privacy Policy -->
+    <string name="privacy_policy_content">Política de privacidad
+
+Propósito de la recolección y uso de información personal
+La aplicación Memo recopila información personal de los usuarios para proporcionar funciones como la creación, el guardado, la modificación, la eliminación y la visualización de widgets de notas. La información personal recopilada incluye lo siguiente:
+
+Título y contenido de las notas creadas por los usuarios
+Fecha y hora en que se crearon las notas
+ID del widget para visualizar las notas como un widget
+La información personal recopilada se utiliza solo para los fines de creación y guardado de notas, visualización de widgets y otros fines relacionados, y no se utiliza para otros fines.
+
+Período de retención y uso de la información personal
+La aplicación Memo retiene la información personal de las notas hasta que los usuarios las eliminen. Cuando un usuario elimina una nota, la información personal de esa nota se elimina de inmediato.
+
+Provisión y compartición de información personal
+La aplicación Memo no proporciona ni comparte información personal de los usuarios con terceros ni la divulga fuera sin su consentimiento. Sin embargo, cuando lo exigen las leyes y regulaciones aplicables, se puede proporcionar información de acuerdo con esas leyes y regulaciones.
+
+Medidas técnicas/administrativas para la protección de información personal
+La aplicación Memo cumple con las leyes y regulaciones relacionadas, como la Ley de protección de información personal, y toma las siguientes medidas técnicas/administrativas para proteger de manera segura la información personal de los usuarios:
+
+Minimiza el número de personal con acceso a la información personal
+Las consultas de información personal relacionadas con el uso de la aplicación Memo se pueden hacer contactando la siguiente dirección de correo electrónico:
+Correo electrónico: noion0511@gmail.com</string>
 </resources>

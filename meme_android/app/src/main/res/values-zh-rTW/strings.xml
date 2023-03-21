@@ -1,11 +1,12 @@
 <resources>
-    <string name="app_name">MEME</string>
+    <string name="app_name">LOG.M</string>
     <string name="memo_save">保存</string>
     <string name="memo_cancel">取消</string>
     <string name="memo_create">创建</string>
     <string name="memo_modify">修改</string>
     <string name="memo_delete">删除便签</string>
     <string name="memo_delete_all">删除所有便签</string>
+    <string name="memo_privacy_policy">隱私政策</string>
     <string name="memo_app_info">应用信息</string>
     <string name="memo_fix">固定/取消固定便签</string>
     <string name="memo_widget">添加小部件</string>
@@ -31,4 +32,26 @@
     <string name="sort_by_latest">最新</string>
     <string name="sort_alphabetically">按字母排序</string>
     <string name="sort_by_creation_date">按创建日期排序</string>
+
+    <!-- Privacy Policy -->
+    <string name="privacy_policy_content">個人資料收集與利用目的
+筆記應用程式收集使用者的個人資料，以提供筆記創建、儲存、修改、刪除、小部件顯示等功能。收集的個人資料包括以下內容：
+
+使用者創建的筆記標題和內容
+筆記創建日期和時間
+用於顯示筆記小部件的小部件 ID
+收集的個人資料僅用於筆記創建、儲存、小部件顯示等相關目的，並不用於其他目的。
+
+個人資料的保留和使用期限
+筆記應用程式將保留使用者的筆記個人資料，直到使用者刪除它們為止。當使用者刪除筆記時，該筆記的個人資料將立即被刪除。
+
+個人資料的提供和共用
+筆記應用程式不會向第三方提供或共用使用者的個人資料，也不會未經他們的同意泄露個人資料。但是，在適用的法律法規要求下，可以根據該等法律法規提供信息。
+
+保護個人資料的技術/管理措施
+筆記應用程式遵守相關法律法規，例如《個人資料保護法》，並採取以下技術/管理措施，以安全保護使用者的個人資料：
+
+最小化可以訪問個人資料的人員數量
+與筆記應用程式使用相關的個人資料查詢，請使用以下聯繫方式：
+電子郵件：noion0511@gmail.com</string>
 </resources>
