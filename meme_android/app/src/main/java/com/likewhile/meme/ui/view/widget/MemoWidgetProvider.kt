@@ -10,6 +10,7 @@ import android.widget.RemoteViews
 import com.likewhile.meme.R
 import com.likewhile.meme.data.local.MemoDBHelper
 import com.likewhile.meme.data.model.MemoItem
+import com.likewhile.meme.data.model.TextMemoItem
 import com.likewhile.meme.ui.view.MemoEditActivity
 import com.likewhile.meme.util.*
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -77,7 +78,7 @@ class MemoWidgetProvider : AppWidgetProvider() {
 
             if (memo != null) {
                 views.setTextViewText(R.id.textViewTitle, memo.title)
-                views.setTextViewText(R.id.textViewContent, memo.content)
+                views.setTextViewText(R.id.textViewContent, (memo as TextMemoItem).content)
                 views.setTextViewText(R.id.textViewDate, memo.date)
                 setWidgetClickEvent(context, views, appWidgetId, memo.id)
             } else {
@@ -100,7 +101,7 @@ class MemoWidgetProvider : AppWidgetProvider() {
 
     private fun createNewMemo(context: Context): MemoItem {
         val dbHelper = MemoDBHelper(context)
-        val memo = MemoItem(
+        val memo = TextMemoItem(
             0L, // ID는 데이터베이스에서 자동으로 생성됩니다.
             "new meme", // 제목
             "", // 내용

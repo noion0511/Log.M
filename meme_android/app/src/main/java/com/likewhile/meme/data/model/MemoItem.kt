@@ -1,9 +1,82 @@
 package com.likewhile.meme.data.model
 
-data class MemoItem(
-    var id: Long = -1L,
-    var title: String = "meme",
-    var content: String,
-    var date: String,
-    var isFixed: Boolean
-)
+import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken
+import com.google.gson.Gson
+import java.io.File
+
+abstract class MemoItem(
+    open var id: Long = -1L,
+    open var title: String = "",
+    open var date: String = "",
+    open var isFixed: Boolean = false
+) {
+    abstract val contentType: String
+}
+
+data class TextMemoItem(
+    override var id: Long = -1L,
+    override var title: String = "",
+    var content: String = "",
+    override var date: String = "",
+    override var isFixed: Boolean = false
+) : MemoItem() {
+    override val contentType: String = "text"
+}
+
+data class ListMemoItem(
+    override var id: Long = -1L,
+    override var title: String = "",
+    var listItems: List<ListItem> = listOf(),
+    override var date: String = "",
+    override var isFixed: Boolean = false
+) : MemoItem() {
+    override val contentType: String = "list"
+}
+
+data class DrawingMemoItem(
+    override var id: Long = -1L,
+    override var title: String = "",
+    var drawingPath: String = "",
+    override var date: String = "",
+    override var isFixed: Boolean = false
+) : MemoItem() {
+    override val contentType: String = "drawing"
+}
+
+fun serializeListContent(listItems: List<ListItem>): ByteArray {
+    val jsonString = Gson().toJson(listItems)
+    return jsonString.toByteArray(Charsets.UTF_8)
+}
+
+fun deserializeListContent(data: ByteArray): List<ListItem> {
+    val jsonString = String(data, Charsets.UTF_8)
+    return Gson().fromJson(jsonString, object : TypeToken<List<ListItem>>() {}.type)
+}
+
+fun serializeDrawingContent(drawingPath: String): ByteArray {
+    val file = File(drawingPath)
+    val bytes = file.readBytes()
+    return bytes
+}
+
+fun deserializeDrawingContent(data: ByteArray, filePath: String): String {
+    val file = File(filePath)
+    file.writeBytes(data)
+    return filePath
+}
+
+enum class MemoType(val typeValue: Int) {
+    TEXT(0),
+    LIST(1),
+    DRAWING(2);
+    companion object {
+        fun fromInt(value: Int): MemoType {
+            return when (value) {
+                1 -> LIST
+                2 -> DRAWING
+                else -> TEXT
+            }
+        }
+    }
+}
+

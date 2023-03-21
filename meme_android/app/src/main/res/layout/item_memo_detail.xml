@@ -5,10 +5,10 @@
     <data>
 
         <import type="android.view.View" />
-        <import type="com.likewhile.meme.data.model.MemoItem" />
+        <import type="com.likewhile.meme.data.model.TextMemoItem" />
         <variable
             name="memo"
-            type="com.likewhile.meme.data.model.MemoItem" />
+            type="com.likewhile.meme.data.model.TextMemoItem" />
     </data>
 
     <androidx.cardview.widget.CardView

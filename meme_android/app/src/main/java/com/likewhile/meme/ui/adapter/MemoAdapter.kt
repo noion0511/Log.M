@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.likewhile.meme.data.model.MemoItem
+import com.likewhile.meme.data.model.TextMemoItem
 import com.likewhile.meme.databinding.ItemMemoBinding
 import com.likewhile.meme.databinding.ItemMemoDetailBinding
 
@@ -63,7 +64,7 @@ class MemoAdapter(private val memoItems: MutableList<MemoItem>, private val onIt
                 }
             }
             is ViewHolderDetail -> {
-                holder.binding.memo = memoItem
+                holder.binding.memo = memoItem as TextMemoItem
                 holder.binding.executePendingBindings()
 
                 holder.itemView.setOnClickListener {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MEME</string>
+    <string name="app_name">LOG.M</string>
     <string name="memo_save">Save</string>
     <string name="memo_cancel">Cancel</string>
     <string name="memo_create">Create</string>

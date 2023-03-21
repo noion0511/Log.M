@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MEME</string>
+    <string name="app_name">LOG.M</string>
     <string name="memo_save">保存</string>
     <string name="memo_cancel">取消</string>
     <string name="memo_create">创建</string>

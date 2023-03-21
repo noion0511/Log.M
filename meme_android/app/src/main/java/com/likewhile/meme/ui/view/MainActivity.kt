@@ -16,11 +16,11 @@ import com.likewhile.meme.data.model.MemoItem
 import com.likewhile.meme.databinding.ActivityMainBinding
 import com.likewhile.meme.ui.adapter.MemoAdapter
 import com.likewhile.meme.ui.view.widget.MemoWidgetProvider
-import com.likewhile.meme.ui.viewmodel.MemoViewModel
+import com.likewhile.meme.ui.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private lateinit var memoViewModel: MemoViewModel
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var memoAdapter: MemoAdapter
     private lateinit var selectedMemoItem: MemoItem
 
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        memoViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(MemoViewModel::class.java)
+        mainViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(MainViewModel::class.java)
 
         initButtonSetViewType()
         initAdapter()
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 builder.setTitle(getString(R.string.delete_all_memos_title))
                 builder.setMessage(getString(R.string.delete_all_memos_message))
                 builder.setPositiveButton(getString(R.string.delete_all_memos_confirm)) { dialog, which ->
-                    memoViewModel.deleteAllMemos()
+                    mainViewModel.deleteAllMemos()
                     memoAdapter.clear()
                 }
                 builder.setNegativeButton(getString(R.string.delete_all_memos_cancel)) { dialog, which ->
@@ -68,14 +68,14 @@ class MainActivity : AppCompatActivity() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.button_delete -> {
-                memoViewModel.deleteMemo(selectedMemoItem.id)
+                mainViewModel.deleteMemo(selectedMemoItem.id)
                 val intent = Intent(MemoWidgetProvider.ACTION_MEMO_DELETED)
                 sendBroadcast(intent)
                 true
             }
             R.id.button_fix -> {
                 selectedMemoItem.isFixed = !selectedMemoItem.isFixed
-                memoViewModel.updateMemo(selectedMemoItem)
+                mainViewModel.updateMemo(selectedMemoItem)
                 true
             }
             else -> {
@@ -110,13 +110,13 @@ class MainActivity : AppCompatActivity() {
         binding.textviewSort.setOnItemClickListener { _, _, position, _ ->
             when(position) {
                 0 -> {
-                    memoViewModel.setSortType(1)
+                    mainViewModel.setSortType(1)
                 }
                 1 -> {
-                    memoViewModel.setSortType(2)
+                    mainViewModel.setSortType(2)
                 }
                 2 -> {
-                    memoViewModel.setSortType(3)
+                    mainViewModel.setSortType(3)
                 }
             }
 
@@ -124,14 +124,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        memoViewModel.memos.observe(this) { memos ->
+        mainViewModel.memos.observe(this) { memos ->
             memos?.let {
                 memoAdapter.clear()
                 memoAdapter.addAll(it)
             }
         }
 
-        memoAdapter = MemoAdapter(memoViewModel.memos.value ?: mutableListOf(), object : MemoAdapter.OnItemClickListener {
+        memoAdapter = MemoAdapter(mainViewModel.memos.value ?: mutableListOf(), object : MemoAdapter.OnItemClickListener {
             override fun onItemClick(memoItem: MemoItem) {
                 val intent = Intent(applicationContext, MemoEditActivity::class.java)
                 intent.putExtra(MemoWidgetProvider.EXTRA_MEMO_ID, memoItem.id)
@@ -174,11 +174,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        memoViewModel.refreshMemos()
+        mainViewModel.refreshMemos()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        memoViewModel.closeDB()
+        mainViewModel.closeDB()
     }
 }
