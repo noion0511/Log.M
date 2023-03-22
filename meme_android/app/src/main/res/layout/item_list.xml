@@ -8,30 +8,36 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/list_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/priorityTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{Integer.toString(listItem.priority)}"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:layout_marginStart="10dp"/>
 
         <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@{listItem.title}"
-            android:textSize="18sp" />
-
-        <CheckBox
-            android:id="@+id/completedCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="@{listItem.isCompleted}"
-            android:layout_gravity="center_vertical" />
+            android:text="@string/todo_content_list_item"
+            android:layout_marginEnd="5dp"
+            android:textSize="18sp"/>
+
+        <EditText
+            android:id="@+id/titleTextView"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="@{listItem.title}"
+            android:textSize="18sp"
+            android:maxWidth="400dp"
+            android:hint="@string/todo_content"
+            android:layout_marginEnd="10dp"/>
     </LinearLayout>
 </layout>

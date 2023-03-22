@@ -14,9 +14,6 @@ class ListMemoViewModel(application: Application) : AndroidViewModel(application
     private var _memo = MediatorLiveData<ListMemoItem>()
     val memo: LiveData<ListMemoItem> get() = _memo
 
-    private var _contents = MediatorLiveData<ListMemoItem>()
-    val contents: LiveData<ListMemoItem> get() = _contents
-
     private var itemId: Long = -1
 
     init {

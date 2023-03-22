@@ -13,14 +13,17 @@ import android.view.View
 import android.widget.Toast
 import android.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.likewhile.meme.R
+import com.likewhile.meme.data.model.ListItem
 import com.likewhile.meme.data.model.ListMemoItem
 import com.likewhile.meme.databinding.ActivityMemoListEditBinding
 import com.likewhile.meme.ui.adapter.ListAdapter
 import com.likewhile.meme.ui.view.widget.MemoWidgetProvider
 import com.likewhile.meme.ui.viewmodel.ListMemoViewModel
 import com.likewhile.meme.util.DateFormatUtil
+import com.likewhile.meme.util.ListItemTouchHelperCallback
 import java.util.*
 
 class ListMemoEditActivity : AppCompatActivity() {
@@ -29,17 +32,19 @@ class ListMemoEditActivity : AppCompatActivity() {
 
     private lateinit var memoViewModel: ListMemoViewModel
     private lateinit var listAdapter: ListAdapter
+    private lateinit var itemTouchHelperCallback:ListItemTouchHelperCallback
 
     private var isMenuVisible = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_memo_list_edit)
+        setContentView(binding.root)
 
         memoViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
             ListMemoViewModel::class.java)
 
         initRecyclerView()
         initMemoData()
+        initAddItemButton()
         initSave()
         initCancel()
         initToolbar()
@@ -57,34 +62,31 @@ class ListMemoEditActivity : AppCompatActivity() {
         sendBroadcast(intent)
     }
 
-    private fun setReadMode() {
-        binding.title.editTextTitle.isEnabled = false
-        binding.title.editTextTitle.alpha = 1f
-        binding.bottomBtnEdit.checkBoxFix.isEnabled = false
-        binding.bottomBtnEdit.checkBoxFix.setTextColor(Color.BLACK)
-        binding.bottomBtnEdit.buttonSave.visibility = View.GONE
-        binding.bottomBtnEdit.buttonCancel.visibility = View.GONE
-        // 메뉴를 무효화하여 onPrepareOptionsMenu()를 다시 호출
-        isMenuVisible = true
-        invalidateOptionsMenu()
-    }
 
+    private fun initRecyclerView(itemList: List<ListItem>? = null) {
+        val initialList = if (itemList == null || itemList.isEmpty()) {
+            val initialItem = ListItem(priority = 1, title = "")
+            mutableListOf(initialItem)
+        } else {
+            itemList.toMutableList()
+        }
 
-    private fun setEditMode() {
-        binding.title.editTextTitle.isEnabled = true
-        binding.bottomBtnEdit.checkBoxFix.isEnabled = true
-        binding.bottomBtnEdit.buttonSave.visibility = View.VISIBLE
-        binding.bottomBtnEdit.buttonCancel.visibility = View.VISIBLE
-        // 메뉴를 무효화하여 onPrepareOptionsMenu()를 다시 호출
-        isMenuVisible = false
-        invalidateOptionsMenu()
-    }
-
-
-    private fun initRecyclerView() {
-        listAdapter = ListAdapter()
+        listAdapter = ListAdapter(initialList)
         binding.contentRecyclerview.adapter = listAdapter
         binding.contentRecyclerview.layoutManager = LinearLayoutManager(this)
+
+        itemTouchHelperCallback = ListItemTouchHelperCallback(listAdapter)
+        val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(binding.contentRecyclerview)
+    }
+
+
+    private fun initAddItemButton() {
+        binding.addItemButton.setOnClickListener {
+            val newItem = ListItem(priority = listAdapter.itemCount + 1, title = "")
+            listAdapter.addItem(newItem)
+            binding.contentRecyclerview.scrollToPosition(listAdapter.itemCount - 1)
+        }
     }
 
 
@@ -109,10 +111,17 @@ class ListMemoEditActivity : AppCompatActivity() {
             val time = DateFormatUtil.formatDate(Date(), "yyyy-MM-dd HH:mm")
             val isFixed = binding.bottomBtnEdit.checkBoxFix.isChecked
 
+            val listItems = contentList.mapIndexed  { index, item ->
+                ListItem(
+                    priority = index + 1,
+                    title = item.title,
+                )
+            }
+
             val memoItem = ListMemoItem(
                 id = itemId,
                 title = title,
-                listItems = contentList,
+                listItems = listItems,
                 date = time,
                 isFixed = isFixed,
             )
@@ -122,12 +131,11 @@ class ListMemoEditActivity : AppCompatActivity() {
             else {
                 if (itemId != -1L) {
                     memoViewModel.updateMemo(memoItem)
-                    setReadMode()
                     updateWidget()
                 } else {
                     memoViewModel.insertMemo(memoItem)
-                    setReadMode()
                 }
+                setReadMode()
             }
         }
     }
@@ -155,7 +163,6 @@ class ListMemoEditActivity : AppCompatActivity() {
             }
         }
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
@@ -188,5 +195,38 @@ class ListMemoEditActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         memoViewModel.closeDB()
+    }
+
+
+    private fun setReadMode() {
+        binding.title.editTextTitle.isEnabled = false
+        binding.title.editTextTitle.alpha = 0.8f
+        binding.title.editTextTitle.setTextColor(Color.BLACK)
+        binding.bottomBtnEdit.checkBoxFix.isEnabled = false
+        binding.bottomBtnEdit.checkBoxFix.setTextColor(Color.BLACK)
+        binding.bottomBtnEdit.buttonSave.visibility = View.GONE
+        binding.bottomBtnEdit.buttonCancel.visibility = View.GONE
+        binding.addItemButton.visibility = View.GONE
+        listAdapter.setItemsClickable(false)
+        itemTouchHelperCallback.setEnabled(false)
+
+        // 메뉴를 무효화하여 onPrepareOptionsMenu()를 다시 호출
+        isMenuVisible = true
+        invalidateOptionsMenu()
+    }
+
+
+    private fun setEditMode() {
+        binding.title.editTextTitle.isEnabled = true
+        binding.bottomBtnEdit.checkBoxFix.isEnabled = true
+        binding.bottomBtnEdit.buttonSave.visibility = View.VISIBLE
+        binding.bottomBtnEdit.buttonCancel.visibility = View.VISIBLE
+        binding.addItemButton.visibility = View.VISIBLE
+        listAdapter.setItemsClickable(true)
+        itemTouchHelperCallback.setEnabled(true)
+
+        // 메뉴를 무효화하여 onPrepareOptionsMenu()를 다시 호출
+        isMenuVisible = false
+        invalidateOptionsMenu()
     }
 }
