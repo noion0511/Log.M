@@ -36,4 +36,6 @@
     <string name="choose_a_screen">Elige una pantalla</string>
     <string name="navigation_option_memo_edit">Editar nota</string>
     <string name="navigation_option_list_memo_edit">Editar nota de lista</string>
+    <string name="fixed">Fijado</string>
+    <string name="unfixed">Desfijado</string>
 </resources>

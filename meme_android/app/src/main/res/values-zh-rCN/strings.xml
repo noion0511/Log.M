@@ -36,4 +36,6 @@
     <string name="choose_a_screen">选择屏幕</string>
     <string name="navigation_option_memo_edit">编辑备忘录</string>
     <string name="navigation_option_list_memo_edit">编辑列表备忘录</string>
+    <string name="fixed">固定</string>
+    <string name="unfixed">取消固定</string>
 </resources>

@@ -37,4 +37,6 @@
     <string name="choose_a_screen">화면 선택</string>
     <string name="navigation_option_memo_edit">메모 편집</string>
     <string name="navigation_option_list_memo_edit">리스트 메모 편집</string>
+    <string name="fixed">고정</string>
+    <string name="unfixed">고정 해제</string>
 </resources>

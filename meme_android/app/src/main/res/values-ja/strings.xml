@@ -36,4 +36,6 @@
     <string name="choose_a_screen">画面を選択</string>
     <string name="navigation_option_memo_edit">メモ編集</string>
     <string name="navigation_option_list_memo_edit">リストメモ編集</string>
+    <string name="fixed">固定</string>
+    <string name="unfixed">固定解除</string>
 </resources>

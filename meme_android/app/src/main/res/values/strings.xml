@@ -35,4 +35,6 @@
     <string name="choose_a_screen">Choose a screen</string>
     <string name="navigation_option_memo_edit">MemoEditActivity</string>
     <string name="navigation_option_list_memo_edit">ListMemoEditActivity</string>
+    <string name="fixed">Fixed</string>
+    <string name="unfixed">Unfixed</string>
 </resources>
