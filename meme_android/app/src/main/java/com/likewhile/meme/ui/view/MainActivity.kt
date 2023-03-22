@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.likewhile.meme.*
 import com.likewhile.meme.data.model.MemoItem
 import com.likewhile.meme.data.model.MemoType
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity() {
             R.id.button_fix -> {
                 selectedMemoItem.isFixed = !selectedMemoItem.isFixed
                 mainViewModel.updateMemo(selectedMemoItem)
+                memoAdapter.notifyDataSetChanged()
                 true
             }
             else -> {
@@ -165,7 +167,7 @@ class MainActivity : AppCompatActivity() {
 
                     binding.listViewMemo.setOnCreateContextMenuListener { menu, v, menuInfo ->
                         menuInflater.inflate(R.menu.menu_long_click, menu)
-                        menu.getItem(1).title = if (selectedMemoItem.isFixed) "고정 해제" else "고정"
+                        menu.getItem(1).title = if (selectedMemoItem.isFixed) getString(R.string.fixed) else getString(R.string.unfixed)
                     }
 
                     openContextMenu(binding.listViewMemo)
@@ -184,7 +186,7 @@ class MainActivity : AppCompatActivity() {
             memoAdapter.setViewType(MemoAdapter.TYPE_ITEM_SIMPLE)
         }
         binding.btnDetailView.setOnClickListener {
-            binding.listViewMemo.layoutManager = GridLayoutManager(this, 2)
+            binding.listViewMemo.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             memoAdapter.setViewType(MemoAdapter.TYPE_ITEM_DETAIL)
         }
     }

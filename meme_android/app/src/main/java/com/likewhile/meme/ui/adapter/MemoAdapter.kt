@@ -1,13 +1,14 @@
 package com.likewhile.meme.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.likewhile.meme.data.model.MemoItem
-import com.likewhile.meme.data.model.TextMemoItem
+import com.likewhile.meme.data.model.*
 import com.likewhile.meme.databinding.ItemMemoBinding
 import com.likewhile.meme.databinding.ItemMemoDetailBinding
 
+private const val TAG = "MemoAdapter"
 class MemoAdapter(private val memoItems: MutableList<MemoItem>, private val onItemClickListener: OnItemClickListener, private val onItemLongClickListener: OnItemLongClickListener
     ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -23,8 +24,6 @@ class MemoAdapter(private val memoItems: MutableList<MemoItem>, private val onIt
 
     inner class ViewHolderSimple(val binding: ItemMemoBinding) : RecyclerView.ViewHolder(binding.root)
     inner class ViewHolderDetail(val binding: ItemMemoDetailBinding) : RecyclerView.ViewHolder(binding.root)
-
-
 
     override fun getItemViewType(position: Int): Int {
         return currentViewType
@@ -64,7 +63,10 @@ class MemoAdapter(private val memoItems: MutableList<MemoItem>, private val onIt
                 }
             }
             is ViewHolderDetail -> {
-                holder.binding.memo = memoItem as TextMemoItem
+                holder.binding.memo  = when(memoItem) {
+                    is ListMemoItem -> formatMemo(memoItem)
+                    else -> memoItem as TextMemoItem
+                }
                 holder.binding.executePendingBindings()
 
                 holder.itemView.setOnClickListener {
@@ -94,6 +96,17 @@ class MemoAdapter(private val memoItems: MutableList<MemoItem>, private val onIt
 
     fun getMemoItem(position: Int): MemoItem {
         return memoItems[position]
+    }
+
+
+    private fun formatMemo(memoItem: ListMemoItem): TextMemoItem {
+        val formattedItems = memoItem.listItems.map {
+            Log.d(TAG, "formatMemo: $it")
+            "${it.priority}. ${it.title}"
+        }
+        val content = formattedItems.joinToString(separator = "\n")
+
+        return TextMemoItem(memoItem.id, memoItem.title, content, memoItem.date, memoItem.isFixed)
     }
 
     companion object {

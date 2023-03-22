@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="@+id/bottom_btn_edit"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -37,17 +37,11 @@
 
             <include
                 android:id="@+id/content"
-                layout="@layout/memo_content" />
+                layout="@layout/memo_content"/>
+
+            <include
+                android:id="@+id/bottom_btn_edit"
+                layout="@layout/bottom_btn_edit" />
         </LinearLayout>
     </ScrollView>
-
-    <include
-        android:id="@+id/bottom_btn_edit"
-        layout="@layout/bottom_btn_edit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.863" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
