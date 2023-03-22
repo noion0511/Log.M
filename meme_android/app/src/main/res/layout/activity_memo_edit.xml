@@ -6,57 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.view.MemoEditActivity">
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintBottom_toTopOf="@+id/cardView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include">
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:hint="@string/todo_title">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editText_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxLength="25" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:hint="@string/todo_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editText_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="top"
-                    android:maxLines="100"
-                    android:minHeight="300dp"
-                    android:scrollbars="none" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
-    </ScrollView>
-
     <include
-        android:id="@+id/include"
+        android:id="@+id/toolbar"
         layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,61 +15,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
+    <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="5dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <CheckBox
-                android:id="@+id/checkBox_fix"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/check_fix" />
+            <include
+                android:id="@+id/title"
+                layout="@layout/memo_title" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <include
+                android:id="@+id/content"
+                layout="@layout/memo_content"/>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/button_save"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/round_save_button"
-                    android:text="@string/memo_save"
-                    android:textSize="20sp" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/button_cancel"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/round_cancel_button"
-                    android:text="@string/memo_cancel"
-                    android:textSize="20sp" />
-            </LinearLayout>
+            <include
+                android:id="@+id/bottom_btn_edit"
+                layout="@layout/bottom_btn_edit" />
         </LinearLayout>
-
-
-    </androidx.cardview.widget.CardView>
-
-
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

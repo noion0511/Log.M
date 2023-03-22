@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="listItem"
+            type="com.likewhile.meme.data.model.ListItem" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/list_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/priorityTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@{Integer.toString(listItem.priority)}"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="@string/todo_content_list_item"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/titleTextView"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:hint=""
+            android:maxWidth="400dp"
+            android:text="@{listItem.title}"
+            android:textSize="18sp" />
+    </LinearLayout>
+</layout>

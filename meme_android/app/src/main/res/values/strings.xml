@@ -12,6 +12,7 @@
     <string name="memo_widget">Add Widget</string>
     <string name="todo_title">Title</string>
     <string name="todo_content">Content</string>
+    <string name="todo_content_list_item">.</string>
     <string name="todo_time">Time</string>
     <string name="todo_alarm_10">Alarm in 10 Minutes</string>
     <string name="no_memo">No memo</string>
@@ -32,6 +33,11 @@
     <string name="sort_by_latest">Latest</string>
     <string name="sort_alphabetically">Alphabetical</string>
     <string name="sort_by_creation_date">Creation date</string>
+    <string name="choose_a_screen">Choose a screen</string>
+    <string name="navigation_option_memo_edit">MemoEditActivity</string>
+    <string name="navigation_option_list_memo_edit">ListMemoEditActivity</string>
+    <string name="fixed">Fixed</string>
+    <string name="unfixed">Unfixed</string>
 
     <!-- Privacy Policy -->
     <string name="privacy_policy_content">Personal Information Collection and Use Purpose

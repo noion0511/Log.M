@@ -9,18 +9,21 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.likewhile.meme.*
 import com.likewhile.meme.data.model.MemoItem
+import com.likewhile.meme.data.model.MemoType
 import com.likewhile.meme.databinding.ActivityMainBinding
 import com.likewhile.meme.ui.adapter.MemoAdapter
 import com.likewhile.meme.ui.view.widget.MemoWidgetProvider
-import com.likewhile.meme.ui.viewmodel.MemoViewModel
+import com.likewhile.meme.ui.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private lateinit var memoViewModel: MemoViewModel
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var memoAdapter: MemoAdapter
     private lateinit var selectedMemoItem: MemoItem
 
@@ -28,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        memoViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(MemoViewModel::class.java)
+        mainViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(MainViewModel::class.java)
 
         initButtonSetViewType()
         initAdapter()
@@ -50,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                 builder.setTitle(getString(R.string.delete_all_memos_title))
                 builder.setMessage(getString(R.string.delete_all_memos_message))
                 builder.setPositiveButton(getString(R.string.delete_all_memos_confirm)) { dialog, which ->
-                    memoViewModel.deleteAllMemos()
+                    mainViewModel.deleteAllMemos()
                     memoAdapter.clear()
                 }
                 builder.setNegativeButton(getString(R.string.delete_all_memos_cancel)) { dialog, which ->
@@ -73,14 +76,15 @@ class MainActivity : AppCompatActivity() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.button_delete -> {
-                memoViewModel.deleteMemo(selectedMemoItem.id)
+                mainViewModel.deleteMemo(selectedMemoItem.id)
                 val intent = Intent(MemoWidgetProvider.ACTION_MEMO_DELETED)
                 sendBroadcast(intent)
                 true
             }
             R.id.button_fix -> {
                 selectedMemoItem.isFixed = !selectedMemoItem.isFixed
-                memoViewModel.updateMemo(selectedMemoItem)
+                mainViewModel.updateMemo(selectedMemoItem)
+                memoAdapter.notifyDataSetChanged()
                 true
             }
             else -> {
@@ -96,8 +100,22 @@ class MainActivity : AppCompatActivity() {
 
     private fun initCreateBtn() {
         binding.floatingActionButton.setOnClickListener {
-            val intent = Intent(this, MemoEditActivity::class.java)
-            startActivity(intent)
+            val navigationOptions = arrayOf(
+                getString(R.string.navigation_option_memo_edit),
+                getString(R.string.navigation_option_list_memo_edit)
+            )
+
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(getString(R.string.choose_a_screen))
+                .setItems(navigationOptions) { _, which ->
+                    val intent = when (navigationOptions[which]) {
+                        getString(R.string.navigation_option_memo_edit) -> Intent(this, MemoEditActivity::class.java)
+                        getString(R.string.navigation_option_list_memo_edit) -> Intent(this, ListMemoEditActivity::class.java)
+                        else -> null
+                    }
+                    intent?.let { startActivity(it) }
+                }
+            builder.create().show()
         }
     }
 
@@ -115,13 +133,13 @@ class MainActivity : AppCompatActivity() {
         binding.textviewSort.setOnItemClickListener { _, _, position, _ ->
             when(position) {
                 0 -> {
-                    memoViewModel.setSortType(1)
+                    mainViewModel.setSortType(1)
                 }
                 1 -> {
-                    memoViewModel.setSortType(2)
+                    mainViewModel.setSortType(2)
                 }
                 2 -> {
-                    memoViewModel.setSortType(3)
+                    mainViewModel.setSortType(3)
                 }
             }
 
@@ -129,16 +147,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        memoViewModel.memos.observe(this) { memos ->
+        mainViewModel.memos.observe(this) { memos ->
             memos?.let {
                 memoAdapter.clear()
                 memoAdapter.addAll(it)
             }
         }
 
-        memoAdapter = MemoAdapter(memoViewModel.memos.value ?: mutableListOf(), object : MemoAdapter.OnItemClickListener {
+        memoAdapter = MemoAdapter(mainViewModel.memos.value ?: mutableListOf(), object : MemoAdapter.OnItemClickListener {
             override fun onItemClick(memoItem: MemoItem) {
-                val intent = Intent(applicationContext, MemoEditActivity::class.java)
+                val targetActivity = when (memoItem.contentType) {
+                    "LIST" -> ListMemoEditActivity::class.java
+                    "DRAWING" -> MemoEditActivity::class.java
+                    else -> MemoEditActivity::class.java
+                }
+                val intent = Intent(applicationContext, targetActivity)
                 intent.putExtra(MemoWidgetProvider.EXTRA_MEMO_ID, memoItem.id)
                 startActivity(intent)
             }
@@ -149,7 +172,7 @@ class MainActivity : AppCompatActivity() {
 
                     binding.listViewMemo.setOnCreateContextMenuListener { menu, v, menuInfo ->
                         menuInflater.inflate(R.menu.menu_long_click, menu)
-                        menu.getItem(1).title = if (selectedMemoItem.isFixed) "고정 해제" else "고정"
+                        menu.getItem(1).title = if (selectedMemoItem.isFixed) getString(R.string.fixed) else getString(R.string.unfixed)
                     }
 
                     openContextMenu(binding.listViewMemo)
@@ -168,7 +191,7 @@ class MainActivity : AppCompatActivity() {
             memoAdapter.setViewType(MemoAdapter.TYPE_ITEM_SIMPLE)
         }
         binding.btnDetailView.setOnClickListener {
-            binding.listViewMemo.layoutManager = GridLayoutManager(this, 2)
+            binding.listViewMemo.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             memoAdapter.setViewType(MemoAdapter.TYPE_ITEM_DETAIL)
         }
     }
@@ -179,11 +202,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        memoViewModel.refreshMemos()
+        mainViewModel.refreshMemos()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        memoViewModel.closeDB()
+        mainViewModel.closeDB()
     }
 }

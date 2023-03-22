@@ -13,6 +13,7 @@
     <string name="memo_widget">ウィジェットに追加</string>
     <string name="todo_title">タイトル</string>
     <string name="todo_content">内容</string>
+    <string name="todo_content_list_item">.</string>
     <string name="todo_time">時間</string>
     <string name="todo_alarm_10">10分後にアラーム</string>
     <string name="no_memo">メモはありません</string>
@@ -33,6 +34,11 @@
     <string name="sort_by_latest">新しい順</string>
     <string name="sort_alphabetically">アルファベット順</string>
     <string name="sort_by_creation_date">作成日時</string>
+    <string name="choose_a_screen">画面を選択</string>
+    <string name="navigation_option_memo_edit">メモ編集</string>
+    <string name="navigation_option_list_memo_edit">リストメモ編集</string>
+    <string name="fixed">固定</string>
+    <string name="unfixed">固定解除</string>
 
     <!-- Privacy Policy -->
     <string name="privacy_policy_content">プライバシーポリシー

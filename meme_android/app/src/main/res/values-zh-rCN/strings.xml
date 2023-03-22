@@ -13,6 +13,7 @@
     <string name="memo_widget">添加部件</string>
     <string name="todo_title">标题</string>
     <string name="todo_content">内容</string>
+    <string name="todo_content_list_item">.</string>
     <string name="todo_time">时间</string>
     <string name="todo_alarm_10">10分钟后提醒</string>
     <string name="no_memo">无备忘录</string>
@@ -33,6 +34,11 @@
     <string name="sort_by_latest">最新的</string>
     <string name="sort_alphabetically">字母表排序</string>
     <string name="sort_by_creation_date">创建日期</string>
+    <string name="choose_a_screen">选择屏幕</string>
+    <string name="navigation_option_memo_edit">编辑备忘录</string>
+    <string name="navigation_option_list_memo_edit">编辑列表备忘录</string>
+    <string name="fixed">固定</string>
+    <string name="unfixed">取消固定</string>
 
     <!-- Privacy Policy -->
     <string name="privacy_policy_content">个人信息处理和隐私政策
