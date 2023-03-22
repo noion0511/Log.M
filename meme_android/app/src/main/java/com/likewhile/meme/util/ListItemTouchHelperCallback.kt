@@ -29,7 +29,8 @@ class ListItemTouchHelperCallback(private val adapter: ListAdapter) : ItemTouchH
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        // 스와이프 작업은 처리하지 않음
+        val position = viewHolder.adapterPosition
+        adapter.removeItem(position)
     }
 
     override fun isLongPressDragEnabled(): Boolean {
@@ -37,7 +38,7 @@ class ListItemTouchHelperCallback(private val adapter: ListAdapter) : ItemTouchH
     }
 
     override fun isItemViewSwipeEnabled(): Boolean {
-        return false
+        return true
     }
 
     fun setEnabled(enabled: Boolean) {

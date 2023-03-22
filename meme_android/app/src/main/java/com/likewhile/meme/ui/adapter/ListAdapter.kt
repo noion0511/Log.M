@@ -71,6 +71,11 @@ class ListAdapter(private var listItems: MutableList<ListItem>) : RecyclerView.A
         listItems[position].title = title
     }
 
+    fun removeItem(position: Int) {
+        listItems.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     fun setItemsClickable(clickable: Boolean) {
         this.clickable = clickable
         notifyDataSetChanged()
