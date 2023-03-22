@@ -31,6 +31,10 @@
         </receiver>
 
         <activity
+            android:name=".ui.view.PrivacyPolicyActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.view.MemoEditActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize">
@@ -38,6 +42,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.view.MainActivity" />
         </activity>
+
         <activity
             android:name=".ui.view.MainActivity"
             android:exported="true">

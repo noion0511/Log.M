@@ -6,6 +6,7 @@
     <string name="memo_modify">Modify</string>
     <string name="memo_delete">Delete Memo</string>
     <string name="memo_delete_all">Delete All Memos</string>
+    <string name="memo_privacy_policy">Privacy Policy</string>
     <string name="memo_app_info">App Info</string>
     <string name="memo_fix">Fix or Unfix Memo</string>
     <string name="memo_widget">Add Widget</string>
@@ -37,4 +38,26 @@
     <string name="navigation_option_list_memo_edit">ListMemoEditActivity</string>
     <string name="fixed">Fixed</string>
     <string name="unfixed">Unfixed</string>
+
+    <!-- Privacy Policy -->
+    <string name="privacy_policy_content">Personal Information Collection and Use Purpose
+The Memo app collects personal information from users to provide functions such as memo creation, saving, modification, deletion, and widget display. The personal information collected includes the following:
+
+Title and content of memos created by users
+Date and time when memos are created
+Widget ID to display memos as a widget
+The collected personal information is only used for the purposes of memo creation, saving, widget display, and other related purposes, and is not used for other purposes.
+
+Retention and Use Period of Personal Information
+The Memo app retains personal information of memos until users delete them. When a user deletes a memo, the personal information of that memo is immediately deleted.
+
+Provision and Sharing of Personal Information
+The Memo app does not provide or share users personal information with third parties or leak it outside without their consent. However, when required by applicable laws and regulations, information may be provided in accordance with such laws and regulations.
+
+Technological, Administrative Measures for Personal Information Protection
+The Memo app complies with related laws and regulations such as the Personal Information Protection Act and takes the following technological, administrative measures to securely protect users personal information:
+
+Minimizes the number of personnel with access to personal information
+Personal information inquiries related to using the Memo app can be made by contacting the following email address:
+Email: noion0511@gmail.com</string>
 </resources>
