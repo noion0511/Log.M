@@ -155,10 +155,10 @@ class MemoDBHelper(context: Context) :
     }
 
     companion object {
-        const val DATABASE_NAME = "meme.db"
+        const val DATABASE_NAME = "logm.db"
         const val DATABASE_VERSION = 1
 
-        const val TABLE_NAME = "meme"
+        const val TABLE_NAME = "logm"
         const val COLUMN_ID = "_id"
         const val COLUMN_TITLE = "title"
         const val COLUMN_CONTENT = "content"
@@ -170,7 +170,7 @@ class MemoDBHelper(context: Context) :
 
         const val DELETE_TABLE_SQL = "DROP TABLE if exists $TABLE_NAME"
         const val CREATE_TABLE_SQL = """
-            CREATE TABLE TABLE_NAME (
+            CREATE TABLE $TABLE_NAME (
         $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
         $COLUMN_TITLE TEXT,
         $COLUMN_CONTENT TEXT,
