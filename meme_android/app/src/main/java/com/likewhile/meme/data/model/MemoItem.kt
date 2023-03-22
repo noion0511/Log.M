@@ -20,7 +20,7 @@ data class TextMemoItem(
     override var date: String = "",
     override var isFixed: Boolean = false
 ) : MemoItem() {
-    override val contentType: String = "text"
+    override val contentType: String = "TEXT"
 }
 
 data class ListMemoItem(
@@ -30,7 +30,7 @@ data class ListMemoItem(
     override var date: String = "",
     override var isFixed: Boolean = false
 ) : MemoItem() {
-    override val contentType: String = "list"
+    override val contentType: String = "LIST"
 }
 
 data class DrawingMemoItem(
@@ -40,7 +40,7 @@ data class DrawingMemoItem(
     override var date: String = "",
     override var isFixed: Boolean = false
 ) : MemoItem() {
-    override val contentType: String = "drawing"
+    override val contentType: String = "DRAWING"
 }
 
 fun serializeListContent(listItems: List<ListItem>): ByteArray {

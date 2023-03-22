@@ -9,10 +9,12 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.likewhile.meme.*
 import com.likewhile.meme.data.model.MemoItem
+import com.likewhile.meme.data.model.MemoType
 import com.likewhile.meme.databinding.ActivityMainBinding
 import com.likewhile.meme.ui.adapter.MemoAdapter
 import com.likewhile.meme.ui.view.widget.MemoWidgetProvider
@@ -91,8 +93,22 @@ class MainActivity : AppCompatActivity() {
 
     private fun initCreateBtn() {
         binding.floatingActionButton.setOnClickListener {
-            val intent = Intent(this, MemoEditActivity::class.java)
-            startActivity(intent)
+            val navigationOptions = arrayOf(
+                getString(R.string.navigation_option_memo_edit),
+                getString(R.string.navigation_option_list_memo_edit)
+            )
+
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(getString(R.string.choose_a_screen))
+                .setItems(navigationOptions) { _, which ->
+                    val intent = when (navigationOptions[which]) {
+                        getString(R.string.navigation_option_memo_edit) -> Intent(this, MemoEditActivity::class.java)
+                        getString(R.string.navigation_option_list_memo_edit) -> Intent(this, ListMemoEditActivity::class.java)
+                        else -> null
+                    }
+                    intent?.let { startActivity(it) }
+                }
+            builder.create().show()
         }
     }
 
@@ -133,7 +149,12 @@ class MainActivity : AppCompatActivity() {
 
         memoAdapter = MemoAdapter(mainViewModel.memos.value ?: mutableListOf(), object : MemoAdapter.OnItemClickListener {
             override fun onItemClick(memoItem: MemoItem) {
-                val intent = Intent(applicationContext, MemoEditActivity::class.java)
+                val targetActivity = when (memoItem.contentType) {
+                    "LIST" -> ListMemoEditActivity::class.java
+                    "DRAWING" -> MemoEditActivity::class.java
+                    else -> MemoEditActivity::class.java
+                }
+                val intent = Intent(applicationContext, targetActivity)
                 intent.putExtra(MemoWidgetProvider.EXTRA_MEMO_ID, memoItem.id)
                 startActivity(intent)
             }
