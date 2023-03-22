@@ -12,6 +12,7 @@
     <string name="memo_widget">Agregar Widget</string>
     <string name="todo_title">Título</string>
     <string name="todo_content">Contenido</string>
+    <string name="todo_content_list_item">.</string>
     <string name="todo_time">Hora</string>
     <string name="todo_alarm_10">Alarma en 10 minutos</string>
     <string name="no_memo">No hay memo</string>
@@ -32,4 +33,7 @@
     <string name="sort_by_latest">Último</string>
     <string name="sort_alphabetically">Alfabético</string>
     <string name="sort_by_creation_date">Fecha de creación</string>
+    <string name="choose_a_screen">Elige una pantalla</string>
+    <string name="navigation_option_memo_edit">Editar nota</string>
+    <string name="navigation_option_list_memo_edit">Editar nota de lista</string>
 </resources>
