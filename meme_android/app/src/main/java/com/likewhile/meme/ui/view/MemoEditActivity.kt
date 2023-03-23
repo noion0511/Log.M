@@ -64,7 +64,6 @@ class MemoEditActivity : AppCompatActivity() {
         binding.bottomBtnEdit.checkBoxFix.setTextColor(Color.BLACK)
         binding.bottomBtnEdit.buttonSave.visibility = View.GONE
         binding.bottomBtnEdit.buttonCancel.visibility = View.GONE
-        // 메뉴를 무효화하여 onPrepareOptionsMenu()를 다시 호출
         isMenuVisible = true
         invalidateOptionsMenu()
     }
@@ -76,7 +75,6 @@ class MemoEditActivity : AppCompatActivity() {
         binding.bottomBtnEdit.checkBoxFix.isEnabled = true
         binding.bottomBtnEdit.buttonSave.visibility = View.VISIBLE
         binding.bottomBtnEdit.buttonCancel.visibility = View.VISIBLE
-        // 메뉴를 무효화하여 onPrepareOptionsMenu()를 다시 호출
         isMenuVisible = false
         invalidateOptionsMenu()
     }
