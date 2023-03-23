@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.likewhile.meme.data.local.MemoDBHelper
-import com.likewhile.meme.data.model.ListItem
 import com.likewhile.meme.data.model.ListMemoItem
 import com.likewhile.meme.data.model.MemoItem
 
@@ -36,6 +35,7 @@ class ListMemoViewModel(application: Application) : AndroidViewModel(application
 
     fun updateMemo(memoItem: MemoItem) {
         memoDBHelper.updateMemo(memoItem)
+        refreshMemo()
     }
 
     fun closeDB() {
