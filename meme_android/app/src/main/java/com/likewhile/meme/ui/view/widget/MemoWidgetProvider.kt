@@ -103,7 +103,7 @@ class MemoWidgetProvider : AppWidgetProvider() {
         val dbHelper = MemoDBHelper(context)
         val memo = TextMemoItem(
             0L, // ID는 데이터베이스에서 자동으로 생성됩니다.
-            "new meme", // 제목
+            "new memo", // 제목
             "", // 내용
             DateFormatUtil.formatDate(Date(), "yyyy-MM-dd HH:mm"), // 날짜
             false // 고정 여부
