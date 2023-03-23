@@ -4,63 +4,38 @@
     <string name="memo_save">Guardar</string>
     <string name="memo_cancel">Cancelar</string>
     <string name="memo_create">Crear</string>
-    <string name="memo_modify">Modificar</string>
-    <string name="memo_delete">Borrar Memo</string>
-    <string name="memo_delete_all">Borrar todos los Memos</string>
-    <string name="memo_privacy_policy">Política de privacidad</string>
+    <string name="memo_modify">Editar</string>
+    <string name="memo_delete">Eliminar memo</string>
+    <string name="memo_delete_all">Eliminar todos los memos</string>
     <string name="memo_app_info">Información de la aplicación</string>
-    <string name="memo_fix">Fijar o Desfijar Memo</string>
-    <string name="memo_widget">Agregar Widget</string>
+    <string name="memo_fix">Fijar y desanclar memo</string>
+    <string name="memo_widget">Mostrar como widget</string>
     <string name="todo_title">Título</string>
-    <string name="todo_content">Contenido</string>
+    <string name="todo_content">Detalles</string>
     <string name="todo_content_list_item">.</string>
     <string name="todo_time">Hora</string>
-    <string name="todo_alarm_10">Alarma en 10 minutos</string>
-    <string name="no_memo">No hay memo</string>
-    <string name="sort_memo">Ordenar Memo</string>
+    <string name="todo_alarm_10">Notificar en 10 minutos</string>
+    <string name="no_memo">No hay memos</string>
+    <string name="sort_memo">Ordenar memos</string>
     <string name="back">Volver</string>
-    <string name="check_fix">¿Quieres fijar este memo en la parte superior?</string>
-    <string name="fab_content_desc">Crear un nuevo memo</string>
-    <string name="fixed_icon_description">Fijar memo</string>
+    <string name="check_fix">¿Desea fijar esta tarea en la parte superior?</string>
+    <string name="fab_content_desc">Crear memo de tarea</string>
+    <string name="fixed_icon_description">Fijar memo de tarea</string>
     <string name="appwidget_text">EJEMPLO</string>
     <string name="add_widget">Agregar widget</string>
     <string name="app_widget_description">Esta es una descripción del widget de la aplicación</string>
 
     <!-- MainActivity -->
-    <string name="delete_all_memos_title">Borrar todos los memos</string>
-    <string name="delete_all_memos_message">¿Estás seguro de que quieres borrar todos los memos? Una vez borrados, los memos no se pueden recuperar.</string>
+    <string name="delete_all_memos_title">Eliminar todos los memos</string>
+    <string name="delete_all_memos_message">¿Está seguro de que desea eliminar todos los memos? Los memos eliminados no se pueden recuperar.</string>
     <string name="delete_all_memos_confirm">Sí</string>
     <string name="delete_all_memos_cancel">No</string>
-    <string name="sort_by_latest">Último</string>
-    <string name="sort_alphabetically">Alfabético</string>
+    <string name="sort_by_latest">Más recientes primero</string>
+    <string name="sort_alphabetically">Orden alfabético</string>
     <string name="sort_by_creation_date">Fecha de creación</string>
-    <string name="choose_a_screen">Elige una pantalla</string>
-    <string name="navigation_option_memo_edit">Editar nota</string>
-    <string name="navigation_option_list_memo_edit">Editar nota de lista</string>
+    <string name="choose_a_screen">Elegir pantalla</string>
+    <string name="navigation_option_memo_edit">Escribir memo</string>
+    <string name="navigation_option_list_memo_edit">Escribir memo de lista</string>
     <string name="fixed">Fijado</string>
-    <string name="unfixed">Desfijado</string>
-
-    <!-- Privacy Policy -->
-    <string name="privacy_policy_content">Política de privacidad
-
-Propósito de la recolección y uso de información personal
-La aplicación Memo recopila información personal de los usuarios para proporcionar funciones como la creación, el guardado, la modificación, la eliminación y la visualización de widgets de notas. La información personal recopilada incluye lo siguiente:
-
-Título y contenido de las notas creadas por los usuarios
-Fecha y hora en que se crearon las notas
-ID del widget para visualizar las notas como un widget
-La información personal recopilada se utiliza solo para los fines de creación y guardado de notas, visualización de widgets y otros fines relacionados, y no se utiliza para otros fines.
-
-Período de retención y uso de la información personal
-La aplicación Memo retiene la información personal de las notas hasta que los usuarios las eliminen. Cuando un usuario elimina una nota, la información personal de esa nota se elimina de inmediato.
-
-Provisión y compartición de información personal
-La aplicación Memo no proporciona ni comparte información personal de los usuarios con terceros ni la divulga fuera sin su consentimiento. Sin embargo, cuando lo exigen las leyes y regulaciones aplicables, se puede proporcionar información de acuerdo con esas leyes y regulaciones.
-
-Medidas técnicas/administrativas para la protección de información personal
-La aplicación Memo cumple con las leyes y regulaciones relacionadas, como la Ley de protección de información personal, y toma las siguientes medidas técnicas/administrativas para proteger de manera segura la información personal de los usuarios:
-
-Minimiza el número de personal con acceso a la información personal
-Las consultas de información personal relacionadas con el uso de la aplicación Memo se pueden hacer contactando la siguiente dirección de correo electrónico:
-Correo electrónico: noion0511@gmail.com</string>
+    <string name="unfixed">Desanclado</string>
 </resources>
