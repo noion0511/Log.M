@@ -67,6 +67,11 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
+            R.id.button_terms_conditions -> {
+                val intent = Intent(this, TermsConditionsActivity::class.java)
+                startActivity(intent)
+                true
+            }
             else -> {
                 super.onOptionsItemSelected(item)
             }
@@ -172,7 +177,7 @@ class MainActivity : AppCompatActivity() {
 
                     binding.listViewMemo.setOnCreateContextMenuListener { menu, v, menuInfo ->
                         menuInflater.inflate(R.menu.menu_long_click, menu)
-                        menu.getItem(1).title = if (selectedMemoItem.isFixed) getString(R.string.fixed) else getString(R.string.unfixed)
+                        menu.getItem(1).title = if (selectedMemoItem.isFixed) getString(R.string.unfixed) else getString(R.string.fixed)
                     }
 
                     openContextMenu(binding.listViewMemo)

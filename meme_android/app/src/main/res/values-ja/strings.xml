@@ -4,23 +4,22 @@
     <string name="memo_save">保存</string>
     <string name="memo_cancel">キャンセル</string>
     <string name="memo_create">作成</string>
-    <string name="memo_modify">変更</string>
-    <string name="memo_delete">メモの削除</string>
+    <string name="memo_modify">編集</string>
+    <string name="memo_delete">メモ削除</string>
     <string name="memo_delete_all">すべてのメモを削除</string>
-    <string name="memo_privacy_policy">プライバシーポリシー</string>
     <string name="memo_app_info">アプリ情報</string>
-    <string name="memo_fix">メモのピン留めまたは解除</string>
-    <string name="memo_widget">ウィジェットに追加</string>
+    <string name="memo_fix">メモを固定・解除</string>
+    <string name="memo_widget">ウィジェットとして表示</string>
     <string name="todo_title">タイトル</string>
-    <string name="todo_content">内容</string>
+    <string name="todo_content">詳細</string>
     <string name="todo_content_list_item">.</string>
     <string name="todo_time">時間</string>
-    <string name="todo_alarm_10">10分後にアラーム</string>
-    <string name="no_memo">メモはありません</string>
+    <string name="todo_alarm_10">10分後に通知</string>
+    <string name="no_memo">メモがありません</string>
     <string name="sort_memo">メモの並び替え</string>
     <string name="back">戻る</string>
-    <string name="check_fix">このタスクをトップにピン留めしますか？</string>
-    <string name="fab_content_desc">新しいタスクメモを作成</string>
+    <string name="check_fix">このタスクを上に固定しますか？</string>
+    <string name="fab_content_desc">タスクメモ作成</string>
     <string name="fixed_icon_description">タスクメモを固定</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">ウィジェットを追加</string>
@@ -28,38 +27,15 @@
 
     <!-- MainActivity -->
     <string name="delete_all_memos_title">すべてのメモを削除</string>
-    <string name="delete_all_memos_message">本当にすべてのメモを削除してよろしいですか？削除後、メモを復元することはできません。</string>
+    <string name="delete_all_memos_message">本当にすべてのメモを削除しますか？削除したメモは復元できません。</string>
     <string name="delete_all_memos_confirm">はい</string>
     <string name="delete_all_memos_cancel">いいえ</string>
-    <string name="sort_by_latest">新しい順</string>
-    <string name="sort_alphabetically">アルファベット順</string>
-    <string name="sort_by_creation_date">作成日時</string>
+    <string name="sort_by_latest">最新順</string>
+    <string name="sort_alphabetically">五十音順</string>
+    <string name="sort_by_creation_date">作成日順</string>
     <string name="choose_a_screen">画面を選択</string>
-    <string name="navigation_option_memo_edit">メモ編集</string>
-    <string name="navigation_option_list_memo_edit">リストメモ編集</string>
-    <string name="fixed">固定</string>
-    <string name="unfixed">固定解除</string>
-
-    <!-- Privacy Policy -->
-    <string name="privacy_policy_content">プライバシーポリシー
-個人情報の収集および利用目的
-メモアプリは、メモ作成、保存、修正、削除、ウィジェット表示などの機能を提供するため、ユーザーの個人情報を収集します。収集する個人情報は以下の通りです。
-
-ユーザーが作成したメモのタイトルと内容
-メモが作成された日時
-メモをウィジェットとして表示するためのウィジェットID
-収集した個人情報は、メモの作成、保存、ウィジェットの表示などの目的でのみ使用され、他の目的で使用されることはありません。
-
-個人情報の保有および利用期間
-メモアプリは、ユーザーがメモを削除するまで、そのメモの個人情報を保有します。ユーザーがメモを削除すると、そのメモの個人情報は即座に削除されます。
-
-個人情報の提供および共有
-メモアプリは、ユーザーの個人情報を第三者に提供することはなく、同意なしに外部に漏洩することはありません。ただし、関連法令および規定などに基づき、情報を提供することがあります。
-
-個人情報保護のための技術的/管理的対策
-メモアプリは、個人情報保護法などの関連法令を遵守し、ユーザーの個人情報を安全に保護するために、以下の技術的/管理的対策を実施します。
-
-最小限の人員しか個人情報にアクセスできないよう制限する
-メモアプリを利用する中で発生した個人情報に関するお問い合わせは、以下のメールアドレスまでお問い合わせください。
-Eメール：noion0511@gmail.com</string>
+    <string name="navigation_option_memo_edit">メモ作成</string>
+    <string name="navigation_option_list_memo_edit">リストメモ作成</string>
+    <string name="fixed">固定済み</string>
+    <string name="unfixed">固定解除済み</string>
 </resources>
