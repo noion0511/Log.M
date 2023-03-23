@@ -35,6 +35,7 @@ class TextMemoViewModel(application: Application) : AndroidViewModel(application
 
     fun updateMemo(memoItem: MemoItem) {
         memoDBHelper.updateMemo(memoItem)
+        refreshMemo()
     }
 
     fun closeDB() {

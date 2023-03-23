@@ -57,7 +57,8 @@
                 android:layout_height="wrap_content"
                 android:text="@{memo.content}"
                 android:textColor="@color/black"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                android:maxHeight="200dp"/>
 
             <TextView
                 android:id="@+id/textViewDate"
