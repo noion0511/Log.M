@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "650947486022",
+    "project_id": "logm-62a0f",
+    "storage_bucket": "logm-62a0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650947486022:android:eabfecac3468489c944547",
+        "android_client_info": {
+          "package_name": "com.likewhile.meme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "650947486022-lf4vk2u7ikevnq5hlb2siudoivdhjueg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHiyWZuY6UIlVxBGGGbB5kQoHx_jvhyaI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "650947486022-lf4vk2u7ikevnq5hlb2siudoivdhjueg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

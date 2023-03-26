@@ -1,110 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.MainActivity">
+    tools:openDrawer="start">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/toolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        tools:context=".ui.view.MainActivity">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="2dp"
-        android:layout_margin="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include">
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <include
+            android:id="@+id/include"
+            layout="@layout/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/menu"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:layout_gravity="center"
-                android:gravity="center_vertical">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="2dp"
+            android:layout_margin="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include">
 
-                <AutoCompleteTextView
-                    android:id="@+id/textview_sort"
-                    android:layout_width="wrap_content"
-                    android:minWidth="130dp"
-                    android:layout_height="match_parent"
-                    android:inputType="none"
-                    android:textSize="13sp"
-                    android:layout_gravity="center_vertical"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.button.MaterialButtonToggleGroup
-                android:id="@+id/materialButtonToggleGroup"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:gravity="end"
-                app:checkedButton="@id/btn_simple_view"
-                app:singleSelection="true">
+                android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btn_simple_view"
-                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    app:icon="@drawable/baseline_table_rows_24" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/menu"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical">
 
-                <Button
-                    android:id="@+id/btn_detail_view"
-                    style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    app:icon="@drawable/baseline_dashboard_24" />
-            </com.google.android.material.button.MaterialButtonToggleGroup>
+                    <AutoCompleteTextView
+                        android:id="@+id/textview_sort"
+                        android:layout_width="wrap_content"
+                        android:minWidth="130dp"
+                        android:layout_height="match_parent"
+                        android:inputType="none"
+                        android:textSize="13sp"
+                        android:layout_gravity="center_vertical"/>
 
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_view_memo"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView" />
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/materialButtonToggleGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="end"
+                    app:checkedButton="@id/btn_calendar_view"
+                    app:singleSelection="true">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_button"
+                    <Button
+                        android:id="@+id/btn_calendar_view"
+                        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:icon="@drawable/baseline_calendar_month_24" />
+
+                    <Button
+                        android:id="@+id/btn_simple_view"
+                        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:icon="@drawable/baseline_table_rows_24" />
+
+                    <Button
+                        android:id="@+id/btn_detail_view"
+                        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:icon="@drawable/baseline_dashboard_24" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView"/>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/fab_content_desc"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1"
+            app:srcCompat="@drawable/round_add_24" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/fab_content_desc"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1"
-        app:srcCompat="@drawable/round_add_24" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/menu_drawer"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/navigation_header"/>
+</androidx.drawerlayout.widget.DrawerLayout>

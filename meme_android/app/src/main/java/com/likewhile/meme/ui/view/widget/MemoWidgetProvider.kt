@@ -79,7 +79,7 @@ class MemoWidgetProvider : AppWidgetProvider() {
             if (memo != null) {
                 views.setTextViewText(R.id.textViewTitle, memo.title)
                 views.setTextViewText(R.id.textViewContent, (memo as TextMemoItem).content)
-                views.setTextViewText(R.id.textViewDate, memo.date)
+                views.setTextViewText(R.id.textViewDate, DateFormatUtil.formatDate(memo.date))
                 setWidgetClickEvent(context, views, appWidgetId, memo.id)
             } else {
                 views.setTextViewText(R.id.textViewTitle, "메모가 없음")
@@ -105,7 +105,7 @@ class MemoWidgetProvider : AppWidgetProvider() {
             0L, // ID는 데이터베이스에서 자동으로 생성됩니다.
             "new memo", // 제목
             "", // 내용
-            DateFormatUtil.formatDate(Date(), "yyyy-MM-dd HH:mm"), // 날짜
+            Date(), // 날짜
             false // 고정 여부
         )
 

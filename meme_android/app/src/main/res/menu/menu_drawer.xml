@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/button_delete_all"
-        android:title="@string/memo_delete_all" />
 
     <item
         android:id="@+id/button_privacy_policy"
