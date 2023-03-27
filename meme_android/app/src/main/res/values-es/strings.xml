@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">LOG.M</string>
+    <string name="app_name">Log.M</string>
     <string name="memo_save">Guardar</string>
     <string name="memo_cancel">Cancelar</string>
     <string name="memo_create">Crear</string>
@@ -24,6 +24,15 @@
     <string name="appwidget_text">EJEMPLO</string>
     <string name="add_widget">Agregar widget</string>
     <string name="app_widget_description">Esta es una descripción del widget de la aplicación</string>
+
+    <string name="sunday">D</string>
+    <string name="monday">L</string>
+    <string name="tuesday">M</string>
+    <string name="wednesday">M</string>
+    <string name="thursday">J</string>
+    <string name="friday">V</string>
+    <string name="saturday">S</string>
+
 
     <!-- MainActivity -->
     <string name="delete_all_memos_title">Eliminar todos los memos</string>

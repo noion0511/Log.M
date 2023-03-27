@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">LOG.M</string>
+    <string name="app_name">Log.M</string>
     <string name="memo_save">保存</string>
     <string name="memo_cancel">キャンセル</string>
     <string name="memo_create">作成</string>
@@ -24,6 +24,15 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">ウィジェットを追加</string>
     <string name="app_widget_description">これはアプリウィジェットの説明です</string>
+
+    <string name="sunday">日</string>
+    <string name="monday">月</string>
+    <string name="tuesday">火</string>
+    <string name="wednesday">水</string>
+    <string name="thursday">木</string>
+    <string name="friday">金</string>
+    <string name="saturday">土</string>
+
 
     <!-- MainActivity -->
     <string name="delete_all_memos_title">すべてのメモを削除</string>

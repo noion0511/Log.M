@@ -4,11 +4,12 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.likewhile.meme.data.local.MemoDBHelper
 import com.likewhile.meme.data.model.MemoItem
-import java.util.*
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+// DetailViewModel.kt
+class DetailModeViewModel(application: Application) : AndroidViewModel(application) {
     private val memoDBHelper: MemoDBHelper
 
     private var _memos = MutableLiveData<MutableList<MemoItem>>()
@@ -24,8 +25,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _memos.value = memoDBHelper.selectAllMemos(sortType)
     }
 
-    fun deleteAllMemos() {
-        memoDBHelper.deleteAllMemos()
+    fun setSortType(newSortType: Int) {
+        sortType = newSortType
+        refreshMemos()
+    }
+
+
+    fun updateMemo(memoItem: MemoItem) {
+        memoDBHelper.updateMemo(memoItem)
+    }
+
+
+    fun deleteMemo(id: Long) {
+        memoDBHelper.deleteMemo(id)
         refreshMemos()
     }
 

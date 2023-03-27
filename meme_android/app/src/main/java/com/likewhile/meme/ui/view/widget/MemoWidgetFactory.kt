@@ -8,6 +8,7 @@ import com.likewhile.meme.R
 import com.likewhile.meme.data.local.MemoDBHelper
 import com.likewhile.meme.data.model.MemoItem
 import com.likewhile.meme.data.model.TextMemoItem
+import com.likewhile.meme.util.DateFormatUtil
 
 class MemoWidgetFactory(private val context: Context, intent: Intent?) : RemoteViewsService.RemoteViewsFactory {
     private val memoDBHelper = MemoDBHelper(context)
@@ -31,7 +32,7 @@ class MemoWidgetFactory(private val context: Context, intent: Intent?) : RemoteV
         val remoteViews = RemoteViews(context.packageName, R.layout.widget_memo)
         remoteViews.setTextViewText(R.id.textViewTitle, memoItem.title)
         remoteViews.setTextViewText(R.id.textViewContent, memoItem.content)
-        remoteViews.setTextViewText(R.id.textViewDate, memoItem.date)
+        remoteViews.setTextViewText(R.id.textViewDate, DateFormatUtil.formatDate(memoItem.date))
 
         return remoteViews
     }

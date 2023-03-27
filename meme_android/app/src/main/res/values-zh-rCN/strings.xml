@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">LOG.M</string>
+    <string name="app_name">Log.M</string>
     <string name="memo_save">保存</string>
     <string name="memo_cancel">取消</string>
     <string name="memo_create">创建</string>
@@ -24,6 +24,15 @@
     <string name="appwidget_text">示例</string>
     <string name="add_widget">添加小部件</string>
     <string name="app_widget_description">这是一个应用小部件描述</string>
+
+    <string name="sunday">日</string>
+    <string name="monday">一</string>
+    <string name="tuesday">二</string>
+    <string name="wednesday">三</string>
+    <string name="thursday">四</string>
+    <string name="friday">五</string>
+    <string name="saturday">六</string>
+
 
     <!-- MainActivity -->
     <string name="delete_all_memos_title">删除所有备忘录</string>

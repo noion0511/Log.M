@@ -2,16 +2,22 @@ package com.likewhile.meme.ui.view
 
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import android.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,7 +50,6 @@ class ListMemoEditActivity : AppCompatActivity() {
 
         initRecyclerView()
         initMemoData()
-        initAddItemButton()
         initSave()
         initCancel()
         initToolbar()
@@ -71,7 +76,12 @@ class ListMemoEditActivity : AppCompatActivity() {
             itemList.toMutableList()
         }
 
-        listAdapter = ListAdapter(initialList)
+        listAdapter = ListAdapter(initialList) {
+            val newItem = ListItem(priority = listAdapter.itemCount + 1, title = "")
+            initialList.add(newItem)
+            listAdapter.notifyItemInserted(listAdapter.itemCount - 1)
+            binding.contentRecyclerview.scrollToPosition(listAdapter.itemCount - 1)
+        }
         binding.contentRecyclerview.adapter = listAdapter
         binding.contentRecyclerview.layoutManager = LinearLayoutManager(this)
 
@@ -80,16 +90,6 @@ class ListMemoEditActivity : AppCompatActivity() {
         itemTouchHelper.attachToRecyclerView(binding.contentRecyclerview)
     }
 
-
-    private fun initAddItemButton() {
-        binding.addItemButton.setOnClickListener {
-            val newItem = ListItem(priority = listAdapter.itemCount + 1, title = "")
-            listAdapter.addItem(newItem)
-            binding.contentRecyclerview.scrollToPosition(listAdapter.itemCount - 1)
-        }
-    }
-
-
     private fun initToolbar() {
         val params = Toolbar.LayoutParams(
             Toolbar.LayoutParams.MATCH_PARENT,
@@ -97,6 +97,8 @@ class ListMemoEditActivity : AppCompatActivity() {
             Gravity.START
         )
         setSupportActionBar(binding.toolbar.toolbar)
+        val blackColor = ContextCompat.getColor(this, android.R.color.black)
+        binding.toolbar.logo.setColorFilter(blackColor, PorterDuff.Mode.SRC_IN)
         binding.toolbar.toolbar.setNavigationIcon(R.drawable.baseline_arrow_back_24)
         binding.toolbar.toolbar.layoutParams = params
         binding.toolbar.toolbar.setNavigationOnClickListener { finish() }
@@ -108,7 +110,6 @@ class ListMemoEditActivity : AppCompatActivity() {
         binding.bottomBtnEdit.buttonSave.setOnClickListener {
             val title = binding.title.editTextTitle.text.toString()
             val contentList = listAdapter.getItems()
-            val time = DateFormatUtil.formatDate(Date(), "yyyy-MM-dd HH:mm")
             val isFixed = binding.bottomBtnEdit.checkBoxFix.isChecked
 
             val listItems = contentList.mapIndexed  { index, item ->
@@ -122,7 +123,7 @@ class ListMemoEditActivity : AppCompatActivity() {
                 id = itemId,
                 title = title,
                 listItems = listItems,
-                date = time,
+                date = Date(),
                 isFixed = isFixed,
             )
 
@@ -136,6 +137,13 @@ class ListMemoEditActivity : AppCompatActivity() {
                     memoViewModel.insertMemo(memoItem)
                 }
                 setReadMode()
+                val focusedView = currentFocus
+                focusedView?.clearFocus()
+
+                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(focusedView?.windowToken, 0)
+
+                Toast.makeText(this, "save", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -206,8 +214,8 @@ class ListMemoEditActivity : AppCompatActivity() {
         binding.bottomBtnEdit.checkBoxFix.setTextColor(Color.BLACK)
         binding.bottomBtnEdit.buttonSave.visibility = View.GONE
         binding.bottomBtnEdit.buttonCancel.visibility = View.GONE
-        binding.addItemButton.visibility = View.GONE
         listAdapter.setItemsClickable(false)
+        listAdapter.setItemEditable(false)
         itemTouchHelperCallback.setEnabled(false)
 
         // 메뉴를 무효화하여 onPrepareOptionsMenu()를 다시 호출
@@ -221,8 +229,8 @@ class ListMemoEditActivity : AppCompatActivity() {
         binding.bottomBtnEdit.checkBoxFix.isEnabled = true
         binding.bottomBtnEdit.buttonSave.visibility = View.VISIBLE
         binding.bottomBtnEdit.buttonCancel.visibility = View.VISIBLE
-        binding.addItemButton.visibility = View.VISIBLE
         listAdapter.setItemsClickable(true)
+        listAdapter.setItemEditable(true)
         itemTouchHelperCallback.setEnabled(true)
 
         // 메뉴를 무효화하여 onPrepareOptionsMenu()를 다시 호출

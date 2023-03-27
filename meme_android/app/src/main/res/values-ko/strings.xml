@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">LOG.M</string>
+    <string name="app_name">Log.M</string>
     <string name="memo_save">저장</string>
     <string name="memo_cancel">취소</string>
     <string name="memo_create">생성</string>
@@ -25,6 +25,14 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>
+
+    <string name="sunday">일</string>
+    <string name="monday">월</string>
+    <string name="tuesday">화</string>
+    <string name="wednesday">수</string>
+    <string name="thursday">목</string>
+    <string name="friday">금</string>
+    <string name="saturday">토</string>
 
     <!-- MainActivity -->
     <string name="delete_all_memos_title">모든 메모 삭제</string>

@@ -4,28 +4,24 @@ package com.likewhile.meme.ui.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.navigation.NavigationView
 import com.likewhile.meme.*
-import com.likewhile.meme.data.model.MemoItem
-import com.likewhile.meme.data.model.MemoType
+import com.likewhile.meme.data.model.SortTypeChangeEvent
 import com.likewhile.meme.databinding.ActivityMainBinding
-import com.likewhile.meme.ui.adapter.MemoAdapter
-import com.likewhile.meme.ui.view.widget.MemoWidgetProvider
 import com.likewhile.meme.ui.viewmodel.MainViewModel
+import org.greenrobot.eventbus.EventBus
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var memoAdapter: MemoAdapter
-    private lateinit var selectedMemoItem: MemoItem
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,74 +29,84 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(MainViewModel::class.java)
 
+        if (savedInstanceState == null) {
+            replaceFragment("calendar_mode_fragment", CalendarModeFragment::newInstance)
+        }
+
         initButtonSetViewType()
-        initAdapter()
         initCreateBtn()
-        initContextMenu()
         initSortMemu()
         initToolbar()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_create, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.button_delete_all -> {
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle(getString(R.string.delete_all_memos_title))
-                builder.setMessage(getString(R.string.delete_all_memos_message))
-                builder.setPositiveButton(getString(R.string.delete_all_memos_confirm)) { dialog, which ->
-                    mainViewModel.deleteAllMemos()
-                    memoAdapter.clear()
-                }
-                builder.setNegativeButton(getString(R.string.delete_all_memos_cancel)) { dialog, which ->
-                    dialog.dismiss()
-                }
-                builder.show()
-                true
-            }
-            R.id.button_privacy_policy -> {
-                val intent = Intent(this, PrivacyPolicyActivity::class.java)
-                startActivity(intent)
-                true
-            }
-            R.id.button_terms_conditions -> {
-                val intent = Intent(this, TermsConditionsActivity::class.java)
-                startActivity(intent)
-                true
-            }
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
-        }
-    }
-
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.button_delete -> {
-                mainViewModel.deleteMemo(selectedMemoItem.id)
-                val intent = Intent(MemoWidgetProvider.ACTION_MEMO_DELETED)
-                sendBroadcast(intent)
-                true
-            }
-            R.id.button_fix -> {
-                selectedMemoItem.isFixed = !selectedMemoItem.isFixed
-                mainViewModel.updateMemo(selectedMemoItem)
-                memoAdapter.notifyDataSetChanged()
-                true
-            }
-            else -> {
-                super.onContextItemSelected(item)
-            }
-        }
+        initDrawer()
     }
 
     private fun initToolbar() {
         setSupportActionBar(binding.include.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        binding.include.btnDrawer.setOnClickListener {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
+    }
+
+    private fun initDrawer() {
+        drawerLayout = binding.drawerLayout
+        navigationView = binding.navView
+
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when(menuItem.itemId) {
+                R.id.button_privacy_policy -> {
+                    val intent = Intent(this, PrivacyPolicyActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.button_terms_conditions -> {
+                    val intent = Intent(this, TermsConditionsActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> {
+                    drawerLayout.closeDrawers()
+                    true
+                }
+            }
+        }
+    }
+
+
+    private fun replaceFragment(tag: String, newInstance: () -> Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        for (existingFragment in fragmentManager.fragments) {
+            fragmentTransaction.hide(existingFragment)
+        }
+
+        var fragment = fragmentManager.findFragmentByTag(tag)
+        if (fragment == null) {
+            fragment = newInstance()
+            fragmentTransaction.add(R.id.fragment_container, fragment, tag)
+        } else {
+            fragmentTransaction.show(fragment)
+        }
+
+        fragmentTransaction.commit()
+    }
+
+    private fun initButtonSetViewType() {
+        binding.btnCalendarView.setOnClickListener {
+            replaceFragment("calendar_mode_fragment", CalendarModeFragment::newInstance)
+        }
+        binding.btnSimpleView.setOnClickListener {
+            replaceFragment("title_mode_fragment", TitleModeFragment::newInstance)
+        }
+        binding.btnDetailView.setOnClickListener {
+            replaceFragment("detail_mode_fragment", DetailModeFragment::newInstance)
+        }
     }
 
     private fun initCreateBtn() {
@@ -138,71 +144,16 @@ class MainActivity : AppCompatActivity() {
         binding.textviewSort.setOnItemClickListener { _, _, position, _ ->
             when(position) {
                 0 -> {
-                    mainViewModel.setSortType(1)
+                    EventBus.getDefault().post(SortTypeChangeEvent(1))
                 }
                 1 -> {
-                    mainViewModel.setSortType(2)
+                    EventBus.getDefault().post(SortTypeChangeEvent(2))
                 }
                 2 -> {
-                    mainViewModel.setSortType(3)
+                    EventBus.getDefault().post(SortTypeChangeEvent(3))
                 }
             }
-
         }
-    }
-
-    private fun initAdapter() {
-        mainViewModel.memos.observe(this) { memos ->
-            memos?.let {
-                memoAdapter.clear()
-                memoAdapter.addAll(it)
-            }
-        }
-
-        memoAdapter = MemoAdapter(mainViewModel.memos.value ?: mutableListOf(), object : MemoAdapter.OnItemClickListener {
-            override fun onItemClick(memoItem: MemoItem) {
-                val targetActivity = when (memoItem.contentType) {
-                    "LIST" -> ListMemoEditActivity::class.java
-                    "DRAWING" -> MemoEditActivity::class.java
-                    else -> MemoEditActivity::class.java
-                }
-                val intent = Intent(applicationContext, targetActivity)
-                intent.putExtra(MemoWidgetProvider.EXTRA_MEMO_ID, memoItem.id)
-                startActivity(intent)
-            }
-        },
-            object : MemoAdapter.OnItemLongClickListener {
-                override fun onItemLongClick(memoItem: MemoItem): Boolean {
-                    selectedMemoItem = memoItem
-
-                    binding.listViewMemo.setOnCreateContextMenuListener { menu, v, menuInfo ->
-                        menuInflater.inflate(R.menu.menu_long_click, menu)
-                        menu.getItem(1).title = if (selectedMemoItem.isFixed) getString(R.string.unfixed) else getString(R.string.fixed)
-                    }
-
-                    openContextMenu(binding.listViewMemo)
-                    return true
-                }
-            }
-        )
-        binding.listViewMemo.layoutManager = LinearLayoutManager(this)
-        binding.listViewMemo.adapter = memoAdapter
-    }
-
-    private fun initButtonSetViewType() {
-        binding.btnSimpleView.isSelected = true
-        binding.btnSimpleView.setOnClickListener {
-            binding.listViewMemo.layoutManager = LinearLayoutManager(this)
-            memoAdapter.setViewType(MemoAdapter.TYPE_ITEM_SIMPLE)
-        }
-        binding.btnDetailView.setOnClickListener {
-            binding.listViewMemo.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            memoAdapter.setViewType(MemoAdapter.TYPE_ITEM_DETAIL)
-        }
-    }
-
-    private fun initContextMenu() {
-        registerForContextMenu(binding.listViewMemo)
     }
 
     override fun onResume() {

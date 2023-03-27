@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textColor="@color/black"
-                    android:text="@{memo.date}"/>
+                    app:formattedDate="@{memo.date}" />
             </LinearLayout>
 
 
