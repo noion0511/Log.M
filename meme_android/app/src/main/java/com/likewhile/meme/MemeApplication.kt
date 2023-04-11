@@ -44,7 +44,7 @@ class MemeApplication : Application() {
             }
         }
 
-        val context = createConfigurationContext(config)
+//        val context = createConfigurationContext(config)
         baseContext.resources.updateConfiguration(config, baseContext.resources.displayMetrics)
     }
 }
