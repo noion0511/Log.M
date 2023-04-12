@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.likewhile.meme.ui.viewmodel.CalendarModeViewModel" />
+            type="com.likewhile.meme.ui.viewmodel.MainViewModel" />
 
         <variable
             name="lifecycleOwner"

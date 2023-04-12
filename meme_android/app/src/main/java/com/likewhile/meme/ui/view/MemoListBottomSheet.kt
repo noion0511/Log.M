@@ -13,13 +13,13 @@ import com.likewhile.meme.data.model.MemoItem
 import com.likewhile.meme.databinding.BottomSheetMemoBinding
 import com.likewhile.meme.ui.adapter.MemoAdapter
 import com.likewhile.meme.ui.view.widget.MemoWidgetProvider
-import com.likewhile.meme.ui.viewmodel.DetailModeViewModel
+import com.likewhile.meme.ui.viewmodel.MainViewModel
 import com.likewhile.meme.util.DateFormatUtil
 
 class MemoListBottomSheet(private val memoList: List<MemoItem>) : BottomSheetDialogFragment() {
 
     private lateinit var binding: BottomSheetMemoBinding
-    private val viewModel: DetailModeViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModels()
 
     private lateinit var memoAdapter: MemoAdapter
     private lateinit var selectedMemoItem: MemoItem
