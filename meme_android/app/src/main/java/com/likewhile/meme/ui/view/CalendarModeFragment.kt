@@ -32,16 +32,19 @@ class CalendarModeFragment : Fragment(), CalendarAdapter.OnMonthChangeListener, 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentCalendarModeBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         initCalendar()
         initCalendarData()
-
-        return binding.root
     }
 
     private fun initCalendar() {
