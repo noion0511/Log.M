@@ -16,6 +16,9 @@ class MemoDBHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(CREATE_TABLE_SQL)
+
+        val memoItem = TextMemoItem(title = "first Memo", content = "hello, world")
+        insertMemo(memoItem, db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -122,7 +125,7 @@ class MemoDBHelper(context: Context) :
         return memoItem
     }
 
-    fun insertMemo(memoItem: MemoItem) {
+    fun insertMemo(memoItem: MemoItem, db: SQLiteDatabase? = null) {
         val values = ContentValues()
         values.put(COLUMN_TITLE, memoItem.title)
         values.put(COLUMN_DATE, DateFormatUtil.dateToString(memoItem.date))
@@ -138,9 +141,11 @@ class MemoDBHelper(context: Context) :
             }
         }
 
-        val db = writableDatabase
-        db.insert(TABLE_NAME, null, values)
-        db.close()
+        val database = db ?: writableDatabase
+        database.insert(TABLE_NAME, null, values)
+        if (db == null) {
+            database.close()
+        }
     }
 
     fun updateMemo(memoItem: MemoItem) {
