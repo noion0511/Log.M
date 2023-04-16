@@ -113,7 +113,8 @@ class MainActivity : AppCompatActivity() {
         binding.floatingActionButton.setOnClickListener {
             val navigationOptions = arrayOf(
                 getString(R.string.navigation_option_memo_edit),
-                getString(R.string.navigation_option_list_memo_edit)
+                getString(R.string.navigation_option_list_memo_edit),
+                "사진 메모 작성"
             )
 
             val builder = AlertDialog.Builder(this)
@@ -122,6 +123,7 @@ class MainActivity : AppCompatActivity() {
                     val intent = when (navigationOptions[which]) {
                         getString(R.string.navigation_option_memo_edit) -> Intent(this, MemoEditActivity::class.java)
                         getString(R.string.navigation_option_list_memo_edit) -> Intent(this, ListMemoEditActivity::class.java)
+                        "사진 메모 작성" -> Intent(this, ImageMemoEditActivity::class.java)
                         else -> null
                     }
                     intent?.let { startActivity(it) }
