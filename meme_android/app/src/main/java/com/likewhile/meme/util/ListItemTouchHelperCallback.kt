@@ -1,7 +1,11 @@
 package com.likewhile.meme.util
 
+import android.annotation.SuppressLint
+import android.graphics.Color
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.likewhile.meme.R
 import com.likewhile.meme.ui.adapter.ListAdapter
 
 class ListItemTouchHelperCallback(private val adapter: ListAdapter) : ItemTouchHelper.Callback() {
@@ -18,18 +22,24 @@ class ListItemTouchHelperCallback(private val adapter: ListAdapter) : ItemTouchH
             makeMovementFlags(0, 0)
         }
     }
-
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+        adapter.onItemMove(viewHolder.layoutPosition, target.layoutPosition)
+        viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.context, R.color.teal_700))
         return true
     }
 
+
+    override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+        super.onSelectedChanged(viewHolder, actionState)
+        viewHolder?.itemView?.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.context, R.color.teal_700))
+    }
+
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val position = viewHolder.adapterPosition
+        val position = viewHolder.layoutPosition
         adapter.removeItem(position)
     }
 
@@ -39,6 +49,12 @@ class ListItemTouchHelperCallback(private val adapter: ListAdapter) : ItemTouchH
 
     override fun isItemViewSwipeEnabled(): Boolean {
         return true
+    }
+
+
+    override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+        super.clearView(recyclerView, viewHolder)
+        viewHolder.itemView.setBackgroundColor(Color.WHITE)
     }
 
     fun setEnabled(enabled: Boolean) {
