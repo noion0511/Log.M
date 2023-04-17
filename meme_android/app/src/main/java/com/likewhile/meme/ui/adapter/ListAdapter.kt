@@ -77,6 +77,7 @@ class ListAdapter(
             ITEM_TYPE_NORMAL -> {
                 val normalViewHolder = holder as ListViewHolder
                 val listItem = listItems[position]
+                listItem.priority = position + 1
                 normalViewHolder.binding.titleTextView.isEnabled = clickable
                 normalViewHolder.binding.titleTextView.setTextColor(Color.BLACK)
                 normalViewHolder.bind(listItem)
@@ -96,6 +97,8 @@ class ListAdapter(
     fun onItemMove(fromPosition: Int, toPosition: Int) {
         Collections.swap(listItems, fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
+        notifyItemChanged(fromPosition)
+        notifyItemChanged(toPosition)
     }
 
     override fun getItemCount() = listItems.size
