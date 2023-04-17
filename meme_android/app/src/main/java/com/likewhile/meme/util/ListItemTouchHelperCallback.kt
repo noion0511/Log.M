@@ -16,7 +16,7 @@ class ListItemTouchHelperCallback(private val adapter: ListAdapter) : ItemTouchH
     ): Int {
         return if (enabled) {
             val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
-            val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+            val swipeFlags = ItemTouchHelper.END
             makeMovementFlags(dragFlags, swipeFlags)
         } else {
             makeMovementFlags(0, 0)
