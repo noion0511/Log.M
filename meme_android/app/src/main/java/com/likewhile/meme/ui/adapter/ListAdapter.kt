@@ -136,6 +136,7 @@ class ListAdapter(
     fun removeItem(position: Int) {
         listItems.removeAt(position)
         notifyItemRemoved(position)
+        notifyItemRangeChanged(position, listItems.size - position)
     }
 
     fun setItemsClickable(clickable: Boolean) {
