@@ -79,10 +79,10 @@ class ListMemoEditActivity : AppCompatActivity() {
         }
 
         listAdapter = ListAdapter(initialList) {
-            val newItem = ListItem(priority = listAdapter.itemCount + 1, title = "")
-            initialList.add(newItem)
-            listAdapter.notifyItemInserted(listAdapter.itemCount - 1)
-            binding.contentRecyclerview.scrollToPosition(listAdapter.itemCount - 1)
+            val newItem = ListItem(priority = listAdapter.itemCount, title = "")
+            initialList.add(initialList.lastIndex, newItem)
+            listAdapter.notifyItemInserted(initialList.lastIndex)
+            binding.contentRecyclerview.scrollToPosition(initialList.lastIndex)
         }
         binding.contentRecyclerview.adapter = listAdapter
         binding.contentRecyclerview.layoutManager = LinearLayoutManager(this)

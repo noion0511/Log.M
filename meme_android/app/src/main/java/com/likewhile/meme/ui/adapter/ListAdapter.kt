@@ -1,14 +1,14 @@
 package com.likewhile.meme.ui.adapter
 
-import android.content.Context
 import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
+import com.likewhile.meme.R
 import com.likewhile.meme.data.model.ListItem
 import com.likewhile.meme.databinding.ItemListAddBinding
 import com.likewhile.meme.databinding.ItemListBinding
@@ -21,14 +21,10 @@ class ListAdapter(
     private val onAddButtonClick: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    companion object {
-        const val ITEM_TYPE_NORMAL = 0
-        const val ITEM_TYPE_ADD_BUTTON = 1
-    }
-
     private var clickable: Boolean = true
     private var editable: Boolean = true
     lateinit var recyclerView: RecyclerView
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_TYPE_ADD_BUTTON -> {
@@ -60,6 +56,7 @@ class ListAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        setAnimation(holder.itemView, position)
         when (getItemViewType(position)) {
             ITEM_TYPE_ADD_BUTTON -> {
                 val addButtonHolder = holder as ListAddViewHolder
@@ -67,7 +64,6 @@ class ListAdapter(
                     addButtonHolder.binding.addItemButton.visibility = View.VISIBLE
                     addButtonHolder.binding.addItemButton.setOnClickListener {
                         onAddButtonClick()
-                        addButtonHolder.binding.addItemButton.visibility = View.GONE
                     }
                 } else {
                     addButtonHolder.binding.addItemButton.visibility = View.GONE
@@ -111,14 +107,7 @@ class ListAdapter(
     }
 
 
-    inner class ListAddViewHolder(val binding: ItemListAddBinding) : RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.addItemButton.setOnClickListener {
-                onAddButtonClick()
-            }
-        }
-    }
-
+    inner class ListAddViewHolder(val binding: ItemListAddBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -157,5 +146,23 @@ class ListAdapter(
     fun addAll(listItems: List<ListItem>) {
         this.listItems.addAll(listItems)
         notifyDataSetChanged()
+    }
+
+
+    private fun setAnimation(viewToAnimate: View, position: Int) {
+        if (position == listItems.lastIndex - 1) {
+            val animation = AnimationUtils.loadAnimation(viewToAnimate.context, R.anim.item_animation_fall_down)
+            animation.startOffset = ANIMATION_DELAY
+            animation.duration = ANIMATION_DURATION
+            viewToAnimate.startAnimation(animation)
+        }
+    }
+
+
+    companion object {
+        const val ITEM_TYPE_NORMAL = 0
+        const val ITEM_TYPE_ADD_BUTTON = 1
+        private const val ANIMATION_DELAY = 100L
+        private const val ANIMATION_DURATION = 300L
     }
 }
