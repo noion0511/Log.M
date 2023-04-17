@@ -14,7 +14,7 @@ class ListItemTouchHelperCallback(private val adapter: ListAdapter) : ItemTouchH
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
     ): Int {
-        return if (enabled && viewHolder.itemViewType == ListAdapter.ITEM_TYPE_NORMAL) {
+        return if (enabled) {
             val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
             val swipeFlags = ItemTouchHelper.END
             makeMovementFlags(dragFlags, swipeFlags)
@@ -27,9 +27,6 @@ class ListItemTouchHelperCallback(private val adapter: ListAdapter) : ItemTouchH
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        if (target.itemViewType == ListAdapter.ITEM_TYPE_ADD_BUTTON || viewHolder.itemViewType == ListAdapter.ITEM_TYPE_ADD_BUTTON) {
-            return false
-        }
         adapter.onItemMove(viewHolder.layoutPosition, target.layoutPosition)
         viewHolder.itemView.setBackgroundColor(ContextCompat.getColor(viewHolder.itemView.context, R.color.teal_700))
         return true
