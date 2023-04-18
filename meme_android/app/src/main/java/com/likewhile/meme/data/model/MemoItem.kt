@@ -33,6 +33,16 @@ data class ListMemoItem(
     override val contentType: String = "LIST"
 }
 
+data class ImageMemoItem(
+    override var id: Long = -1L,
+    override var title: String = "",
+    var uri : String = "",
+    override var date: Date = Date(),
+    override var isFixed: Boolean = false
+) : MemoItem() {
+    override val contentType: String = "IMAGE"
+}
+
 fun serializeListContent(listItems: List<ListItem>): ByteArray {
     val jsonString = Gson().toJson(listItems)
     return jsonString.toByteArray(Charsets.UTF_8)
