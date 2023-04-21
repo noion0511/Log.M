@@ -132,7 +132,7 @@ class ImageMemoEditActivity : AppCompatActivity() {
 
             if(imeageSettingMode=="bitmap"){
                 makePathName()
-                if(saveImageInLocalStorage()){
+                if(saveImageInLocalStorage()==false){
                     Toast.makeText(this, "이미지 저장에 실패했습니다", Toast.LENGTH_SHORT).show()
                     binding.imageAddButton.root.visibility = View.VISIBLE
                     binding.imageContent.root.visibility = View.GONE
@@ -281,11 +281,11 @@ class ImageMemoEditActivity : AppCompatActivity() {
             setImageView()
         }
     }
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        val menuItem = menu.findItem(R.id.button_edit_mode)
-        menuItem.isVisible = isMenuVisible
-        return super.onPrepareOptionsMenu(menu)
-    }
+//    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+//        val menuItem = menu.findItem(R.id.button_edit_mode)
+//        menuItem.isVisible = isMenuVisible
+//        return super.onPrepareOptionsMenu(menu)
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
