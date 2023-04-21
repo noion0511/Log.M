@@ -53,6 +53,14 @@ class MemoDBHelper(val context: Context) :
 
                 val memoItem = when (memoType) {
                     MemoType.LIST -> ListMemoItem(id, title, deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT))), date, isFixed)
+                    MemoType.IMAGE -> ImageMemoItem(
+                        id,
+                        title,
+                        cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI)),
+                        date,
+                        isFixed
+                    )
                     else -> TextMemoItem(id, title, cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)), date, isFixed)
                 }
                 memoItems.add(memoItem)
@@ -241,6 +249,11 @@ class MemoDBHelper(val context: Context) :
             MemoType.LIST -> {
                 val listItems = deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT)))
                 ListMemoItem(id, title, listItems, date, isFixed)
+            }
+            MemoType.IMAGE -> {
+                val content = cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT))
+                val uri = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI))
+                ImageMemoItem(id, title, content, uri, date, isFixed)
             }
             else -> throw IllegalArgumentException("Invalid memo type")
         }
