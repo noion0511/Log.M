@@ -3,6 +3,7 @@ package com.likewhile.meme.ui.view
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -22,9 +23,12 @@ import android.widget.Toast
 import android.widget.Toolbar
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.content.PackageManagerCompat
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.likewhile.meme.BuildConfig
 import com.likewhile.meme.R
 import com.likewhile.meme.data.model.ImageMemoItem
@@ -57,6 +61,15 @@ class ImageMemoEditActivity : AppCompatActivity() {
         imageMemoViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application))
             .get(ImageMemoViewModel::class.java)
 
+        if(checkPermission()){
+            initImageMemoEdit()
+        }else{
+            requestPermission()
+        }
+
+    }
+
+    private fun initImageMemoEdit(){
         initMemoData()
         initCancel()
         initToolbar()
@@ -94,13 +107,15 @@ class ImageMemoEditActivity : AppCompatActivity() {
             imageMemoViewModel.setItemId(itemId)
             setReadMode()
         }else{
-             setEditMode()
+            setEditMode()
         }
         imageMemoViewModel.memo.observe(this){ memo ->
             if(memo !=null){
                 binding.title.editTextTitle.setText(memo.title)
                 binding.content.editTextContent.setText(memo.content)
                 binding.bottomBtnEdit.checkBoxFix.isChecked = memo.isFixed
+                fileUri = memo.uri
+                setImageView()
             }
         }
     }
@@ -222,7 +237,13 @@ class ImageMemoEditActivity : AppCompatActivity() {
 
     private fun setImageView() {//이미지 뷰에 사진을 세팅합니다
         if(imeageSettingMode=="uri"){
-            binding.imageContent.imageView.setImageURI(Uri.parse(fileUri))
+            Log.d("uri","$fileUri")
+            Glide
+                .with(this)
+                .load(fileUri)
+                .fitCenter()
+                .into(binding.imageContent.imageView)
+
         }else{
             binding.imageContent.imageView.setImageBitmap(bitmap)
         }
@@ -292,4 +313,36 @@ class ImageMemoEditActivity : AppCompatActivity() {
         imageMemoViewModel.closeDB()
     }
 
+    private fun checkPermission() : Boolean{
+        val readPermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        return readPermission == PackageManager.PERMISSION_GRANTED
+    }
+    private fun requestPermission(){
+        Log.d("request", "req")
+        ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), READ_EXTERNAL_STORAGE_CODE)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode){
+            READ_EXTERNAL_STORAGE_CODE ->{
+                if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    initImageMemoEdit()
+                }
+                else{
+                    Toast.makeText(this, "권한 승인이 필요합니다.", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            }
+
+        }
+    }
+
+    companion object{
+        val READ_EXTERNAL_STORAGE_CODE=99
+    }
 }
