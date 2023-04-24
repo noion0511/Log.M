@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.likewhile.meme.R
 import com.likewhile.meme.data.model.MemoItem
@@ -15,7 +15,7 @@ import com.likewhile.meme.data.model.SortTypeChangeEvent
 import com.likewhile.meme.databinding.FragmentDetailModeBinding
 import com.likewhile.meme.ui.adapter.MemoAdapter
 import com.likewhile.meme.ui.view.widget.MemoWidgetProvider
-import com.likewhile.meme.ui.viewmodel.DetailModeViewModel
+import com.likewhile.meme.ui.viewmodel.MainViewModel
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -23,7 +23,7 @@ import org.greenrobot.eventbus.ThreadMode
 class DetailModeFragment : Fragment() {
 
     private lateinit var binding: FragmentDetailModeBinding
-    private val viewModel: DetailModeViewModel by viewModels()
+    private val viewModel: MainViewModel by activityViewModels()
 
     private lateinit var memoAdapter: MemoAdapter
     private lateinit var selectedMemoItem: MemoItem
