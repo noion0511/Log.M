@@ -61,7 +61,14 @@ class MemoDBHelper(val context: Context) :
                         date,
                         isFixed
                     )
-                    else -> TextMemoItem(id, title, cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)), date, isFixed)
+                    else -> TextMemoItem(
+                        id,
+                        title,
+                        cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI)),
+                        date,
+                        isFixed
+                    )
                 }
                 memoItems.add(memoItem)
             } while (cursor.moveToNext())
@@ -138,7 +145,14 @@ class MemoDBHelper(val context: Context) :
                     date,
                     isFixed
                 )
-                else -> TextMemoItem(id, title, cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)), date, isFixed)
+                else -> TextMemoItem(
+                    id,
+                    title,
+                    cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI)),
+                    date,
+                    isFixed
+                )
             }
         }
 
@@ -155,6 +169,7 @@ class MemoDBHelper(val context: Context) :
         when (memoItem) {
             is TextMemoItem -> {
                 values.put(COLUMN_MEMO_TYPE, MemoType.TEXT.typeValue)
+                values.put(COLUMN_IMAGE_URI, memoItem.uri)
                 values.put(COLUMN_CONTENT, memoItem.content)
             }
             is ListMemoItem -> {
@@ -182,6 +197,7 @@ class MemoDBHelper(val context: Context) :
         when (memoItem) {
             is TextMemoItem -> {
                 values.put(COLUMN_MEMO_TYPE, MemoType.TEXT.typeValue)
+                values.put(COLUMN_IMAGE_URI, memoItem.uri)
                 values.put(COLUMN_CONTENT, memoItem.content)
             }
             is ListMemoItem -> {
@@ -213,7 +229,7 @@ class MemoDBHelper(val context: Context) :
         }
         MemeApplication.instance.sendBroadcast(intent)
 
-        if(targetMemo is ImageMemoItem){
+        if(targetMemo is TextMemoItem){
             val uri = targetMemo.uri.toUri()
             if(uri.authority=="com.likewhile.meme.fileprovider"){
                 context.contentResolver.delete(uri, null, null)
@@ -244,7 +260,8 @@ class MemoDBHelper(val context: Context) :
         return when (contentType) {
             MemoType.TEXT -> {
                 val content = cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT))
-                TextMemoItem(id, title, content, date, isFixed)
+                val uri = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI))
+                TextMemoItem(id, title, content, uri, date, isFixed)
             }
             MemoType.LIST -> {
                 val listItems = deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT)))
