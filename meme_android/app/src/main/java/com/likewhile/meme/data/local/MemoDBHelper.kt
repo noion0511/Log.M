@@ -189,6 +189,14 @@ class MemoDBHelper(val context: Context) :
     }
 
     fun updateMemo(memoItem: MemoItem) {
+
+        if(memoItem is TextMemoItem){
+            val oldMemo =  selectMemo(memoItem.id) as TextMemoItem
+            val uri = oldMemo.uri.toUri()
+            if(uri.authority=="com.likewhile.meme.fileprovider" && !memoItem.uri.equals(uri)){
+                context.contentResolver.delete(uri, null, null)
+            }
+        }
         val values = ContentValues()
         values.put(COLUMN_TITLE, memoItem.title)
 
