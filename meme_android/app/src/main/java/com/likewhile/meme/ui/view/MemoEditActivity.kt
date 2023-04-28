@@ -14,10 +14,7 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Gravity
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -90,6 +87,7 @@ class MemoEditActivity : AppCompatActivity() {
         binding.bottomBtnEdit.buttonSave.visibility = View.GONE
         binding.bottomBtnEdit.buttonCancel.visibility = View.GONE
         binding.bottomBtnAddImage.visibility=View.GONE
+        unregisterForContextMenu(binding.image.imageView)
         isMenuVisible = true
         invalidateOptionsMenu()
     }
@@ -102,6 +100,7 @@ class MemoEditActivity : AppCompatActivity() {
         binding.bottomBtnEdit.buttonSave.visibility = View.VISIBLE
         binding.bottomBtnEdit.buttonCancel.visibility = View.VISIBLE
         binding.bottomBtnAddImage.visibility=View.VISIBLE
+        registerForContextMenu(binding.image.root)
         isMenuVisible = false
         invalidateOptionsMenu()
     }
@@ -129,7 +128,6 @@ class MemoEditActivity : AppCompatActivity() {
                 requestPermission()
             }
         }
-
     }
 
     private fun initSave() {
@@ -202,6 +200,22 @@ class MemoEditActivity : AppCompatActivity() {
         }
     }
 
+    override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        menuInflater.inflate(R.menu.menu_image_long_click, menu)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+             R.id.button_delete_image->{
+                 binding.image.root.visibility=View.GONE
+                 fileUri=""
+                 imeageSettingMode="uri"
+            }
+        }
+        return super.onContextItemSelected(item)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_toolbar, menu)
