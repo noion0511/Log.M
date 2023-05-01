@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initToolbar() {
-        setSupportActionBar(binding.include.toolbar)
+        setSupportActionBar(binding.include.include)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         binding.include.btnDrawer.setOnClickListener {
