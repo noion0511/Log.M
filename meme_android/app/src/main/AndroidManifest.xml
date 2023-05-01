@@ -17,9 +17,11 @@
         <activity
             android:name=".ui.view.TermsConditionsActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.view.ListMemoEditActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize"/>
 
         <receiver
             android:name=".ui.view.widget.MemoWidgetProvider"
@@ -37,14 +39,17 @@
         <activity
             android:name=".ui.view.PrivacyPolicyActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.view.MemoEditActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize"
+            android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.view.MainActivity" />
         </activity>
+
         <activity
             android:name=".ui.view.MainActivity"
             android:exported="true">

@@ -17,34 +17,41 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import android.widget.Toolbar
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.likewhile.meme.ui.view.widget.MemoWidgetProvider
 import com.likewhile.meme.R
 import com.likewhile.meme.data.model.TextMemoItem
 import com.likewhile.meme.databinding.ActivityMemoEditBinding
+import com.likewhile.meme.ui.viewmodel.MainViewModel
 import com.likewhile.meme.ui.viewmodel.TextMemoViewModel
 import com.likewhile.meme.util.DateFormatUtil
 import java.util.*
 
 class MemoEditActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMemoEditBinding.inflate(layoutInflater) }
-    private lateinit var memoViewModel: TextMemoViewModel
+    private val memoViewModel: TextMemoViewModel by viewModels()
     private val itemId by lazy { intent.getLongExtra(MemoWidgetProvider.EXTRA_MEMO_ID, -1) }
     private var isMenuVisible = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        memoViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
-            TextMemoViewModel::class.java)
+        binding.viewModel = memoViewModel
+        binding.lifecycleOwner = this
 
         initMemoData()
         initSave()
         initCancel()
         initToolbar()
+
+        savedInstanceState?.let {
+            isMenuVisible = it.getBoolean("isMenuVisible")
+            invalidateOptionsMenu()
+        }
     }
 
 
@@ -178,6 +185,17 @@ class MemoEditActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("isMenuVisible", isMenuVisible)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        isMenuVisible = savedInstanceState.getBoolean("isMenuVisible")
+        invalidateOptionsMenu()
+    }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         val menuItem = menu.findItem(R.id.button_edit_mode)
