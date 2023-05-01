@@ -35,10 +35,14 @@ class DetailModeFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         initContextMenu()
         initAdapter()
-
-        return binding.root
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
