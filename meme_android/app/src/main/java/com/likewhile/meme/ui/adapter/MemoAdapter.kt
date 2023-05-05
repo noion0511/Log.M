@@ -65,7 +65,6 @@ class MemoAdapter(private val memoItems: MutableList<MemoItem>, private val onIt
             is ViewHolderDetail -> {
                 holder.binding.memo  = when(memoItem) {
                     is ListMemoItem -> formatMemo(memoItem)
-                    is ImageMemoItem -> TextMemoItem(memoItem.id, memoItem.title, memoItem.content,memoItem.uri, memoItem.date, memoItem.isFixed)
                     else -> memoItem as TextMemoItem
                 }
                 holder.binding.executePendingBindings()

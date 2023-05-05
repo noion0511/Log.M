@@ -48,7 +48,6 @@ class MemoListBottomSheet(private val memoList: List<MemoItem>) : BottomSheetDia
                 override fun onItemClick(memoItem: MemoItem) {
                     val targetActivity = when (memoItem.contentType) {
                         "LIST" -> ListMemoEditActivity::class.java
-                        "IMAGE" -> ImageMemoEditActivity::class.java
                         else -> MemoEditActivity::class.java
                     }
                     val intent = Intent(requireActivity(), targetActivity)

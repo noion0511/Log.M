@@ -53,14 +53,6 @@ class MemoDBHelper(val context: Context) :
 
                 val memoItem = when (memoType) {
                     MemoType.LIST -> ListMemoItem(id, title, deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT))), date, isFixed)
-                    MemoType.IMAGE -> ImageMemoItem(
-                        id,
-                        title,
-                        cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)),
-                        cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI)),
-                        date,
-                        isFixed
-                    )
                     else -> TextMemoItem(
                         id,
                         title,
@@ -137,14 +129,6 @@ class MemoDBHelper(val context: Context) :
 
             memoItem = when (memoType) {
                 MemoType.LIST -> ListMemoItem(id, title, deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT))), date, isFixed)
-                MemoType.IMAGE -> ImageMemoItem(
-                    id,
-                    title,
-                    cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)),
-                    cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI)),
-                    date,
-                    isFixed
-                )
                 else -> TextMemoItem(
                     id,
                     title,
@@ -176,11 +160,6 @@ class MemoDBHelper(val context: Context) :
                 values.put(COLUMN_MEMO_TYPE, MemoType.LIST.typeValue)
                 values.put(COLUMN_LIST_CONTENT, serializeListContent(memoItem.listItems))
             }
-            is ImageMemoItem -> {
-                values.put(COLUMN_MEMO_TYPE, MemoType.IMAGE.typeValue)
-                values.put(COLUMN_CONTENT, memoItem.content)
-                values.put(COLUMN_IMAGE_URI, memoItem.uri)
-            }
         }
 
         val db = writableDatabase
@@ -211,11 +190,6 @@ class MemoDBHelper(val context: Context) :
             is ListMemoItem -> {
                 values.put(COLUMN_MEMO_TYPE, MemoType.LIST.typeValue)
                 values.put(COLUMN_LIST_CONTENT, serializeListContent(memoItem.listItems))
-            }
-            is ImageMemoItem -> {
-                values.put(COLUMN_MEMO_TYPE, MemoType.IMAGE.typeValue)
-                values.put(COLUMN_CONTENT, memoItem.content)
-                values.put(COLUMN_IMAGE_URI, memoItem.uri)
             }
         }
 
@@ -274,11 +248,6 @@ class MemoDBHelper(val context: Context) :
             MemoType.LIST -> {
                 val listItems = deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT)))
                 ListMemoItem(id, title, listItems, date, isFixed)
-            }
-            MemoType.IMAGE -> {
-                val content = cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT))
-                val uri = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI))
-                ImageMemoItem(id, title, content, uri, date, isFixed)
             }
             else -> throw IllegalArgumentException("Invalid memo type")
         }
