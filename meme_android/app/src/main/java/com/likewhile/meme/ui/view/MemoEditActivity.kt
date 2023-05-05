@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -48,6 +49,7 @@ class MemoEditActivity : AppCompatActivity() {
     private var fileUri : String =""
     private var imeageSettingMode : String = "uri"
     private lateinit var bitmap : Bitmap
+    private var isImageChanged = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,8 +90,10 @@ class MemoEditActivity : AppCompatActivity() {
         binding.bottomBtnEdit.buttonSave.visibility = View.GONE
         binding.bottomBtnEdit.buttonCancel.visibility = View.GONE
         binding.bottomBtnAddImage.visibility=View.GONE
-        unregisterForContextMenu(binding.image.imageView)
+        unregisterForContextMenu(binding.image.root)
         isMenuVisible = true
+        imeageSettingMode = "uri"
+        isImageChanged = false
         invalidateOptionsMenu()
     }
 
@@ -136,8 +140,8 @@ class MemoEditActivity : AppCompatActivity() {
             val title = binding.title.editTextTitle.text.toString()
             val content = binding.content.editTextContent.text.toString()
             val isFixed = binding.bottomBtnEdit.checkBoxFix.isChecked
-
-            if(imeageSettingMode=="bitmap"){
+            Log.d("setting mode","$imeageSettingMode")
+            if(imeageSettingMode=="bitmap" && isImageChanged == true){
                 if(saveImageInLocalStorage()==false){
                     Toast.makeText(this, "이미지 저장에 실패했습니다", Toast.LENGTH_SHORT).show()
                     binding.image.root.visibility=View.GONE
@@ -213,6 +217,7 @@ class MemoEditActivity : AppCompatActivity() {
                  binding.image.root.visibility=View.GONE
                  fileUri=""
                  imeageSettingMode="uri"
+                 isImageChanged = true
             }
         }
         return super.onContextItemSelected(item)
@@ -284,6 +289,7 @@ class MemoEditActivity : AppCompatActivity() {
     }
 
     private fun saveImageInLocalStorage() : Boolean{//촬영한 이미지를 external storage에 저장합니다
+        Log.d("save image","save")
         var filePath : String =""
         val uuid = UUID.randomUUID()
         val externalFileDir : String? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.absolutePath
@@ -319,7 +325,6 @@ class MemoEditActivity : AppCompatActivity() {
         return readPermission == PackageManager.PERMISSION_GRANTED
     }
     private fun requestPermission(){
-        Log.d("request", "req")
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
             READ_EXTERNAL_STORAGE_CODE
         )
@@ -349,6 +354,7 @@ class MemoEditActivity : AppCompatActivity() {
         if (it.resultCode== RESULT_OK) {
             bitmap= it.data?.extras?.get("data") as Bitmap
             imeageSettingMode="bitmap"
+            isImageChanged = true
             setImageView()
         }
     }
@@ -359,6 +365,7 @@ class MemoEditActivity : AppCompatActivity() {
         if(it!=null){
             fileUri=it.toString()
             imeageSettingMode="uri"
+            isImageChanged = true
             setImageView()
         }
     }

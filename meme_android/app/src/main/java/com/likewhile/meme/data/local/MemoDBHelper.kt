@@ -7,6 +7,7 @@ import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import androidx.core.net.toUri
 import com.likewhile.meme.MemeApplication
 import com.likewhile.meme.data.model.*
@@ -146,6 +147,7 @@ class MemoDBHelper(val context: Context) :
     }
 
     fun insertMemo(memoItem: MemoItem) {
+        Log.d("inserted","inserted")
         val values = ContentValues()
         values.put(COLUMN_TITLE, memoItem.title)
         values.put(COLUMN_DATE, DateFormatUtil.dateToString(memoItem.date))
@@ -172,7 +174,7 @@ class MemoDBHelper(val context: Context) :
         if(memoItem is TextMemoItem){
             val oldMemo =  selectMemo(memoItem.id) as TextMemoItem
             val uri = oldMemo.uri.toUri()
-            if(uri.authority=="com.likewhile.meme.fileprovider" && !memoItem.uri.equals(uri)){
+            if(uri.authority=="com.likewhile.meme.fileprovider" && !memoItem.uri.equals(oldMemo.uri)){
                 context.contentResolver.delete(uri, null, null)
             }
         }
