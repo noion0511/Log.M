@@ -24,6 +24,13 @@
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>
 
+    <string name="image_save_failed">Failed to save image</string>
+    <string name="incomplete_input_message">Please enter the title and details</string>
+    <string name="taking_pictures">Take pictures</string>
+    <string name="select_a_picture_from_gallery">Select a picture from gallery</string>
+    <string name="authorization_is_required">Authorization is required</string>
+    <string name="remove_image">Remove</string>
+
     <string name="sunday">S</string>
     <string name="monday">M</string>
     <string name="tuesday">T</string>

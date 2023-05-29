@@ -143,7 +143,7 @@ class MemoEditActivity : AppCompatActivity() {
             Log.d("setting mode","$imeageSettingMode")
             if(imeageSettingMode=="bitmap" && isImageChanged == true){
                 if(saveImageInLocalStorage()==false){
-                    Toast.makeText(this, "이미지 저장에 실패했습니다", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.image_save_failed), Toast.LENGTH_SHORT).show()
                     binding.image.root.visibility=View.GONE
                     fileUri=""
                 }
@@ -159,7 +159,7 @@ class MemoEditActivity : AppCompatActivity() {
             )
 
             if (title.isBlank() || content.isBlank())
-                Toast.makeText(this, "제목과 상세내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.incomplete_input_message), Toast.LENGTH_SHORT).show()
             else {
                 if (itemId != -1L) {
                     memoViewModel.updateMemo(memoItem)
@@ -267,19 +267,19 @@ class MemoEditActivity : AppCompatActivity() {
 
     private fun showDialog(){
         val navigationOptions = arrayOf(
-            "사진 촬영",
-            "갤러리에서 사진 선택"
+            getString(R.string.taking_pictures),
+            getString(R.string.select_a_picture_from_gallery)
         )
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.choose_a_screen))
             .setItems(navigationOptions) { _, which ->
                 val intent = when (navigationOptions[which]) {
-                    "사진 촬영" -> {
+                    getString(R.string.taking_pictures) -> {
                         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                         requestCameraImageLauncher.launch(intent)
                     }
-                    "갤러리에서 사진 선택" ->{
+                    getString(R.string.select_a_picture_from_gallery) ->{
                         requestGalleryImageLauncher.launch("image/*")
                     }
                     else -> null
@@ -313,7 +313,7 @@ class MemoEditActivity : AppCompatActivity() {
                 return true
             } catch (e:java.lang.Exception) {
                 e.printStackTrace()
-                Toast.makeText(getApplicationContext(), "이미지 저장 실패", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.image_save_failed), Toast.LENGTH_SHORT).show();
                 return false
             }
         }
@@ -342,7 +342,7 @@ class MemoEditActivity : AppCompatActivity() {
                     showDialog()
                 }
                 else{
-                    Toast.makeText(this, "권한 승인이 필요합니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.authorization_is_required), Toast.LENGTH_SHORT).show()
                 }
             }
 
