@@ -19,7 +19,7 @@ class CalendarModeViewModel(application: Application) : AndroidViewModel(applica
     val memosDate: LiveData<List<MemoItem>> get() = _memosDate
 
     private var sortType = 1
-    private lateinit var calendarData : Calendar
+    private lateinit var calendarData: Calendar
 
     init {
         memoDBHelper = MemoDBHelper(application)
@@ -29,28 +29,22 @@ class CalendarModeViewModel(application: Application) : AndroidViewModel(applica
         sortType = newSortType
     }
 
-    fun setCalendarMonthData(calendar: Calendar) {
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH) + 1
-
-        calendarData = calendar
-        _memos.value = memoDBHelper.getMemosByMonth(year, month)
+    fun setCalendarMonthData(calendar: Calendar? = null) {
+        if (calendar != null) {
+            calendarData = calendar
+        }
+        if (::calendarData.isInitialized) {
+            val year = calendarData.get(Calendar.YEAR)
+            val month = calendarData.get(Calendar.MONTH) + 1
+            _memos.value = memoDBHelper.getMemosByMonth(year, month)
+        }
     }
-
 
     fun setCalendarDateData(date: Int) {
         val year = calendarData.get(Calendar.YEAR)
         val month = calendarData.get(Calendar.MONTH) + 1
 
         _memosDate.value = memoDBHelper.getMemosByDate(year, month, date, sortType)
-    }
-
-    fun updateMemo(memoItem: MemoItem) {
-        memoDBHelper.updateMemo(memoItem)
-    }
-
-    fun deleteMemo(id: Long) {
-        memoDBHelper.deleteMemo(id)
     }
 
     fun closeDB() {

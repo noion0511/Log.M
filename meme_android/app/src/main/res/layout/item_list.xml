@@ -12,7 +12,8 @@
         android:id="@+id/list_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/priorityTextView"
@@ -35,6 +36,7 @@
             android:layout_height="50dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
+            android:inputType="text"
             android:maxLength="25"
             android:maxLines="1"
             android:maxWidth="400dp"

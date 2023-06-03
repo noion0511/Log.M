@@ -24,6 +24,23 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         _memos.value = memoDBHelper.selectAllMemos(sortType)
     }
 
+
+    fun setSortType(newSortType: Int) {
+        sortType = newSortType
+        refreshMemos()
+    }
+
+
+    fun updateMemo(memoItem: MemoItem) {
+        memoDBHelper.updateMemo(memoItem)
+    }
+
+
+    fun deleteMemo(id: Long) {
+        memoDBHelper.deleteMemo(id)
+        refreshMemos()
+    }
+
     fun deleteAllMemos() {
         memoDBHelper.deleteAllMemos()
         refreshMemos()
