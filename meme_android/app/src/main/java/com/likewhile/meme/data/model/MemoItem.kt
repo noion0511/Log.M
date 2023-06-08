@@ -17,6 +17,7 @@ data class TextMemoItem(
     override var id: Long = -1L,
     override var title: String = "",
     var content: String = "",
+    var uri : String = "",
     override var date: Date = Date(),
     override var isFixed: Boolean = false
 ) : MemoItem() {
@@ -32,6 +33,7 @@ data class ListMemoItem(
 ) : MemoItem() {
     override val contentType: String = "LIST"
 }
+
 
 fun serializeListContent(listItems: List<ListItem>): ByteArray {
     val jsonString = Gson().toJson(listItems)

@@ -7,12 +7,15 @@ import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
+import androidx.core.net.toUri
 import com.likewhile.meme.MemeApplication
 import com.likewhile.meme.data.model.*
 import com.likewhile.meme.ui.view.widget.MemoWidgetProvider
 import com.likewhile.meme.util.DateFormatUtil
+import java.io.File
 
-class MemoDBHelper(context: Context) :
+class MemoDBHelper(val context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(CREATE_TABLE_SQL)
@@ -22,8 +25,15 @@ class MemoDBHelper(context: Context) :
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL(DELETE_TABLE_SQL)
-        onCreate(db)
+        try{
+            if(oldVersion<2){
+                db.execSQL(ALTER_TABLE_SQL)
+            }
+        }catch (e : java.lang.Exception){
+            db.execSQL(DELETE_TABLE_SQL)
+            onCreate(db)
+        }
+
     }
 
     @SuppressLint("Range")
@@ -47,7 +57,14 @@ class MemoDBHelper(context: Context) :
 
                 val memoItem = when (memoType) {
                     MemoType.LIST -> ListMemoItem(id, title, deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT))), date, isFixed)
-                    else -> TextMemoItem(id, title, cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)), date, isFixed)
+                    else -> TextMemoItem(
+                        id,
+                        title,
+                        cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI)),
+                        date,
+                        isFixed
+                    )
                 }
                 memoItems.add(memoItem)
             } while (cursor.moveToNext())
@@ -116,7 +133,14 @@ class MemoDBHelper(context: Context) :
 
             memoItem = when (memoType) {
                 MemoType.LIST -> ListMemoItem(id, title, deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT))), date, isFixed)
-                else -> TextMemoItem(id, title, cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)), date, isFixed)
+                else -> TextMemoItem(
+                    id,
+                    title,
+                    cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI)),
+                    date,
+                    isFixed
+                )
             }
         }
 
@@ -124,6 +148,7 @@ class MemoDBHelper(context: Context) :
         db.close()
         return memoItem
     }
+
 
     fun insertMemo(memoItem: MemoItem, db: SQLiteDatabase? = null) {
         val values = ContentValues()
@@ -133,6 +158,7 @@ class MemoDBHelper(context: Context) :
         when (memoItem) {
             is TextMemoItem -> {
                 values.put(COLUMN_MEMO_TYPE, MemoType.TEXT.typeValue)
+                values.put(COLUMN_IMAGE_URI, memoItem.uri)
                 values.put(COLUMN_CONTENT, memoItem.content)
             }
             is ListMemoItem -> {
@@ -149,6 +175,14 @@ class MemoDBHelper(context: Context) :
     }
 
     fun updateMemo(memoItem: MemoItem) {
+
+        if(memoItem is TextMemoItem){
+            val oldMemo =  selectMemo(memoItem.id) as TextMemoItem
+            val uri = oldMemo.uri.toUri()
+            if(uri.authority=="com.likewhile.meme.fileprovider" && !memoItem.uri.equals(oldMemo.uri)){
+                context.contentResolver.delete(uri, null, null)
+            }
+        }
         val values = ContentValues()
         values.put(COLUMN_TITLE, memoItem.title)
 
@@ -157,6 +191,7 @@ class MemoDBHelper(context: Context) :
         when (memoItem) {
             is TextMemoItem -> {
                 values.put(COLUMN_MEMO_TYPE, MemoType.TEXT.typeValue)
+                values.put(COLUMN_IMAGE_URI, memoItem.uri)
                 values.put(COLUMN_CONTENT, memoItem.content)
             }
             is ListMemoItem -> {
@@ -171,6 +206,8 @@ class MemoDBHelper(context: Context) :
     }
 
     fun deleteMemo(memoItemId: Long) {
+       val targetMemo = selectMemo(memoItemId)
+
         val db = writableDatabase
         db.delete(TABLE_NAME, "$COLUMN_ID = ?", arrayOf(memoItemId.toString()))
         db.close()
@@ -180,6 +217,13 @@ class MemoDBHelper(context: Context) :
             putExtra(MemoWidgetProvider.EXTRA_MEMO_ID, memoItemId)
         }
         MemeApplication.instance.sendBroadcast(intent)
+
+        if(targetMemo is TextMemoItem){
+            val uri = targetMemo.uri.toUri()
+            if(uri.authority=="com.likewhile.meme.fileprovider"){
+                context.contentResolver.delete(uri, null, null)
+            }
+        }
     }
 
     fun deleteAllMemos() {
@@ -205,7 +249,8 @@ class MemoDBHelper(context: Context) :
         return when (contentType) {
             MemoType.TEXT -> {
                 val content = cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT))
-                TextMemoItem(id, title, content, date, isFixed)
+                val uri = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI))
+                TextMemoItem(id, title, content, uri, date, isFixed)
             }
             MemoType.LIST -> {
                 val listItems = deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT)))
@@ -217,7 +262,7 @@ class MemoDBHelper(context: Context) :
 
     companion object {
         const val DATABASE_NAME = "logm.db"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 2
 
         const val TABLE_NAME = "logm"
         const val COLUMN_ID = "_id"
@@ -225,11 +270,13 @@ class MemoDBHelper(context: Context) :
         const val COLUMN_CONTENT = "content"
         const val COLUMN_LIST_CONTENT = "list"
         const val COLUMN_HANDWRITTEN_DATA = "drawing"
+        const val COLUMN_IMAGE_URI = "uri"
         const val COLUMN_MEMO_TYPE = "type"
         const val COLUMN_DATE = "date"
         const val COLUMN_IS_FIXED = "fixed"
 
         const val DELETE_TABLE_SQL = "DROP TABLE if exists $TABLE_NAME"
+        const val ALTER_TABLE_SQL = "ALTER TABLE $TABLE_NAME ADD COLUMN $COLUMN_IMAGE_URI TEXT"
         const val CREATE_TABLE_SQL = """
             CREATE TABLE $TABLE_NAME (
         $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -239,7 +286,8 @@ class MemoDBHelper(context: Context) :
         $COLUMN_IS_FIXED INTEGER,
         $COLUMN_MEMO_TYPE INTEGER,
         $COLUMN_LIST_CONTENT TEXT,
-        $COLUMN_HANDWRITTEN_DATA BLOB
+        $COLUMN_HANDWRITTEN_DATA BLOB,
+        $COLUMN_IMAGE_URI TEXT
             );
         """
     }
