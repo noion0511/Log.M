@@ -35,6 +35,7 @@ import java.util.*
 class ListMemoEditActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMemoListEditBinding.inflate(layoutInflater) }
     private val itemId by lazy { intent.getLongExtra(MemoWidgetProvider.EXTRA_MEMO_ID, -1) }
+    private var insertedId : Long = 0L
 
     private lateinit var memoViewModel: ListMemoViewModel
     private lateinit var listAdapter: ListAdapter
@@ -137,8 +138,13 @@ class ListMemoEditActivity : AppCompatActivity() {
             if (itemId != -1L) {
                 memoViewModel.updateMemo(memoItem)
                 updateWidget()
+            } else if (insertedId != 0L) {
+                memoViewModel.setItemId(insertedId)
+                memoItem.id = insertedId
+                memoViewModel.updateMemo(memoItem)
+                updateWidget()
             } else {
-                memoViewModel.insertMemo(memoItem)
+                insertedId = memoViewModel.insertMemo(memoItem)
             }
             setReadMode()
             val focusedView = currentFocus

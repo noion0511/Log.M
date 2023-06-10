@@ -45,6 +45,7 @@ class MemoEditActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMemoEditBinding.inflate(layoutInflater) }
     private lateinit var memoViewModel: TextMemoViewModel
     private val itemId by lazy { intent.getLongExtra(MemoWidgetProvider.EXTRA_MEMO_ID, -1) }
+    private var insertedId : Long = 0L
     private var isMenuVisible = true
     private var fileUri : String =""
     private var imeageSettingMode : String = "uri"
@@ -165,8 +166,14 @@ class MemoEditActivity : AppCompatActivity() {
                     memoViewModel.updateMemo(memoItem)
                     setReadMode()
                     updateWidget()
+                } else if (insertedId != 0L) {
+                    memoViewModel.setItemId(insertedId)
+                    memoItem.id = insertedId
+                    memoViewModel.updateMemo(memoItem)
+                    setReadMode()
+                    updateWidget()
                 } else {
-                    memoViewModel.insertMemo(memoItem)
+                    insertedId = memoViewModel.insertMemo(memoItem)
                     setReadMode()
                     val focusedView = currentFocus
                     focusedView?.clearFocus()

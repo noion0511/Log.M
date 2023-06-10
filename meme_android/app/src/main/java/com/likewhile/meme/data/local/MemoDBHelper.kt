@@ -150,7 +150,7 @@ class MemoDBHelper(val context: Context) :
     }
 
 
-    fun insertMemo(memoItem: MemoItem, db: SQLiteDatabase? = null) {
+    fun insertMemo(memoItem: MemoItem, db: SQLiteDatabase? = null): Long {
         val values = ContentValues()
         values.put(COLUMN_TITLE, memoItem.title)
         values.put(COLUMN_DATE, DateFormatUtil.dateToString(memoItem.date))
@@ -168,10 +168,12 @@ class MemoDBHelper(val context: Context) :
         }
 
         val database = db ?: writableDatabase
-        database.insert(TABLE_NAME, null, values)
+        val id = database.insert(TABLE_NAME, null, values)
         if (db == null) {
             database.close()
         }
+
+        return id
     }
 
     fun updateMemo(memoItem: MemoItem) {
