@@ -201,7 +201,6 @@ class MemoEditActivity : AppCompatActivity() {
                     setImageView()
                 }
             }
-
         }
     }
 
@@ -236,6 +235,15 @@ class MemoEditActivity : AppCompatActivity() {
             }
             R.id.button_edit_mode -> {
                 setEditMode()
+                return true
+            }
+            R.id.button_memo_delete -> {
+                val deleteResult = memoViewModel.deleteMemo(itemId)
+                if (deleteResult) {
+                    finish()
+                } else {
+                    Toast.makeText(this, "메모 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                }
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

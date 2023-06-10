@@ -205,11 +205,11 @@ class MemoDBHelper(val context: Context) :
         db.close()
     }
 
-    fun deleteMemo(memoItemId: Long) {
-       val targetMemo = selectMemo(memoItemId)
+    fun deleteMemo(memoItemId: Long): Boolean {
+        val targetMemo = selectMemo(memoItemId)
 
         val db = writableDatabase
-        db.delete(TABLE_NAME, "$COLUMN_ID = ?", arrayOf(memoItemId.toString()))
+        val deleteCount = db.delete(TABLE_NAME, "$COLUMN_ID = ?", arrayOf(memoItemId.toString()))
         db.close()
 
         val intent = Intent(MemeApplication.instance, MemoWidgetProvider::class.java).apply {
@@ -218,12 +218,17 @@ class MemoDBHelper(val context: Context) :
         }
         MemeApplication.instance.sendBroadcast(intent)
 
-        if(targetMemo is TextMemoItem){
-            val uri = targetMemo.uri.toUri()
-            if(uri.authority=="com.likewhile.meme.fileprovider"){
-                context.contentResolver.delete(uri, null, null)
+        if (deleteCount > 0) {
+            if (targetMemo is TextMemoItem) {
+                val uri = targetMemo.uri.toUri()
+                if (uri.authority == "com.likewhile.meme.fileprovider") {
+                    val deleteFileCount = context.contentResolver.delete(uri, null, null)
+                    return deleteFileCount > 0
+                }
             }
+            return true
         }
+        return false
     }
 
     fun deleteAllMemos() {

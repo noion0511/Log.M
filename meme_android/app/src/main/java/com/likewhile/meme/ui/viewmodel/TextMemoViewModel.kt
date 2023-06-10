@@ -38,6 +38,11 @@ class TextMemoViewModel(application: Application) : AndroidViewModel(application
         refreshMemo()
     }
 
+
+    fun deleteMemo(memoItemId: Long) : Boolean {
+        return memoDBHelper.deleteMemo(memoItemId)
+    }
+
     fun closeDB() {
         memoDBHelper.close()
     }
