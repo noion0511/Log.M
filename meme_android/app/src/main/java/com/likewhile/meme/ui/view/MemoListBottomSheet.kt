@@ -19,10 +19,8 @@ import com.likewhile.meme.util.DateFormatUtil
 class MemoListBottomSheet(private val memoList: List<MemoItem>) : BottomSheetDialogFragment() {
 
     private lateinit var binding: BottomSheetMemoBinding
-    private val viewModel: MainViewModel by viewModels()
 
     private lateinit var memoAdapter: MemoAdapter
-    private lateinit var selectedMemoItem: MemoItem
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = BottomSheetMemoBinding.inflate(inflater, container, false)
@@ -53,43 +51,15 @@ class MemoListBottomSheet(private val memoList: List<MemoItem>) : BottomSheetDia
                     val intent = Intent(requireActivity(), targetActivity)
                     intent.putExtra(MemoWidgetProvider.EXTRA_MEMO_ID, memoItem.id)
                     startActivity(intent)
+                    dismiss()
                 }
             },
             object : MemoAdapter.OnItemLongClickListener {
                 override fun onItemLongClick(memoItem: MemoItem): Boolean {
-                    selectedMemoItem = memoItem
-
-                    binding.recyclerViewMemos.setOnCreateContextMenuListener { menu, v, menuInfo ->
-                        requireActivity().menuInflater.inflate(R.menu.menu_long_click, menu)
-                        menu.getItem(1).title = if (selectedMemoItem.isFixed) getString(R.string.unfixed) else getString(
-                            R.string.fixed)
-                    }
-
-                    requireActivity().openContextMenu(binding.recyclerViewMemos)
                     return true
                 }
             })
         binding.recyclerViewMemos.adapter = memoAdapter
         memoAdapter.setViewType(MemoAdapter.TYPE_ITEM_DETAIL)
-    }
-
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.button_delete -> {
-                viewModel.deleteMemo(selectedMemoItem.id)
-                val intent = Intent(MemoWidgetProvider.ACTION_MEMO_DELETED)
-                requireActivity().sendBroadcast(intent)
-                true
-            }
-            R.id.button_fix -> {
-                selectedMemoItem.isFixed = !selectedMemoItem.isFixed
-                viewModel.updateMemo(selectedMemoItem)
-                memoAdapter.notifyDataSetChanged()
-                true
-            }
-            else -> {
-                super.onContextItemSelected(item)
-            }
-        }
     }
 }
