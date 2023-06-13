@@ -81,8 +81,8 @@ class ListMemoEditActivity : AppCompatActivity() {
 
         listAdapter = ListAdapter(initialList) {
             val newItem = ListItem(priority = listAdapter.itemCount, title = "")
-            initialList.add(initialList.lastIndex, newItem)
-            listAdapter.notifyItemInserted(initialList.lastIndex)
+            initialList.add(initialList.lastIndex + 1, newItem)
+            listAdapter.notifyItemInserted(initialList.lastIndex + 1)
             binding.contentRecyclerview.scrollToPosition(initialList.lastIndex)
         }
         binding.contentRecyclerview.adapter = listAdapter
