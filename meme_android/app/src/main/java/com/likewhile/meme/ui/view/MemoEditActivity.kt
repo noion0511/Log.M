@@ -8,16 +8,11 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.media.MediaScannerConnection
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.*
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import android.widget.Toolbar
@@ -35,7 +30,6 @@ import com.likewhile.meme.R
 import com.likewhile.meme.data.model.TextMemoItem
 import com.likewhile.meme.databinding.ActivityMemoEditBinding
 import com.likewhile.meme.ui.viewmodel.TextMemoViewModel
-import com.likewhile.meme.util.DateFormatUtil
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
@@ -259,8 +253,10 @@ class MemoEditActivity : AppCompatActivity() {
 
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        val menuItem = menu.findItem(R.id.button_edit_mode)
-        menuItem.isVisible = isMenuVisible
+        val editMenu = menu.findItem(R.id.button_edit_mode)
+        val deleteMenu = menu.findItem(R.id.button_memo_delete)
+        editMenu.isVisible = isMenuVisible
+        deleteMenu.isVisible = isMenuVisible
         return super.onPrepareOptionsMenu(menu)
     }
 

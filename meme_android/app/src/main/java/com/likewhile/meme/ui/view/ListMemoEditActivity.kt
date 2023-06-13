@@ -8,8 +8,6 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -28,7 +26,6 @@ import com.likewhile.meme.databinding.ActivityMemoListEditBinding
 import com.likewhile.meme.ui.adapter.ListAdapter
 import com.likewhile.meme.ui.view.widget.MemoWidgetProvider
 import com.likewhile.meme.ui.viewmodel.ListMemoViewModel
-import com.likewhile.meme.util.DateFormatUtil
 import com.likewhile.meme.util.ListItemTouchHelperCallback
 import java.util.*
 
@@ -215,8 +212,10 @@ override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
 
 override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-    val menuItem = menu.findItem(R.id.button_edit_mode)
-    menuItem.isVisible = isMenuVisible
+    val editMenu = menu.findItem(R.id.button_edit_mode)
+    val deleteMenu = menu.findItem(R.id.button_memo_delete)
+    editMenu.isVisible = isMenuVisible
+    deleteMenu.isVisible = isMenuVisible
     return super.onPrepareOptionsMenu(menu)
 }
 
