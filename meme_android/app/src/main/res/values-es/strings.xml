@@ -54,4 +54,8 @@
     <string name="navigation_option_list_memo_edit">Escribir memo de lista</string>
     <string name="fixed">Fijado</string>
     <string name="unfixed">Desanclado</string>
+
+    <string name="toast_empty_fields">Por favor, ingrese el título y el contenido.</string>
+    <string name="toast_saved">Guardado</string>
+    <string name="toast_delete_failed">No se pudo eliminar la nota.</string>
 </resources>

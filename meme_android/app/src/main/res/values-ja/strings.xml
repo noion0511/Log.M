@@ -54,4 +54,8 @@
     <string name="navigation_option_list_memo_edit">リストメモ作成</string>
     <string name="fixed">固定済み</string>
     <string name="unfixed">固定解除済み</string>
+
+    <string name="toast_empty_fields">タイトルと内容を入力してください。</string>
+    <string name="toast_saved">保存しました。</string>
+    <string name="toast_delete_failed">メモの削除に失敗しました。</string>
 </resources>
