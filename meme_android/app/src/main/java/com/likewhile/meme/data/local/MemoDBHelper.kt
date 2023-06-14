@@ -152,11 +152,51 @@ class MemoDBHelper(val context: Context) :
     }
 
 
+    @SuppressLint("Range")
+    fun selectStarredMemo(): List<MemoItem> {
+        val memoList = mutableListOf<MemoItem>()
+        val db = readableDatabase
+
+        val selectQuery = "SELECT * FROM $TABLE_NAME WHERE $COLUMN_IS_STARRED = 1"
+        val cursor = db.rawQuery(selectQuery, null)
+
+        if (cursor.moveToFirst()) {
+            val id = cursor.getLong(cursor.getColumnIndex(COLUMN_ID))
+            val title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE))
+            val date = DateFormatUtil.stringToDate(cursor.getString(cursor.getColumnIndex(COLUMN_DATE)))
+            val isPinned = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_PINNED)) == 1
+            val isStarred = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_STARRED)) == 1
+            val memoType = MemoType.fromInt(cursor.getInt(cursor.getColumnIndex(COLUMN_MEMO_TYPE)))
+
+            val memoItem = when (memoType) {
+                MemoType.LIST -> ListMemoItem(id, title,  date, isPinned, isStarred, deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT))))
+                else -> TextMemoItem(
+                    id,
+                    title,
+                    date,
+                    isPinned,
+                    isStarred,
+                    cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)),
+                    cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI)),
+                )
+            }
+
+            memoList.add(memoItem)
+        }
+
+        cursor.close()
+        db.close()
+
+        return memoList
+    }
+
+
     fun insertMemo(memoItem: MemoItem, db: SQLiteDatabase? = null): Long {
         val values = ContentValues()
         values.put(COLUMN_TITLE, memoItem.title)
         values.put(COLUMN_DATE, DateFormatUtil.dateToString(memoItem.date))
         values.put(COLUMN_IS_PINNED, memoItem.isPinned)
+        values.put(COLUMN_IS_STARRED, memoItem.isStarred)
         when (memoItem) {
             is TextMemoItem -> {
                 values.put(COLUMN_MEMO_TYPE, MemoType.TEXT.typeValue)
@@ -179,7 +219,6 @@ class MemoDBHelper(val context: Context) :
     }
 
     fun updateMemo(memoItem: MemoItem) {
-
         if(memoItem is TextMemoItem){
             val oldMemo =  selectMemo(memoItem.id) as TextMemoItem
             val uri = oldMemo.uri.toUri()
@@ -192,6 +231,8 @@ class MemoDBHelper(val context: Context) :
 
         values.put(COLUMN_DATE, DateFormatUtil.dateToString(memoItem.date))
         values.put(COLUMN_IS_PINNED, memoItem.isPinned)
+        values.put(COLUMN_IS_STARRED, memoItem.isStarred)
+
         when (memoItem) {
             is TextMemoItem -> {
                 values.put(COLUMN_MEMO_TYPE, MemoType.TEXT.typeValue)
@@ -272,7 +313,7 @@ class MemoDBHelper(val context: Context) :
             }
             MemoType.LIST -> {
                 val listItems = deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT)))
-                ListMemoItem(id, title,  date, isPinned, isStarred, listItems)
+                ListMemoItem(id, title, date, isPinned, isStarred, listItems)
             }
             else -> throw IllegalArgumentException("Invalid memo type")
         }
