@@ -1,9 +1,14 @@
 package com.likewhile.meme.ui.view
 
 
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
@@ -15,6 +20,7 @@ import com.likewhile.meme.*
 import com.likewhile.meme.data.model.SortTypeChangeEvent
 import com.likewhile.meme.databinding.ActivityMainBinding
 import com.likewhile.meme.ui.viewmodel.MainViewModel
+import com.likewhile.meme.util.MemoNotificationService
 import org.greenrobot.eventbus.EventBus
 
 class MainActivity : AppCompatActivity() {
@@ -33,11 +39,22 @@ class MainActivity : AppCompatActivity() {
             replaceFragment("calendar_mode_fragment", CalendarModeFragment::newInstance)
         }
 
+        initNotificationService()
         initButtonSetViewType()
         initCreateBtn()
         initSortMemu()
         initToolbar()
         initDrawer()
+        checkNotificationEnable()
+    }
+
+    private fun initNotificationService() {
+        val intent = Intent(this, MemoNotificationService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent)
+        } else {
+            startService(intent)
+        }
     }
 
     private fun initToolbar() {
@@ -154,6 +171,27 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+
+    private fun checkNotificationEnable() {
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
+
+        if (!areNotificationsEnabled) {
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.fromParts("package", packageName, null)
+            }
+
+            AlertDialog.Builder(this).apply {
+                setMessage("메모를 상단바에 띄우기 위한 알림 권한이 필요합니다.")
+                setPositiveButton("설정") { _, _ ->
+                    startActivity(intent)
+                }
+                setNegativeButton("취소", null)
+            }.show()
+        }
+
     }
 
     override fun onResume() {
