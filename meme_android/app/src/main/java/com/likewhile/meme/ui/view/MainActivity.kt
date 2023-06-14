@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import com.likewhile.meme.*
+import com.likewhile.meme.data.local.MemoDBHelper
 import com.likewhile.meme.data.model.SortTypeChangeEvent
 import com.likewhile.meme.databinding.ActivityMainBinding
 import com.likewhile.meme.ui.viewmodel.MainViewModel
@@ -49,11 +50,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initNotificationService() {
-        val intent = Intent(this, MemoNotificationService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent)
-        } else {
-            startService(intent)
+        val dbHelper = MemoDBHelper(this)
+        if(dbHelper.selectStarredMemo().isNotEmpty()) {
+            val intent = Intent(this, MemoNotificationService::class.java)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent)
+            } else {
+                startService(intent)
+            }
         }
     }
 
