@@ -54,4 +54,8 @@
     <string name="navigation_option_list_memo_edit">编写列表备忘录</string>
     <string name="fixed">已固定</string>
     <string name="unfixed">已取消固定</string>
+
+    <string name="toast_empty_fields">请输入标题和内容。</string>
+    <string name="toast_saved">已保存</string>
+    <string name="toast_delete_failed">删除备忘录失败。</string>
 </resources>

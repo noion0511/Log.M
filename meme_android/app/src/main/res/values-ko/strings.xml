@@ -54,4 +54,8 @@
     <string name="navigation_option_list_memo_edit">리스트 메모 작성</string>
     <string name="fixed">고정</string>
     <string name="unfixed">고정 해제</string>
+
+    <string name="toast_empty_fields">제목과 내용을 입력해주세요.</string>
+    <string name="toast_saved">저장되었습니다.</string>
+    <string name="toast_delete_failed">메모 삭제에 실패했습니다.</string>
 </resources>
