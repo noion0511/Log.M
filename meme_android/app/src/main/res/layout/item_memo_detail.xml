@@ -42,13 +42,22 @@
                     android:singleLine="true"/>
 
                 <ImageView
-                    android:id="@+id/fixedIconImageView"
+                    android:id="@+id/pinnedIconImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/fixed_icon_description"
                     app:srcCompat="@drawable/baseline_push_pin_24"
-                    app:visibility="@{memo.isFixed ? View.VISIBLE : View.GONE}" />
+                    app:visibility="@{memo.pinned ? View.VISIBLE : View.GONE}" />
+
+                <ImageView
+                    android:id="@+id/starredIconImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    app:srcCompat="@drawable/baseline_star_24"
+                    android:contentDescription="@string/fixed_icon_description"
+                    app:visibility="@{memo.starred ? View.VISIBLE : View.GONE}"/>
             </LinearLayout>
 
             <TextView

@@ -22,10 +22,16 @@
             android:orientation="vertical">
 
             <CheckBox
-                android:id="@+id/checkBox_fix"
+                android:id="@+id/checkBox_pinned"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/check_fix" />
+
+            <CheckBox
+                android:id="@+id/checkBox_starred"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="starred" />
 
             <LinearLayout
                 android:layout_width="match_parent"
