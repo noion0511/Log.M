@@ -29,8 +29,8 @@ class TextMemoViewModel(application: Application) : AndroidViewModel(application
         _memo.value = memoDBHelper.selectMemo(itemId) as TextMemoItem
     }
 
-    fun insertMemo(memoItem: MemoItem) {
-        memoDBHelper.insertMemo(memoItem)
+    fun insertMemo(memoItem: MemoItem) : Long{
+        return memoDBHelper.insertMemo(memoItem)
     }
 
     fun updateMemo(memoItem: MemoItem) {
