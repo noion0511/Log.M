@@ -82,8 +82,10 @@ class MemoEditActivity : AppCompatActivity() {
         binding.content.editTextContent.isEnabled = false
         binding.content.editTextContent.alpha = 1f
         binding.content.editTextContent.setTextColor(Color.BLACK)
-        binding.bottomBtnEdit.checkBoxFix.isEnabled = false
-        binding.bottomBtnEdit.checkBoxFix.setTextColor(Color.BLACK)
+        binding.bottomBtnEdit.checkBoxPinned.isEnabled = false
+        binding.bottomBtnEdit.checkBoxPinned.setTextColor(Color.BLACK)
+        binding.bottomBtnEdit.checkBoxStarred.isEnabled = false
+        binding.bottomBtnEdit.checkBoxStarred.setTextColor(Color.BLACK)
         binding.bottomBtnEdit.buttonSave.visibility = View.GONE
         binding.bottomBtnEdit.buttonCancel.visibility = View.GONE
         binding.bottomBtnAddImage.visibility = View.GONE
@@ -98,7 +100,8 @@ class MemoEditActivity : AppCompatActivity() {
     private fun setEditMode() {
         binding.title.editTextTitle.isEnabled = true
         binding.content.editTextContent.isEnabled = true
-        binding.bottomBtnEdit.checkBoxFix.isEnabled = true
+        binding.bottomBtnEdit.checkBoxPinned.isEnabled = true
+        binding.bottomBtnEdit.checkBoxStarred.isEnabled = true
         binding.bottomBtnEdit.buttonSave.visibility = View.VISIBLE
         binding.bottomBtnEdit.buttonCancel.visibility = View.VISIBLE
         binding.bottomBtnAddImage.visibility = View.VISIBLE
@@ -136,7 +139,8 @@ class MemoEditActivity : AppCompatActivity() {
         binding.bottomBtnEdit.buttonSave.setOnClickListener {
             val title = binding.title.editTextTitle.text.toString()
             val content = binding.content.editTextContent.text.toString()
-            val isFixed = binding.bottomBtnEdit.checkBoxFix.isChecked
+            val isPinned = binding.bottomBtnEdit.checkBoxPinned.isChecked
+            val isStarred = binding.bottomBtnEdit.checkBoxStarred.isChecked
             Log.d("setting mode", "$imeageSettingMode")
             if (imeageSettingMode == "bitmap" && isImageChanged == true) {
                 if (saveImageInLocalStorage() == false) {
@@ -153,7 +157,8 @@ class MemoEditActivity : AppCompatActivity() {
                 content = content,
                 uri = fileUri,
                 date = Date(),
-                isFixed = isFixed,
+                isPinned = isPinned,
+                isStarred = isStarred
             )
 
             if (title.isBlank() || content.isBlank())
@@ -204,7 +209,8 @@ class MemoEditActivity : AppCompatActivity() {
             if (memo != null) {
                 binding.title.editTextTitle.setText(memo.title)
                 binding.content.editTextContent.setText(memo.content)
-                binding.bottomBtnEdit.checkBoxFix.isChecked = memo.isFixed
+                binding.bottomBtnEdit.checkBoxPinned.isChecked = memo.isPinned
+                binding.bottomBtnEdit.checkBoxStarred.isChecked = memo.isStarred
                 if (memo.uri != "") {
                     fileUri = memo.uri
                     setImageView()

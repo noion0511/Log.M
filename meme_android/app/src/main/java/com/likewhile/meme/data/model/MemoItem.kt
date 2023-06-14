@@ -8,7 +8,8 @@ abstract class MemoItem(
     open var id: Long = -1L,
     open var title: String = "",
     open var date: Date = Date(),
-    open var isFixed: Boolean = false
+    open var isPinned: Boolean = false,
+    open var isStarred: Boolean = false
 ) {
     abstract val contentType: String
 }
@@ -16,10 +17,11 @@ abstract class MemoItem(
 data class TextMemoItem(
     override var id: Long = -1L,
     override var title: String = "",
-    var content: String = "",
-    var uri : String = "",
     override var date: Date = Date(),
-    override var isFixed: Boolean = false
+    override var isPinned: Boolean = false,
+    override var isStarred: Boolean = false,
+    var content: String = "",
+    var uri : String = ""
 ) : MemoItem() {
     override val contentType: String = "TEXT"
 }
@@ -27,9 +29,10 @@ data class TextMemoItem(
 data class ListMemoItem(
     override var id: Long = -1L,
     override var title: String = "",
-    var listItems: List<ListItem> = listOf(),
     override var date: Date = Date(),
-    override var isFixed: Boolean = false
+    override var isPinned: Boolean = false,
+    override var isStarred: Boolean = false,
+    var listItems: List<ListItem> = listOf()
 ) : MemoItem() {
     override val contentType: String = "LIST"
 }

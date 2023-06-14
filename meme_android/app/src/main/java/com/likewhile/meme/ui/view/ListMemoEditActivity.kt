@@ -110,7 +110,8 @@ class ListMemoEditActivity : AppCompatActivity() {
         binding.bottomBtnEdit.buttonSave.setOnClickListener {
             val title = binding.title.editTextTitle.text.toString()
             val contentList = listAdapter.getItems()
-            val isFixed = binding.bottomBtnEdit.checkBoxFix.isChecked
+            val isPinned = binding.bottomBtnEdit.checkBoxPinned.isChecked
+            val isStarred = binding.bottomBtnEdit.checkBoxStarred.isChecked
 
             val listItems = contentList.filterIndexed { index, item ->
                 listAdapter.getItemViewType(index) == ListAdapter.ITEM_TYPE_NORMAL
@@ -126,7 +127,8 @@ class ListMemoEditActivity : AppCompatActivity() {
                 title = title,
                 listItems = listItems,
                 date = Date(),
-                isFixed = isFixed,
+                isPinned = isPinned,
+                isStarred = isStarred
             )
 
             if (title.isBlank() || contentList.isEmpty())
@@ -174,7 +176,8 @@ class ListMemoEditActivity : AppCompatActivity() {
         memoViewModel.memo.observe(this) { memo ->
             if (memo != null) {
                 binding.title.editTextTitle.setText(memo.title)
-                binding.bottomBtnEdit.checkBoxFix.isChecked = memo.isFixed
+                binding.bottomBtnEdit.checkBoxPinned.isChecked = memo.isPinned
+                binding.bottomBtnEdit.checkBoxStarred.isChecked = memo.isStarred
                 listAdapter.clear()
                 listAdapter.addAll(memo.listItems)
             }
@@ -235,8 +238,10 @@ class ListMemoEditActivity : AppCompatActivity() {
         binding.title.editTextTitle.isEnabled = false
         binding.title.editTextTitle.alpha = 0.8f
         binding.title.editTextTitle.setTextColor(Color.BLACK)
-        binding.bottomBtnEdit.checkBoxFix.isEnabled = false
-        binding.bottomBtnEdit.checkBoxFix.setTextColor(Color.BLACK)
+        binding.bottomBtnEdit.checkBoxPinned.isEnabled = false
+        binding.bottomBtnEdit.checkBoxPinned.setTextColor(Color.BLACK)
+        binding.bottomBtnEdit.checkBoxStarred.isEnabled = false
+        binding.bottomBtnEdit.checkBoxStarred.setTextColor(Color.BLACK)
         binding.bottomBtnEdit.buttonSave.visibility = View.GONE
         binding.bottomBtnEdit.buttonCancel.visibility = View.GONE
         listAdapter.setItemsClickable(false)
@@ -251,7 +256,8 @@ class ListMemoEditActivity : AppCompatActivity() {
 
     private fun setEditMode() {
         binding.title.editTextTitle.isEnabled = true
-        binding.bottomBtnEdit.checkBoxFix.isEnabled = true
+        binding.bottomBtnEdit.checkBoxPinned.isEnabled = true
+        binding.bottomBtnEdit.checkBoxStarred.isEnabled = true
         binding.bottomBtnEdit.buttonSave.visibility = View.VISIBLE
         binding.bottomBtnEdit.buttonCancel.visibility = View.VISIBLE
         listAdapter.setItemsClickable(true)

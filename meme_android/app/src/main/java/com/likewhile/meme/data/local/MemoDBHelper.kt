@@ -7,13 +7,11 @@ import android.content.Intent
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
 import androidx.core.net.toUri
 import com.likewhile.meme.MemeApplication
 import com.likewhile.meme.data.model.*
 import com.likewhile.meme.ui.view.widget.MemoWidgetProvider
 import com.likewhile.meme.util.DateFormatUtil
-import java.io.File
 
 class MemoDBHelper(val context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -40,9 +38,9 @@ class MemoDBHelper(val context: Context) :
     fun selectAllMemos(sortOption: Int = 1): ArrayList<MemoItem> {
         val memoItems = ArrayList<MemoItem>()
         val selectQuery = when (sortOption) {
-            1 -> "SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_IS_FIXED DESC, $COLUMN_DATE DESC"
-            2 -> "SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_IS_FIXED DESC, $COLUMN_TITLE COLLATE NOCASE ASC"
-            else -> "SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_IS_FIXED DESC, $COLUMN_DATE ASC"
+            1 -> "SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_IS_PINNED DESC, $COLUMN_DATE DESC"
+            2 -> "SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_IS_PINNED DESC, $COLUMN_TITLE COLLATE NOCASE ASC"
+            else -> "SELECT * FROM $TABLE_NAME ORDER BY $COLUMN_IS_PINNED DESC, $COLUMN_DATE ASC"
         }
         val db = readableDatabase
         val cursor = db.rawQuery(selectQuery, null)
@@ -52,18 +50,20 @@ class MemoDBHelper(val context: Context) :
                 val id = cursor.getLong(cursor.getColumnIndex(COLUMN_ID))
                 val title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE))
                 val date = DateFormatUtil.stringToDate(cursor.getString(cursor.getColumnIndex(COLUMN_DATE)))
-                val isFixed = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_FIXED)) == 1
+                val isPinned = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_PINNED)) == 1
+                val isStarred = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_STARRED)) == 1
                 val memoType = MemoType.fromInt(cursor.getInt(cursor.getColumnIndex(COLUMN_MEMO_TYPE)))
 
                 val memoItem = when (memoType) {
-                    MemoType.LIST -> ListMemoItem(id, title, deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT))), date, isFixed)
+                    MemoType.LIST -> ListMemoItem(id, title,  date, isPinned, isStarred, deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT))))
                     else -> TextMemoItem(
                         id,
                         title,
-                        cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)),
-                        cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI)),
                         date,
-                        isFixed
+                        isPinned,
+                        isStarred,
+                        cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI)),
+                        cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)),
                     )
                 }
                 memoItems.add(memoItem)
@@ -101,9 +101,9 @@ class MemoDBHelper(val context: Context) :
         val dayStr = String.format("%02d", day)
 
         val orderBy = when (sortOption) {
-            1 -> "ORDER BY $COLUMN_IS_FIXED DESC, $COLUMN_DATE DESC"
-            2 -> "ORDER BY $COLUMN_IS_FIXED DESC, $COLUMN_TITLE COLLATE NOCASE ASC"
-            else -> "ORDER BY $COLUMN_IS_FIXED DESC, $COLUMN_DATE ASC"
+            1 -> "ORDER BY $COLUMN_IS_PINNED DESC, $COLUMN_DATE DESC"
+            2 -> "ORDER BY $COLUMN_IS_PINNED DESC, $COLUMN_TITLE COLLATE NOCASE ASC"
+            else -> "ORDER BY $COLUMN_IS_PINNED DESC, $COLUMN_DATE ASC"
         }
 
         val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '$year-$monthStr-$dayStr' $orderBy", null)
@@ -128,18 +128,20 @@ class MemoDBHelper(val context: Context) :
             val id = cursor.getLong(cursor.getColumnIndex(COLUMN_ID))
             val title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE))
             val date = DateFormatUtil.stringToDate(cursor.getString(cursor.getColumnIndex(COLUMN_DATE)))
-            val isFixed = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_FIXED)) == 1
+            val isPinned = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_PINNED)) == 1
+            val isStarred = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_STARRED)) == 1
             val memoType = MemoType.fromInt(cursor.getInt(cursor.getColumnIndex(COLUMN_MEMO_TYPE)))
 
             memoItem = when (memoType) {
-                MemoType.LIST -> ListMemoItem(id, title, deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT))), date, isFixed)
+                MemoType.LIST -> ListMemoItem(id, title,  date, isPinned, isStarred, deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT))))
                 else -> TextMemoItem(
                     id,
                     title,
+                    date,
+                    isPinned,
+                    isStarred,
                     cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT)),
                     cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI)),
-                    date,
-                    isFixed
                 )
             }
         }
@@ -154,7 +156,7 @@ class MemoDBHelper(val context: Context) :
         val values = ContentValues()
         values.put(COLUMN_TITLE, memoItem.title)
         values.put(COLUMN_DATE, DateFormatUtil.dateToString(memoItem.date))
-        values.put(COLUMN_IS_FIXED, memoItem.isFixed)
+        values.put(COLUMN_IS_PINNED, memoItem.isPinned)
         when (memoItem) {
             is TextMemoItem -> {
                 values.put(COLUMN_MEMO_TYPE, MemoType.TEXT.typeValue)
@@ -189,7 +191,7 @@ class MemoDBHelper(val context: Context) :
         values.put(COLUMN_TITLE, memoItem.title)
 
         values.put(COLUMN_DATE, DateFormatUtil.dateToString(memoItem.date))
-        values.put(COLUMN_IS_FIXED, memoItem.isFixed)
+        values.put(COLUMN_IS_PINNED, memoItem.isPinned)
         when (memoItem) {
             is TextMemoItem -> {
                 values.put(COLUMN_MEMO_TYPE, MemoType.TEXT.typeValue)
@@ -250,18 +252,27 @@ class MemoDBHelper(val context: Context) :
         val id = cursor.getLong(cursor.getColumnIndex(COLUMN_ID))
         val title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE))
         val date = DateFormatUtil.stringToDate(cursor.getString(cursor.getColumnIndex(COLUMN_DATE)))
-        val isFixed = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_FIXED)) == 1
+        val isPinned = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_PINNED)) == 1
+        val isStarred = cursor.getInt(cursor.getColumnIndex(COLUMN_IS_STARRED)) == 1
         val contentType = MemoType.fromInt(cursor.getInt(cursor.getColumnIndex(COLUMN_MEMO_TYPE)))
 
         return when (contentType) {
             MemoType.TEXT -> {
                 val content = cursor.getString(cursor.getColumnIndex(COLUMN_CONTENT))
                 val uri = cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI))
-                TextMemoItem(id, title, content, uri, date, isFixed)
+                TextMemoItem(
+                    id,
+                    title,
+                    date,
+                    isPinned,
+                    isStarred,
+                    content,
+                    uri,
+                )
             }
             MemoType.LIST -> {
                 val listItems = deserializeListContent(cursor.getBlob(cursor.getColumnIndex(COLUMN_LIST_CONTENT)))
-                ListMemoItem(id, title, listItems, date, isFixed)
+                ListMemoItem(id, title,  date, isPinned, isStarred, listItems)
             }
             else -> throw IllegalArgumentException("Invalid memo type")
         }
@@ -269,18 +280,18 @@ class MemoDBHelper(val context: Context) :
 
     companion object {
         const val DATABASE_NAME = "logm.db"
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 1
 
         const val TABLE_NAME = "logm"
         const val COLUMN_ID = "_id"
         const val COLUMN_TITLE = "title"
         const val COLUMN_CONTENT = "content"
         const val COLUMN_LIST_CONTENT = "list"
-        const val COLUMN_HANDWRITTEN_DATA = "drawing"
         const val COLUMN_IMAGE_URI = "uri"
         const val COLUMN_MEMO_TYPE = "type"
         const val COLUMN_DATE = "date"
-        const val COLUMN_IS_FIXED = "fixed"
+        const val COLUMN_IS_PINNED = "finned"
+        const val COLUMN_IS_STARRED = "starred"
 
         const val DELETE_TABLE_SQL = "DROP TABLE if exists $TABLE_NAME"
         const val ALTER_TABLE_SQL = "ALTER TABLE $TABLE_NAME ADD COLUMN $COLUMN_IMAGE_URI TEXT"
@@ -290,10 +301,10 @@ class MemoDBHelper(val context: Context) :
         $COLUMN_TITLE TEXT,
         $COLUMN_CONTENT TEXT,
         $COLUMN_DATE TEXT,
-        $COLUMN_IS_FIXED INTEGER,
+        $COLUMN_IS_PINNED INTEGER,
+        $COLUMN_IS_STARRED INTEGER,
         $COLUMN_MEMO_TYPE INTEGER,
         $COLUMN_LIST_CONTENT TEXT,
-        $COLUMN_HANDWRITTEN_DATA BLOB,
         $COLUMN_IMAGE_URI TEXT
             );
         """

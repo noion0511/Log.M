@@ -50,7 +50,7 @@ class TitleModeFragment : Fragment() {
                 true
             }
             R.id.button_fix -> {
-                selectedMemoItem.isFixed = !selectedMemoItem.isFixed
+                selectedMemoItem.isPinned = !selectedMemoItem.isPinned
                 viewModel.updateMemo(selectedMemoItem)
                 memoAdapter.notifyDataSetChanged()
                 true
@@ -86,7 +86,7 @@ class TitleModeFragment : Fragment() {
 
                     binding.recyclerViewTitle.setOnCreateContextMenuListener { menu, v, menuInfo ->
                         requireActivity().menuInflater.inflate(R.menu.menu_long_click, menu)
-                        menu.getItem(1).title = if (selectedMemoItem.isFixed) getString(R.string.unfixed) else getString(
+                        menu.getItem(1).title = if (selectedMemoItem.isPinned) getString(R.string.unfixed) else getString(
                             R.string.fixed)
                     }
 
