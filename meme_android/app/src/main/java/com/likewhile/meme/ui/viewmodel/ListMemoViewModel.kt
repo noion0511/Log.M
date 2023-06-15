@@ -29,7 +29,7 @@ class ListMemoViewModel(application: Application) : AndroidViewModel(application
         _memo.value = memoDBHelper.selectMemo(itemId) as ListMemoItem
     }
 
-    fun insertMemo(memoItem: MemoItem) : Long{
+    fun insertMemo(memoItem: MemoItem) : Long {
         return memoDBHelper.insertMemo(memoItem)
     }
 
@@ -37,6 +37,12 @@ class ListMemoViewModel(application: Application) : AndroidViewModel(application
         memoDBHelper.updateMemo(memoItem)
         refreshMemo()
     }
+
+
+    fun deleteMemo(memoItemId: Long) : Boolean {
+        return memoDBHelper.deleteMemo(memoItemId)
+    }
+
 
     fun closeDB() {
         memoDBHelper.close()

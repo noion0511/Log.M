@@ -52,6 +52,10 @@
     <string name="fixed">Pinned</string>
     <string name="unfixed">Unpinned</string>
 
+    <string name="toast_empty_fields">Please enter the title and content.</string>
+    <string name="toast_saved">Saved</string>
+    <string name="toast_delete_failed">Failed to delete the memo.</string>
+
     <string name="navigation_drawer_open" translatable="false">Open</string>
     <string name="navigation_drawer_close" translatable="false">Close</string>
 

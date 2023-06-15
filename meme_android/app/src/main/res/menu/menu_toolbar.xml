@@ -4,4 +4,8 @@
     <item
         android:id="@+id/button_edit_mode"
         android:title="@string/memo_modify"/>
+
+    <item
+        android:id="@+id/button_memo_delete"
+        android:title="@string/memo_delete" />
 </menu>

@@ -29,13 +29,18 @@ class TextMemoViewModel(application: Application) : AndroidViewModel(application
         _memo.value = memoDBHelper.selectMemo(itemId) as TextMemoItem
     }
 
-    fun insertMemo(memoItem: MemoItem) : Long{
+    fun insertMemo(memoItem: MemoItem) : Long {
         return memoDBHelper.insertMemo(memoItem)
     }
 
     fun updateMemo(memoItem: MemoItem) {
         memoDBHelper.updateMemo(memoItem)
         refreshMemo()
+    }
+
+
+    fun deleteMemo(memoItemId: Long) : Boolean {
+        return memoDBHelper.deleteMemo(memoItemId)
     }
 
     fun closeDB() {

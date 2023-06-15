@@ -101,12 +101,6 @@ class CalendarModeFragment : Fragment(), CalendarAdapter.OnMonthChangeListener, 
         EventBus.getDefault().register(this)
     }
 
-    override fun onResume() {
-        super.onResume()
-//        viewModel.refreshMemos()
-    }
-
-
     override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()
