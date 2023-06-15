@@ -106,7 +106,7 @@ class MemoDBHelper(val context: Context) :
             else -> "ORDER BY $COLUMN_IS_FIXED DESC, $COLUMN_DATE ASC"
         }
 
-        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '$year-$monthStr-$dayStr' $orderBy", null)
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE Like '$year-$monthStr-$dayStr%' $orderBy", null)
 
         while (cursor.moveToNext()) {
             memos.add(createMemoItemFromCursor(cursor))
