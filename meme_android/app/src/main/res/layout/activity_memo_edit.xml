@@ -41,9 +41,10 @@
                     android:id="@+id/title"
                     layout="@layout/memo_title" />
 
-                <include
-                    android:id="@+id/image"
-                    layout="@layout/memo_image"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_images"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:visibility="gone"/>
 
                 <include

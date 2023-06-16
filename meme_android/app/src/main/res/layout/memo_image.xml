@@ -9,18 +9,30 @@
     android:padding="16dp"
     android:background="@drawable/grey_rectangle_border_backgound"
     >
-
-    <ImageView
-        android:id="@+id/image_view"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="300dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/backgrounds/scenic"
-        android:scaleType="fitCenter"
-        />
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            tools:srcCompat="@tools:sample/backgrounds/scenic"
+            android:scaleType="fitCenter"
+            />
+        <ImageButton
+            android:id="@+id/image_delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/round_cancel_24"
+            android:layout_gravity="right"
+            />
+    </FrameLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

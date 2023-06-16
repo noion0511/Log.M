@@ -87,7 +87,7 @@ class MemoEditActivity : AppCompatActivity() {
         binding.bottomBtnEdit.buttonSave.visibility = View.GONE
         binding.bottomBtnEdit.buttonCancel.visibility = View.GONE
         binding.bottomBtnAddImage.visibility = View.GONE
-        unregisterForContextMenu(binding.image.root)
+        //unregisterForContextMenu(binding.image.root)
         isMenuVisible = true
         imeageSettingMode = "uri"
         isImageChanged = false
@@ -102,7 +102,7 @@ class MemoEditActivity : AppCompatActivity() {
         binding.bottomBtnEdit.buttonSave.visibility = View.VISIBLE
         binding.bottomBtnEdit.buttonCancel.visibility = View.VISIBLE
         binding.bottomBtnAddImage.visibility = View.VISIBLE
-        registerForContextMenu(binding.image.root)
+        //registerForContextMenu(binding.image.root)
         isMenuVisible = false
         invalidateOptionsMenu()
     }
@@ -142,7 +142,7 @@ class MemoEditActivity : AppCompatActivity() {
                 if (saveImageInLocalStorage() == false) {
                     Toast.makeText(this, getString(R.string.image_save_failed), Toast.LENGTH_SHORT)
                         .show()
-                    binding.image.root.visibility = View.GONE
+                    //binding.image.root.visibility = View.GONE
                     fileUri = ""
                 }
             }
@@ -207,7 +207,7 @@ class MemoEditActivity : AppCompatActivity() {
                 binding.bottomBtnEdit.checkBoxFix.isChecked = memo.isFixed
                 if (memo.uri != "") {
                     fileUri = memo.uri
-                    setImageView()
+                   // setImageView()
                 }
             }
         }
@@ -223,7 +223,7 @@ class MemoEditActivity : AppCompatActivity() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.button_delete_image -> {
-                binding.image.root.visibility = View.GONE
+                //binding.image.root.visibility = View.GONE
                 fileUri = ""
                 imeageSettingMode = "uri"
                 isImageChanged = true
@@ -269,21 +269,21 @@ class MemoEditActivity : AppCompatActivity() {
         return super.onPrepareOptionsMenu(menu)
     }
 
-    private fun setImageView() {//이미지 뷰에 사진을 세팅합니다
-        if (imeageSettingMode == "uri") {
-            Log.d("uri", "$fileUri")
-            Glide
-                .with(this)
-                .load(fileUri)
-                .error(R.drawable.baseline_hide_image_24)
-                .fitCenter()
-                .into(binding.image.imageView)
-
-        } else {
-            binding.image.imageView.setImageBitmap(bitmap)
-        }
-        binding.image.root.visibility = View.VISIBLE
-    }
+//    private fun setImageView() {//이미지 뷰에 사진을 세팅합니다
+//        if (imeageSettingMode == "uri") {
+//            Log.d("uri", "$fileUri")
+//            Glide
+//                .with(this)
+//                .load(fileUri)
+//                .error(R.drawable.baseline_hide_image_24)
+//                .fitCenter()
+//                .into(binding.image.imageView)
+//
+//        } else {
+//            binding.image.imageView.setImageBitmap(bitmap)
+//        }
+//        binding.image.root.visibility = View.VISIBLE
+//    }
 
     private fun showDialog() {
         val navigationOptions = arrayOf(
@@ -393,7 +393,7 @@ class MemoEditActivity : AppCompatActivity() {
             bitmap = it.data?.extras?.get("data") as Bitmap
             imeageSettingMode = "bitmap"
             isImageChanged = true
-            setImageView()
+            //setImageView()
         }
     }
 
@@ -404,7 +404,7 @@ class MemoEditActivity : AppCompatActivity() {
             fileUri = it.toString()
             imeageSettingMode = "uri"
             isImageChanged = true
-            setImageView()
+            //setImageView()
         }
     }
 
