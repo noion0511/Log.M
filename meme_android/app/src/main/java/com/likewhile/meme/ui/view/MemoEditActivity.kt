@@ -23,12 +23,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.likewhile.meme.BuildConfig
 import com.likewhile.meme.ui.view.widget.MemoWidgetProvider
 import com.likewhile.meme.R
+import com.likewhile.meme.data.model.ImageItem
+import com.likewhile.meme.data.model.ImageType
 import com.likewhile.meme.data.model.TextMemoItem
 import com.likewhile.meme.databinding.ActivityMemoEditBinding
+import com.likewhile.meme.ui.adapter.ImageAdapter
+import com.likewhile.meme.ui.adapter.MemoMode
 import com.likewhile.meme.ui.viewmodel.TextMemoViewModel
 import java.io.File
 import java.io.FileOutputStream
@@ -45,6 +50,8 @@ class MemoEditActivity : AppCompatActivity() {
     private var imeageSettingMode: String = "uri"
     private lateinit var bitmap: Bitmap
     private var isImageChanged = false
+    private lateinit var adapter : ImageAdapter
+    private lateinit var imageList : MutableList<ImageItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +62,7 @@ class MemoEditActivity : AppCompatActivity() {
                 TextMemoViewModel::class.java
             )
 
+        initRecyclerView()
         initMemoData()
         initSave()
         initCancel()
@@ -62,6 +70,27 @@ class MemoEditActivity : AppCompatActivity() {
         initImageBtn()
     }
 
+    private fun initRecyclerView(){
+        imageList = mutableListOf()
+        adapter = ImageAdapter(
+            imageList,
+            this,
+            object : ImageAdapter.ClickListener{
+                override fun deleteButtonClicked(data:ImageItem) {
+                    memoViewModel.removeImageItem(data)
+                }
+
+            },
+            MemoMode.READ
+        )
+        binding.recyclerViewImages.adapter = adapter
+        binding.recyclerViewImages.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+    }
+
+    private fun setMemoMode(mode : MemoMode){
+        adapter.setEditMode(mode)
+        adapter.notifyDataSetChanged()
+    }
 
     private fun updateWidget() {
         val appWidgetManager = AppWidgetManager.getInstance(this)
@@ -87,7 +116,7 @@ class MemoEditActivity : AppCompatActivity() {
         binding.bottomBtnEdit.buttonSave.visibility = View.GONE
         binding.bottomBtnEdit.buttonCancel.visibility = View.GONE
         binding.bottomBtnAddImage.visibility = View.GONE
-        //unregisterForContextMenu(binding.image.root)
+        setMemoMode(MemoMode.READ)
         isMenuVisible = true
         imeageSettingMode = "uri"
         isImageChanged = false
@@ -102,7 +131,7 @@ class MemoEditActivity : AppCompatActivity() {
         binding.bottomBtnEdit.buttonSave.visibility = View.VISIBLE
         binding.bottomBtnEdit.buttonCancel.visibility = View.VISIBLE
         binding.bottomBtnAddImage.visibility = View.VISIBLE
-        //registerForContextMenu(binding.image.root)
+        setMemoMode(MemoMode.EDIT)
         isMenuVisible = false
         invalidateOptionsMenu()
     }
@@ -207,29 +236,20 @@ class MemoEditActivity : AppCompatActivity() {
                 binding.bottomBtnEdit.checkBoxFix.isChecked = memo.isFixed
                 if (memo.uri != "") {
                     fileUri = memo.uri
+                    //이미지 리스트 불러오기
                    // setImageView()
                 }
             }
         }
-    }
 
-    override fun onCreateContextMenu(
-        menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?
-    ) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-        menuInflater.inflate(R.menu.menu_image_long_click, menu)
-    }
-
-    override fun onContextItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.button_delete_image -> {
-                //binding.image.root.visibility = View.GONE
-                fileUri = ""
-                imeageSettingMode = "uri"
-                isImageChanged = true
+        memoViewModel.imageListLiveData.observe(this){ list->
+            imageList.clear()
+            imageList.addAll(list)
+            adapter.notifyDataSetChanged()
+            if(list.size>0){
+                binding.recyclerViewImages.visibility=View.VISIBLE
             }
         }
-        return super.onContextItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -268,22 +288,6 @@ class MemoEditActivity : AppCompatActivity() {
         deleteMenu.isVisible = isMenuVisible
         return super.onPrepareOptionsMenu(menu)
     }
-
-//    private fun setImageView() {//이미지 뷰에 사진을 세팅합니다
-//        if (imeageSettingMode == "uri") {
-//            Log.d("uri", "$fileUri")
-//            Glide
-//                .with(this)
-//                .load(fileUri)
-//                .error(R.drawable.baseline_hide_image_24)
-//                .fitCenter()
-//                .into(binding.image.imageView)
-//
-//        } else {
-//            binding.image.imageView.setImageBitmap(bitmap)
-//        }
-//        binding.image.root.visibility = View.VISIBLE
-//    }
 
     private fun showDialog() {
         val navigationOptions = arrayOf(
@@ -393,7 +397,7 @@ class MemoEditActivity : AppCompatActivity() {
             bitmap = it.data?.extras?.get("data") as Bitmap
             imeageSettingMode = "bitmap"
             isImageChanged = true
-            //setImageView()
+            memoViewModel.addImageItem(ImageItem(-1, ImageType.BITMAP, "", bitmap))
         }
     }
 
@@ -404,7 +408,7 @@ class MemoEditActivity : AppCompatActivity() {
             fileUri = it.toString()
             imeageSettingMode = "uri"
             isImageChanged = true
-            //setImageView()
+            memoViewModel.addImageItem(ImageItem(-1, ImageType.URI, fileUri, null))
         }
     }
 

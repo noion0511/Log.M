@@ -4,7 +4,9 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import com.likewhile.meme.data.local.MemoDBHelper
+import com.likewhile.meme.data.model.ImageItem
 import com.likewhile.meme.data.model.MemoItem
 import com.likewhile.meme.data.model.TextMemoItem
 
@@ -16,8 +18,14 @@ class TextMemoViewModel(application: Application) : AndroidViewModel(application
 
     private var itemId: Long = -1
 
+    private val imageList = mutableListOf<ImageItem>()
+    private var _imageListLiveData = MutableLiveData<MutableList<ImageItem>>()
+    val imageListLiveData : LiveData<MutableList<ImageItem>>
+        get() = _imageListLiveData
+
     init {
         memoDBHelper = MemoDBHelper(application)
+        _imageListLiveData.postValue(imageList)
     }
 
     fun setItemId(id: Long) {
@@ -41,6 +49,15 @@ class TextMemoViewModel(application: Application) : AndroidViewModel(application
 
     fun deleteMemo(memoItemId: Long) : Boolean {
         return memoDBHelper.deleteMemo(memoItemId)
+    }
+
+    fun addImageItem(item:ImageItem){
+        imageList.add(item)
+        _imageListLiveData.postValue(imageList)
+    }
+    fun removeImageItem(item:ImageItem){
+        imageList.remove(item)
+        _imageListLiveData.postValue(imageList)
     }
 
     fun closeDB() {
