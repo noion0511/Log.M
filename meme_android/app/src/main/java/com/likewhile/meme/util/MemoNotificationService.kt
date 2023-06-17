@@ -24,7 +24,7 @@ class MemoNotificationService : Service() {
         for (memo in memoList) {
             val notification = createNotification(memo)
             val notificationId = memo.id.hashCode()
-            startForeground(notificationId, notification)
+            showNotification(notificationId, notification)
         }
 
         return START_STICKY

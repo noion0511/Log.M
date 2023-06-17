@@ -5,7 +5,6 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
@@ -17,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.navigation.NavigationView
 import com.likewhile.meme.*
-import com.likewhile.meme.data.local.MemoDBHelper
 import com.likewhile.meme.data.model.SortTypeChangeEvent
 import com.likewhile.meme.databinding.ActivityMainBinding
 import com.likewhile.meme.ui.viewmodel.MainViewModel
@@ -34,7 +32,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        mainViewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(MainViewModel::class.java)
+        mainViewModel =
+            ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
+                MainViewModel::class.java
+            )
 
         if (savedInstanceState == null) {
             replaceFragment("calendar_mode_fragment", CalendarModeFragment::newInstance)
@@ -50,15 +51,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initNotificationService() {
-        val dbHelper = MemoDBHelper(this)
-        if(dbHelper.selectStarredMemo().isNotEmpty()) {
-            val intent = Intent(this, MemoNotificationService::class.java)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(intent)
-            } else {
-                startService(intent)
-            }
-        }
+        val intent = Intent(this, MemoNotificationService::class.java)
+        startService(intent)
     }
 
     private fun initToolbar() {
@@ -79,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         navigationView = binding.navView
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
-            when(menuItem.itemId) {
+            when (menuItem.itemId) {
                 R.id.button_privacy_policy -> {
                     val intent = Intent(this, PrivacyPolicyActivity::class.java)
                     startActivity(intent)
@@ -141,8 +135,14 @@ class MainActivity : AppCompatActivity() {
             builder.setTitle(getString(R.string.choose_a_screen))
                 .setItems(navigationOptions) { _, which ->
                     val intent = when (navigationOptions[which]) {
-                        getString(R.string.navigation_option_memo_edit) -> Intent(this, MemoEditActivity::class.java)
-                        getString(R.string.navigation_option_list_memo_edit) -> Intent(this, ListMemoEditActivity::class.java)
+                        getString(R.string.navigation_option_memo_edit) -> Intent(
+                            this,
+                            MemoEditActivity::class.java
+                        )
+                        getString(R.string.navigation_option_list_memo_edit) -> Intent(
+                            this,
+                            ListMemoEditActivity::class.java
+                        )
                         else -> null
                     }
                     intent?.let { startActivity(it) }
@@ -163,7 +163,7 @@ class MainActivity : AppCompatActivity() {
         binding.textviewSort.setText(items[0], false)
 
         binding.textviewSort.setOnItemClickListener { _, _, position, _ ->
-            when(position) {
+            when (position) {
                 0 -> {
                     EventBus.getDefault().post(SortTypeChangeEvent(1))
                 }
@@ -179,7 +179,8 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun checkNotificationEnable() {
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val areNotificationsEnabled = notificationManager.areNotificationsEnabled()
 
         if (!areNotificationsEnabled) {
