@@ -26,7 +26,7 @@ class DateFormatUtil {
         }
 
         fun dateToString(date: Date): String {
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
             return dateFormat.format(date)
         }
 

@@ -106,7 +106,7 @@ class MemoDBHelper(val context: Context) :
             else -> "ORDER BY $COLUMN_IS_FIXED DESC, $COLUMN_DATE ASC"
         }
 
-        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = '$year-$monthStr-$dayStr' $orderBy", null)
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE Like '$year-$monthStr-$dayStr%' $orderBy", null)
 
         while (cursor.moveToNext()) {
             memos.add(createMemoItemFromCursor(cursor))
@@ -150,7 +150,9 @@ class MemoDBHelper(val context: Context) :
     }
 
 
-    fun insertMemo(memoItem: MemoItem, db: SQLiteDatabase? = null): Long {
+
+    fun insertMemo(memoItem: MemoItem, db: SQLiteDatabase? = null) : Long{
+
         val values = ContentValues()
         values.put(COLUMN_TITLE, memoItem.title)
         values.put(COLUMN_DATE, DateFormatUtil.dateToString(memoItem.date))
@@ -172,7 +174,6 @@ class MemoDBHelper(val context: Context) :
         if (db == null) {
             database.close()
         }
-
         return id
     }
 

@@ -31,8 +31,8 @@ import java.util.*
 
 class ListMemoEditActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMemoListEditBinding.inflate(layoutInflater) }
-    private val itemId by lazy { intent.getLongExtra(MemoWidgetProvider.EXTRA_MEMO_ID, -1) }
-    private var insertedId: Long = 0L
+    private var itemId : Long = -1L
+
 
     private lateinit var memoViewModel: ListMemoViewModel
     private lateinit var listAdapter: ListAdapter
@@ -47,6 +47,8 @@ class ListMemoEditActivity : AppCompatActivity() {
             ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(application)).get(
                 ListMemoViewModel::class.java
             )
+
+        itemId = intent.getLongExtra(MemoWidgetProvider.EXTRA_MEMO_ID, -1)
 
         initRecyclerView()
         initMemoData()
@@ -129,30 +131,26 @@ class ListMemoEditActivity : AppCompatActivity() {
                 isFixed = isFixed,
             )
 
-            if (title.isBlank() || contentList.isEmpty())
-                Toast.makeText(this, getString(R.string.toast_empty_fields), Toast.LENGTH_SHORT)
-                    .show()
-            else {
-                if (itemId != -1L) {
-                    memoViewModel.updateMemo(memoItem)
-                    updateWidget()
-                } else if (insertedId != 0L) {
-                    memoViewModel.setItemId(insertedId)
-                    memoItem.id = insertedId
-                    memoViewModel.updateMemo(memoItem)
-                    updateWidget()
-                } else {
-                    insertedId = memoViewModel.insertMemo(memoItem)
-                }
-                setReadMode()
-                val focusedView = currentFocus
-                focusedView?.clearFocus()
+        if (title.isBlank() || contentList.isEmpty())
+            Toast.makeText(this, "제목과 상세내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
+        else {
+            if (itemId != -1L) {
+                memoViewModel.updateMemo(memoItem)
+                updateWidget()
+            } else {
+                itemId = memoViewModel.insertMemo(memoItem)
+                memoViewModel.setItemId(itemId)
+            }
+            setReadMode()
+            val focusedView = currentFocus
+            focusedView?.clearFocus()
 
-                val inputMethodManager =
-                    getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(focusedView?.windowToken, 0)
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(focusedView?.windowToken, 0)
 
-                Toast.makeText(this, getString(R.string.toast_saved), Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.toast_saved), Toast.LENGTH_SHORT).show()
+
             }
         }
     }
