@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.likewhile.meme.R
 import com.likewhile.meme.data.local.MemoDBHelper
@@ -13,6 +14,7 @@ import com.likewhile.meme.data.model.MemoItem
 import com.likewhile.meme.data.model.TextMemoItem
 import com.likewhile.meme.ui.view.MainActivity
 
+private const val TAG = "MemoNotificationService"
 class MemoNotificationService : Service() {
     private val channelId = "starredMemoChannelId"
 
@@ -24,6 +26,7 @@ class MemoNotificationService : Service() {
         for (memo in memoList) {
             val notification = createNotification(memo)
             val notificationId = memo.id.hashCode()
+            Log.d(TAG, "onStartCommand: ${memo.id} hash ${memo.id.hashCode()}")
             showNotification(notificationId, notification)
         }
 
@@ -52,8 +55,9 @@ class MemoNotificationService : Service() {
         val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        val pendingIntent: PendingIntent =
-            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+        val pendingIntent =
+            PendingIntent.getService(this, memo.id.hashCode(), intent, PendingIntent.FLAG_IMMUTABLE)
 
         val notificationBuilder =  NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_launcher_app)
