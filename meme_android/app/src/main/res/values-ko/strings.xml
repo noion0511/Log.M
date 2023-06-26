@@ -26,6 +26,13 @@
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>
 
+    <string name="image_save_failed">이미지 저장에 실패했습니다.</string>
+    <string name="incomplete_input_message">제목과 상세 내용을 입력해 주세요.</string>
+    <string name="taking_pictures">사진 촬영</string>
+    <string name="select_a_picture_from_gallery">갤러리에서 사진 선택</string>
+    <string name="authorization_is_required">권한 승인이 필요합니다.</string>
+    <string name="remove_image">제거</string>
+
     <string name="sunday">일</string>
     <string name="monday">월</string>
     <string name="tuesday">화</string>
@@ -47,4 +54,8 @@
     <string name="navigation_option_list_memo_edit">리스트 메모 작성</string>
     <string name="fixed">고정</string>
     <string name="unfixed">고정 해제</string>
+
+    <string name="toast_empty_fields">제목과 내용을 입력해주세요.</string>
+    <string name="toast_saved">저장되었습니다.</string>
+    <string name="toast_delete_failed">메모 삭제에 실패했습니다.</string>
 </resources>

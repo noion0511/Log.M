@@ -25,6 +25,13 @@
     <string name="add_widget">ウィジェットを追加</string>
     <string name="app_widget_description">これはアプリウィジェットの説明です</string>
 
+    <string name="image_save_failed">イメージの保存に失敗しました</string>
+    <string name="incomplete_input_message">タイトルと詳細を入力してください</string>
+    <string name="taking_pictures">写真撮影</string>
+    <string name="select_a_picture_from_gallery">ギャラリーで写真を選択</string>
+    <string name="authorization_is_required">権限の承認が必要です。</string>
+    <string name="remove_image">削除</string>
+
     <string name="sunday">日</string>
     <string name="monday">月</string>
     <string name="tuesday">火</string>
@@ -47,4 +54,8 @@
     <string name="navigation_option_list_memo_edit">リストメモ作成</string>
     <string name="fixed">固定済み</string>
     <string name="unfixed">固定解除済み</string>
+
+    <string name="toast_empty_fields">タイトルと内容を入力してください。</string>
+    <string name="toast_saved">保存しました。</string>
+    <string name="toast_delete_failed">メモの削除に失敗しました。</string>
 </resources>

@@ -25,6 +25,13 @@
     <string name="add_widget">添加小部件</string>
     <string name="app_widget_description">这是一个应用小部件描述</string>
 
+    <string name="image_save_failed">图片保存失败</string>
+    <string name="incomplete_input_message">请输入题目和详细内容。</string>
+    <string name="taking_pictures">摄影</string>
+    <string name="select_a_picture_from_gallery">选择照片</string>
+    <string name="authorization_is_required">必须获得批准</string>
+    <string name="remove_image">删除</string>
+
     <string name="sunday">日</string>
     <string name="monday">一</string>
     <string name="tuesday">二</string>
@@ -47,4 +54,8 @@
     <string name="navigation_option_list_memo_edit">编写列表备忘录</string>
     <string name="fixed">已固定</string>
     <string name="unfixed">已取消固定</string>
+
+    <string name="toast_empty_fields">请输入标题和内容。</string>
+    <string name="toast_saved">已保存</string>
+    <string name="toast_delete_failed">删除备忘录失败。</string>
 </resources>

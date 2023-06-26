@@ -24,6 +24,13 @@
     <string name="add_widget">Add widget</string>
     <string name="app_widget_description">This is an app widget description</string>
 
+    <string name="image_save_failed">Failed to save image</string>
+    <string name="incomplete_input_message">Please enter the title and details</string>
+    <string name="taking_pictures">Take pictures</string>
+    <string name="select_a_picture_from_gallery">Select a picture from gallery</string>
+    <string name="authorization_is_required">Authorization is required</string>
+    <string name="remove_image">Remove</string>
+
     <string name="sunday">S</string>
     <string name="monday">M</string>
     <string name="tuesday">T</string>
@@ -44,6 +51,10 @@
     <string name="navigation_option_list_memo_edit">Write List Memo</string>
     <string name="fixed">Pinned</string>
     <string name="unfixed">Unpinned</string>
+
+    <string name="toast_empty_fields">Please enter the title and content.</string>
+    <string name="toast_saved">Saved</string>
+    <string name="toast_delete_failed">Failed to delete the memo.</string>
 
     <string name="navigation_drawer_open" translatable="false">Open</string>
     <string name="navigation_drawer_close" translatable="false">Close</string>

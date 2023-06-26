@@ -65,7 +65,8 @@ class ListAdapter(
                     addButtonHolder.binding.addItemButton.setOnClickListener {
                         onAddButtonClick()
                     }
-                } else {
+                }
+                else {
                     addButtonHolder.binding.addItemButton.visibility = View.GONE
                 }
 
@@ -97,7 +98,7 @@ class ListAdapter(
         notifyItemChanged(toPosition)
     }
 
-    override fun getItemCount() = listItems.size
+    override fun getItemCount() = listItems.size + 1
 
     inner class ListViewHolder(val binding: ItemListBinding) :
         RecyclerView.ViewHolder(binding.root) {

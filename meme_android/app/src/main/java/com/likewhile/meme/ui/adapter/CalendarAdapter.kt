@@ -69,6 +69,8 @@ class CalendarAdapter(private val onMonthChangeListener: OnMonthChangeListener? 
     inner class CalendarItemViewHolder(private val binding: ItemCalendarBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(date: Int, position: Int) {
             binding.tvDate.text = date.toString()
+            binding.point.visibility=View.GONE
+            itemView.isClickable=false
 
             if (position < baseCalendar.preMonth
                 || position >= baseCalendar.preMonth + baseCalendar.currentMonth) {
