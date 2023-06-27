@@ -1,5 +1,6 @@
 package com.likewhile.meme.ui.view
 
+import android.Manifest
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
@@ -8,6 +9,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -354,10 +356,18 @@ class MemoEditActivity : AppCompatActivity() {
     }
 
     private fun requestPermission() {
-        ActivityCompat.requestPermissions(
-            this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-            READ_EXTERNAL_STORAGE_CODE
-        )
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.TIRAMISU){
+            ActivityCompat.requestPermissions(
+                this, arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
+                READ_EXTERNAL_STORAGE_CODE
+            )
+        }else{
+            ActivityCompat.requestPermissions(
+                this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                READ_EXTERNAL_STORAGE_CODE
+            )
+        }
+
     }
 
     override fun onRequestPermissionsResult(
