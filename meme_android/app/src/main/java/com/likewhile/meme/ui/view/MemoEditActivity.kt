@@ -180,9 +180,9 @@ class MemoEditActivity : AppCompatActivity() {
                 id = itemId,
                 title = title,
                 content = content,
-                uri = fileUri,
                 date = Date(),
                 isFixed = isFixed,
+                imageList
             )
 
             if (title.isBlank() || content.isBlank())
@@ -234,11 +234,7 @@ class MemoEditActivity : AppCompatActivity() {
                 binding.title.editTextTitle.setText(memo.title)
                 binding.content.editTextContent.setText(memo.content)
                 binding.bottomBtnEdit.checkBoxFix.isChecked = memo.isFixed
-                if (memo.uri != "") {
-                    fileUri = memo.uri
-                    //이미지 리스트 불러오기
-                   // setImageView()
-                }
+
             }
         }
 

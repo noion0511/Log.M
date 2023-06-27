@@ -105,7 +105,6 @@ class MemoWidgetProvider : AppWidgetProvider() {
             0L, // ID는 데이터베이스에서 자동으로 생성됩니다.
             "new memo", // 제목
             "", // 내용
-            "",//uri
             Date(), // 날짜
             false // 고정 여부
         )

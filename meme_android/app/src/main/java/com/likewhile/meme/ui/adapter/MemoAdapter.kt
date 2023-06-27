@@ -106,7 +106,7 @@ class MemoAdapter(private val memoItems: MutableList<MemoItem>, private val onIt
         }
         val content = formattedItems.joinToString(separator = "\n")
 
-        return TextMemoItem(memoItem.id, memoItem.title, content, "", memoItem.date, memoItem.isFixed)
+        return TextMemoItem(memoItem.id, memoItem.title, content, memoItem.date, memoItem.isFixed)
     }
 
     companion object {

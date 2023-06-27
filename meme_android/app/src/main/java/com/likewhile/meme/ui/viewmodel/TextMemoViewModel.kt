@@ -34,7 +34,11 @@ class TextMemoViewModel(application: Application) : AndroidViewModel(application
     }
 
     private fun refreshMemo() {
-        _memo.value = memoDBHelper.selectMemo(itemId) as TextMemoItem
+        val refreshedMemo = memoDBHelper.selectMemo(itemId) as TextMemoItem
+        _memo.value = refreshedMemo
+        imageList.clear()
+        imageList.addAll(refreshedMemo.imageList)
+        _imageListLiveData.postValue(imageList)
     }
 
     fun insertMemo(memoItem: MemoItem) : Long {

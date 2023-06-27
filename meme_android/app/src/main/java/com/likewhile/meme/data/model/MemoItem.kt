@@ -1,5 +1,6 @@
 package com.likewhile.meme.data.model
 
+import android.media.Image
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import java.util.*
@@ -17,9 +18,10 @@ data class TextMemoItem(
     override var id: Long = -1L,
     override var title: String = "",
     var content: String = "",
-    var uri : String = "",
+    //var uri : String = "",
     override var date: Date = Date(),
-    override var isFixed: Boolean = false
+    override var isFixed: Boolean = false,
+    var imageList : MutableList<ImageItem> = mutableListOf<ImageItem>()
 ) : MemoItem() {
     override val contentType: String = "TEXT"
 }
