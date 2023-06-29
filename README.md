@@ -54,7 +54,7 @@
 
 ## 정보
 
-[Apache License, Version 2.0.](https://github.com/noion0511/Log.M/blob/main/LICENSE)를 준수하며 `LICENSE`에서 자세한 정보를 확인할 수 있습니다.
+Apache License, Version 2.0.를 준수하며, [`LICENSE`](https://github.com/noion0511/Log.M/blob/main/LICENSE)에서 자세한 정보를 확인할 수 있습니다.
 
 [오희주](https://github.com/noion0511)(noion0511@gmail.com), [김도연](https://github.com/DodoKim0425)(dodoyeon0425@gmail.com)
 
