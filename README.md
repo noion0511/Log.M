@@ -1,5 +1,3 @@
-# README.md 정리
-
 # Log.M
 
 > 할 일과 중요 사항을 저장해둘 수 있는 메모 앱
@@ -13,7 +11,19 @@
 
 [구글 플레이스토어](https://play.google.com/store/apps/details?id=com.likewhile.meme)
 
-[사용 언어 및 라이브러리](https://www.notion.so/b7350d517fce470cabd1183213ccd3a7?pvs=21)
+
+## 사용 언어 및 라이브러리
+| Category | Stack |
+| ------------ | ------------- |
+| Language | Kotlin  |
+| Architecture | MVVM  |
+| Networking | Gson, Retrofit, Okhttp  |
+| Asynchronous | Coroutines, RxJava  |
+| JetPack | AAC, DataBinding, LiveData, Repository, ViewMoel  |
+| Local DB | SQLite  |
+| Image | Glide  |
+| Collaboration | Discord, Notion, Slack |
+| Etc | EventBus |
 
 ## 업데이트 내역
 
@@ -45,7 +55,7 @@
 
 ## 정보
 
- Apache License, Version 2.0.를 준수하며 `LICENSE`에서 자세한 정보를 확인할 수 있습니다.
+<a href="https://github.com/noion0511/Log.M/blob/main/LICENSE"> Apache License, Version 2.0.</a>를 준수하며 `LICENSE`에서 자세한 정보를 확인할 수 있습니다.
 
 [오희주](https://github.com/noion0511)(noion0511@gmail.com), [김도연](https://github.com/DodoKim0425)(dodoyeon0425@gmail.com)
 
