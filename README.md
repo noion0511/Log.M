@@ -17,7 +17,6 @@
 | ------------ | ------------- |
 | Language | Kotlin  |
 | Architecture | MVVM  |
-| Asynchronous | Coroutines, RxJava  |
 | JetPack | AAC, DataBinding, LiveData, ViewMoel  |
 | Local DB | SQLite  |
 | Image | Glide  |
